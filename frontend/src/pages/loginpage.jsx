@@ -41,9 +41,16 @@ export default function LoginPage() {
 
     try {
       const userData = await handleLogin(emailValue, passwordValue); // ✅ API 호출
-      setUser(userData); // ✅ 로그인 성공 시 Recoil 상태 업데이트
-      navigate("/"); // ✅ 로그인 후 이동
-      console.log("a");
+      setUser((prevUser) => ({
+        ...prevUser,
+        isLoggedIn: true,
+        code: userData,
+      })); // ✅ 로그인 성공 시 Recoil 상태 업데이트
+      console.log("여기요");
+      console.log(userState);
+      if (userData == 200) {
+        navigate("/"); // ✅ 로그인 후 이동
+      }
     } catch (err) {
       setError(err.message); // ✅ 서버에서 받은 오류 메시지 표시
     }

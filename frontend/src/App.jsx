@@ -13,6 +13,7 @@ import ProgressPage from "./pages/progresspage";
 import SearchPage from "./pages/searchpage";
 import AiPlannerStartPage from "./pages/aiplannerstartpage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Test from "./pages/testpage";
 import { RecoilRoot } from "recoil";
 
 const router = createBrowserRouter([
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: "/aiplanner", element: <AiPlannerStartPage /> },
     ],
   },
+  { path: "/test", element: <Test /> },
 ]);
 
 function App() {

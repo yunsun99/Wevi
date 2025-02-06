@@ -1,21 +1,23 @@
 import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { searchState } from "../../atoms/searchState";
 
 export default function SearchCategoryBar() {
-    const handleButtonClick = (buttonName) => {
-        if (selectedButton !== buttonName) {
-          setSelectedButton(buttonName);
-        }
-      };
-      // 활성화 버튼 css
-      const buttonActive =
-        "flex-1 text-[#121212]center font-medium text-[#121212] hover:text-gray-800 hover:border-b-2 hover:border-black cursor-pointer border-b-2 border-black";
-      // 비활성화 버튼 css
-      const buttonInactive =
-        "flex-1 text-center text-sm font-semibold text-[#AC9261] hover:text-[#121212] hover:border-b-2 hover:border-black cursor-pointer";
-      // 선택된 버튼
-    
-      const [selectedButton, setSelectedButton] = useState("웨딩홀");
-    
+  const handleButtonClick = (buttonName) => {
+    if (selectedButton !== buttonName) {
+      setSelectedButton(buttonName);
+    }
+  };
+  // 활성화 버튼 css
+  const buttonActive =
+    "flex-1 text-[#121212]center font-medium text-[#121212] hover:text-gray-800 hover:border-b-2 hover:border-black cursor-pointer border-b-2 border-black";
+  // 비활성화 버튼 css
+  const buttonInactive =
+    "flex-1 text-center text-sm font-semibold text-[#AC9261] hover:text-[#121212] hover:border-b-2 hover:border-black cursor-pointer";
+  // 선택된 버튼
+
+  const [selectedButton, setSelectedButton] = useRecoilState(searchState);
+
   return (
     <>
       <div className="flex border-b border-gray-300 px-4 py-3 bg-white">
