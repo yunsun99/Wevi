@@ -35,7 +35,7 @@ function TopNavigationBar() {
 
         {/* 알림 아이콘 */}
         <Link
-          to="/alarm"
+          to="/notification"
           aria-label="Notifications"
           className="text-gray-600 hover:text-gray-800"
         >

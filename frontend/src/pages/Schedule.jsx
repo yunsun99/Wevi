@@ -1,13 +1,12 @@
 import { useState, useRef } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import TopNavigationBar from "../components/Navigators/TopNavigationBar";
+import TopNavigationBar from "../components/Navigators/TopNavigationBar.jsx";
 import scheduleData from "../scheduleData.js";
 import CardCalendar from "../components/Cards/CardCalendar.jsx";
 import BottomNavigationBar from "../components/Navigators/BottomNavigationBar.jsx";
-import "../pages/react-calendar.css";
 
-export default function CalendarPage() {
+export default function Schedule() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [filteredSchedules, setFilteredSchedules] = useState([]); // 선택된 날짜의 일정 저장
   const scheduleRefs = useRef({}); // 날짜별 첫 번째 일정의 ref 저장
@@ -15,13 +14,15 @@ export default function CalendarPage() {
   // 날짜 클릭 시 해당 날짜의 일정 필터링
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    
+
     /** 한국시간으로 변환
      * iso는 세계 시간 기준
      * Sat Feb 08 2025 00:00:00 GMT+0900 (한국 표준시) => 2025-02-08
      */
-    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-    
+    const formattedDate = `${date.getFullYear()}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
     // 선택된 날짜에 해당하는 일정 필터링
     const schedulesForDate = scheduleData.filter(
       (schedule) => schedule.date === formattedDate
@@ -85,7 +86,9 @@ export default function CalendarPage() {
               />
             ))
           ) : (
-            <p className="text-center text-gray-500">선택한 날짜에 일정이 없습니다.</p>
+            <p className="text-center text-gray-500">
+              선택한 날짜에 일정이 없습니다.
+            </p>
           )}
         </div>
       </div>

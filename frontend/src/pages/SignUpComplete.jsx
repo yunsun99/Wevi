@@ -1,7 +1,7 @@
 import logo from "@/assets/logo.png";
 import Button1 from "../components/Buttons/Button1";
 
-export default function SignupCompletePage() {
+export default function SignupComplete() {
   return (
     <div className="m-5 w-[90%] flex flex-col h-screen items-center justify-center">
       {/* 로고 및 브랜드 텍스트 */}
