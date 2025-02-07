@@ -3,6 +3,7 @@ import "./App.css";
 import Loginpage from "./pages/loginpage";
 import SignUpPage from "./pages/signuppage";
 import SignUpDetailPage from "./pages/signupdetailpage";
+import SignupCompletePage from "./pages/signupCompletepage";
 import HomePage from "./pages/homepage";
 import AlarmPage from "./pages/alarmpage";
 import CalendarPage from "./pages/calendarpage";
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
   { path: "/login", element: <Loginpage /> },
   { path: "/signup", element: <SignUpPage /> },
   { path: "/signupdetail", element: <SignUpDetailPage /> },
+  { path: "/signup/complete", element: <SignupCompletePage /> },
   {
     element: <ProtectedRoute />,
     children: [

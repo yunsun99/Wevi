@@ -12,11 +12,17 @@ import { useInput } from "@/components/Inputs/useInput.js";
 import logo from "@/assets/logo.png";
 import Input from "@/components/Inputs/Input_gray";
 import Button1 from "@/components/Buttons/Button1";
+import { Link } from "react-router-dom";
 
 export default function LoginPage() {
   const [error, setError] = useState(null); // 로그인 실패 메시지
   const setUser = useSetRecoilState(userState); // Recoil 상태 업데이트
   const navigate = useNavigate(); // 페이지 이동
+
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
 
   // 이메일 입력 관리
   const {
@@ -24,7 +30,12 @@ export default function LoginPage() {
     handelInputChange: handleEmailChange,
     handleInputBlur: handleEmailBlur,
     hasError: emailHasError,
-  } = useInput("", (value) => isEmail(value) && isNotEmpty(value));
+  } = useInput(
+    formData,
+    setFormData,
+    "username",
+    (value) => isEmail(value) && isNotEmpty(value)
+  );
 
   // 비밀번호 입력 관리
   const {
@@ -32,7 +43,9 @@ export default function LoginPage() {
     handelInputChange: handlePasswordChange,
     handleInputBlur: handlePasswordBlur,
     hasError: passwordHasError,
-  } = useInput("", (value) => hasMinLength(value));
+  } = useInput(formData, setFormData, "password", (value) =>
+    hasMinLength(value)
+  );
 
   // 로그인 요청 함수
   const onLoginSubmit = async (e) => {
@@ -40,9 +53,9 @@ export default function LoginPage() {
     setError(null); // 기존 에러 초기화
 
     try {
-      const userCode = await handleLogin(emailValue, passwordValue);
+      const userCode = await handleLogin(formData.username, formData.password);
       setUser(userCode);
-      if (userCode == 200) {
+      if (userCode === 200) {
         navigate("/");
       }
     } catch (err) {
@@ -87,9 +100,9 @@ export default function LoginPage() {
           <Button1 type="submit">로그인</Button1>
 
           {/* 회원가입 문구 */}
-          <p className="text-center text-gray-600 mt-4 text-sm">
+          <Link to="/signup" className="text-center text-gray-600 mt-4 text-sm">
             처음이신가요?
-          </p>
+          </Link>
         </div>
       </form>
     </div>

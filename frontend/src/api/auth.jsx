@@ -2,10 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:8080",
-  // headers: {
-  //   "Content-Type": "application/json",
-  // },
-  // withCredentials: true,
+  withCredentials: true,
 });
 
 export async function handleLogin(email, password) {
@@ -18,7 +15,6 @@ export async function handleLogin(email, password) {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      withCredentials: true,
     });
     return response.status; // 성공 시 응답 코드 반환 (예: 200)
   } catch (error) {
@@ -27,4 +23,38 @@ export async function handleLogin(email, password) {
   }
 }
 
-export async function handleSignUp(params) {}
+export async function emailCertification(email) {
+  try {
+    const response = await api.post(
+      `/api/user/profile`,
+      {
+        email: email,
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.status;
+  } catch (error) {
+    console.log(error);
+    return error.response ? error.response.status : 500;
+  }
+}
+
+export async function handleSignUp(formData) {
+  try {
+    const jsonData = JSON.stringify(formData);
+
+    const response = await api.post(`/api/auth/login`, jsonData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.status; // 성공 시 응답 코드 반환 (예: 200)
+  } catch (error) {
+    console.log(error);
+    return error.response ? error.response.status : 500;
+  }
+}
