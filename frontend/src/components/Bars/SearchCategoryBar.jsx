@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { searchState } from "../../atoms/searchState";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function SearchCategoryBar() {
   const handleButtonClick = (buttonName) => {
-    if (selectedButton !== buttonName) {
-      setSelectedButton(buttonName);
+    if (selectedButton.selectedCategory !== buttonName) {
+      setSelectedButton((prev) => ({
+        ...prev,
+        selectedCategory: buttonName,
+      }));
     }
+    navigate(`?tab=${buttonName}`);
   };
   // 활성화 버튼 css
   const buttonActive =
@@ -18,12 +23,19 @@ export default function SearchCategoryBar() {
 
   const [selectedButton, setSelectedButton] = useRecoilState(searchState);
 
+  ////
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const currentTab = searchParams.get("tab") || "weddinghall";
+
   return (
     <>
       <div className="flex border-b border-gray-300  bg-white whitespace-nowrap ">
         <button
           className={
-            selectedButton === "웨딩홀" ? buttonActive : buttonInactive
+            selectedButton.selectedCategory === "웨딩홀"
+              ? buttonActive
+              : buttonInactive
           }
           onClick={() => handleButtonClick("웨딩홀")}
         >
@@ -31,7 +43,9 @@ export default function SearchCategoryBar() {
         </button>
         <button
           className={
-            selectedButton === "드레스" ? buttonActive : buttonInactive
+            selectedButton.selectedCategory === "드레스"
+              ? buttonActive
+              : buttonInactive
           }
           onClick={() => handleButtonClick("드레스")}
         >
@@ -39,7 +53,9 @@ export default function SearchCategoryBar() {
         </button>
         <button
           className={
-            selectedButton === "스튜디오" ? buttonActive : buttonInactive
+            selectedButton.selectedCategory === "스튜디오"
+              ? buttonActive
+              : buttonInactive
           }
           onClick={() => handleButtonClick("스튜디오")}
         >
@@ -47,7 +63,9 @@ export default function SearchCategoryBar() {
         </button>
         <button
           className={
-            selectedButton === "헤어, 메이크업" ? buttonActive : buttonInactive
+            selectedButton.selectedCategory === "헤어, 메이크업"
+              ? buttonActive
+              : buttonInactive
           }
           onClick={() => handleButtonClick("헤어, 메이크업")}
         >
