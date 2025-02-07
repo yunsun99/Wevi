@@ -1,9 +1,8 @@
-import React from "react";
 import TopNavigationBar from "../components/Navigators/TopNavigationBar";
 import BottomNavigationBar from "../components/Navigators/BottomNavigationBar";
 import example_weddinghall from "../assets/example_weddinghall.png";
 
-export default function AiPlannerResultPage() {
+export default function AiPlannerResult() {
   const data = [
     {
       id: 1,

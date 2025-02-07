@@ -11,7 +11,7 @@ import { useState } from "react";
  * 사진을 주고 고르는 형태가 나을 것 같은데?
  * ex) 웨딩홀 -> 화려한 예시, 웅장한 예시 등등
  */
-export default function AiPlannerStartPage() {
+export default function AiPlannerStart() {
   // 말풍선 내용 상태 관리
   const [speechText, setSpeechText] =
     useState("당신이 원하는 스타일을 말해주세요");

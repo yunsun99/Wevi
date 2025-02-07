@@ -14,7 +14,7 @@ import Input from "@/components/Inputs/Input_gray";
 import Button1 from "@/components/Buttons/Button1";
 import { Link } from "react-router-dom";
 
-export default function LoginPage() {
+export default function Login() {
   const [error, setError] = useState(null); // 로그인 실패 메시지
   const setUser = useSetRecoilState(userState); // Recoil 상태 업데이트
   const navigate = useNavigate(); // 페이지 이동
