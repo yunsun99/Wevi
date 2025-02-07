@@ -11,7 +11,7 @@ export default function SearchCategoryBar() {
         selectedCategory: buttonName,
       }));
     }
-    navigate(`?tab=${buttonName}`);
+    navigate(`?${buttonName}`);
   };
   // 활성화 버튼 css
   const buttonActive =
@@ -33,41 +33,41 @@ export default function SearchCategoryBar() {
       <div className="flex border-b border-gray-300  bg-white whitespace-nowrap ">
         <button
           className={
-            selectedButton.selectedCategory === "웨딩홀"
+            selectedButton.selectedCategory === "weddinghall"
               ? buttonActive
               : buttonInactive
           }
-          onClick={() => handleButtonClick("웨딩홀")}
+          onClick={() => handleButtonClick("weddinghall")}
         >
           웨딩홀
         </button>
         <button
           className={
-            selectedButton.selectedCategory === "드레스"
+            selectedButton.selectedCategory === "dress"
               ? buttonActive
               : buttonInactive
           }
-          onClick={() => handleButtonClick("드레스")}
+          onClick={() => handleButtonClick("dress")}
         >
           드레스
         </button>
         <button
           className={
-            selectedButton.selectedCategory === "스튜디오"
+            selectedButton.selectedCategory === "studio"
               ? buttonActive
               : buttonInactive
           }
-          onClick={() => handleButtonClick("스튜디오")}
+          onClick={() => handleButtonClick("studio")}
         >
           스튜디오
         </button>
         <button
           className={
-            selectedButton.selectedCategory === "헤어, 메이크업"
+            selectedButton.selectedCategory === "hair&makeup"
               ? buttonActive
               : buttonInactive
           }
-          onClick={() => handleButtonClick("헤어, 메이크업")}
+          onClick={() => handleButtonClick("hair&makeup")}
         >
           헤어, 메이크업
         </button>
