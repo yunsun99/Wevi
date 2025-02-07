@@ -1,24 +1,7 @@
 import example_weddinghall from "@/assets/example_weddinghall.png";
 
 // 성일
-export default function Card() {
-  const services = [
-    {
-      id: 1,
-      name: "웨스턴 베니비스 영등포",
-      region: "서울시 강남구 선릉로 757",
-      priceRange: "12,441,000원 ~ 37,128,000원",
-      image: example_weddinghall,
-    },
-    {
-      id: 2,
-      name: "압구정 스튜디오",
-      region: "서울시 강남구 선릉로 757",
-      priceRange: "12,441,000원 ~ 37,128,000원",
-      image: example_weddinghall,
-    },
-  ];
-
+export default function Card({ services }) {
   return (
     <>
       {services.map((service) => (

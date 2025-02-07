@@ -6,6 +6,8 @@ import SearchBar from "../components/Bars/SearchBar";
 import RecentSearch from "../components/Search/RecentSearch";
 import SearchCategoryBar from "../components/Bars/SearchCategoryBar";
 import CardList from "../components/Cards/CardList";
+import Button1 from "../components/Buttons/Button1";
+import ButtonSearch from "../components/Buttons/ButtonSearchHSI";
 // 성일
 
 export default function SearchPage() {
@@ -16,6 +18,7 @@ export default function SearchPage() {
       <SearchBar />
       <RecentSearch />
       <CardList />
+      <ButtonSearch>검색</ButtonSearch>
       <BottomNavigationBar />
     </>
   );
