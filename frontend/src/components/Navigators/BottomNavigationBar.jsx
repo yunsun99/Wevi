@@ -5,6 +5,7 @@ import icon_search from "@/assets/icons/icon_search.png";
 import icon_progress from "@/assets/icons/icon_progress.png";
 
 import { Link } from "react-router-dom";
+// 성일
 
 function BottomNavigationBar() {
   return (

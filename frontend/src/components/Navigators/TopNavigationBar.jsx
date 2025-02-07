@@ -3,6 +3,7 @@ import icon_search from "@/assets/icons/icon_search.png";
 import icon_alarm from "@/assets/icons/icon_alaram.png";
 import icon_menu from "@/assets/icons/icon_menu.png";
 import logo from "@/assets/logo.png";
+// 성일
 
 function TopNavigationBar() {
   return (

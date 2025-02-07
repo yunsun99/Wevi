@@ -6,7 +6,7 @@ const ProtectedRoute = () => {
   const user = useRecoilValue(userState);
   const location = useLocation();
   console.log(user);
-  if (user.code == 450) {
+  if (user.code === 450) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
