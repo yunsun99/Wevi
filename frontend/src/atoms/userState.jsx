@@ -3,8 +3,21 @@ import { atom } from "recoil";
 export const userState = atom({
   key: "userState",
   default: {
-    isLoggedIn: false,
-    userData: JSON.parse(localStorage.getItem("user")) || null,
-    code: 0,
+    key: false,
+    code: null,
+  },
+});
+
+export const signupState = atom({
+  key: "signupState",
+  default: {
+    email: "",
+    nickname: "",
+    name: "",
+    password: "",
+    phone: "",
+    zonecode: "",
+    autoRoadAddress: "",
+    addressDetail: "",
   },
 });
