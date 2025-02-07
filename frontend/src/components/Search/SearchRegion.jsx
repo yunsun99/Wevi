@@ -1,4 +1,6 @@
 import { useState } from "react";
+// 성일
+
 export default function Region() {
   const regiondata = [
     {

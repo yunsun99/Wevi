@@ -4,8 +4,9 @@ import BottomNavigationBar from "../components/Navigators/BottomNavigationBar";
 import { useState } from "react";
 import SearchBar from "../components/Bars/SearchBar";
 import RecentSearch from "../components/Search/RecentSearch";
-import PopularServices from "../components/PopularServices";
 import SearchCategoryBar from "../components/Bars/SearchCategoryBar";
+import CardList from "../components/Cards/CardList";
+// 성일
 
 export default function SearchPage() {
   return (
@@ -14,7 +15,7 @@ export default function SearchPage() {
       <SearchCategoryBar />
       <SearchBar />
       <RecentSearch />
-      <PopularServices />
+      <CardList />
       <BottomNavigationBar />
     </>
   );

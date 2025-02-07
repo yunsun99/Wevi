@@ -10,10 +10,10 @@ export default function SearchCategoryBar() {
   };
   // 활성화 버튼 css
   const buttonActive =
-    "px-4 py-3 flex-1 text-[#121212]center text-sm font-medium text-[#121212] hover:text-gray-800 hover:border-b-2 hover:border-black cursor-pointer bg-[#EDE4DC]";
+    "px-4 py-4 flex-1 text-[#121212]center text-sm font-medium text-[#121212] hover:text-gray-800 hover:border-b-2 hover:border-black cursor-pointer bg-[#EDE4DC]";
   // 비활성화 버튼 css
   const buttonInactive =
-    "px-4 py-3 flex-1 text-center text-sm font-semibold text-[#AC9261] hover:text-[#121212] hover:border-b-2 hover:border-black cursor-pointer";
+    "px-4 py-4 flex-1 text-center text-sm font-semibold text-[#AC9261] hover:text-[#121212] hover:border-b-2 hover:border-black cursor-pointer";
   // 선택된 버튼
 
   const [selectedButton, setSelectedButton] = useRecoilState(searchState);

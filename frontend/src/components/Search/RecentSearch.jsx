@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// 성일
 
 export default function RecentSearch() {
   // searches를 상태로 관리
@@ -30,28 +31,40 @@ export default function RecentSearch() {
   return (
     <section className="p-4">
       <h2 className="text-lg font-semibold mb-4">최근 검색</h2>
-      <ul>
-        {searches.map((search) => (
-          <li
-            key={search.id}
-            className="flex justify-between items-center bg-white p-2 mb-2 rounded-lg shadow-md"
-          >
-            <div>
-              <p className="font-bold">{search.title}</p>
-              <p className="text-sm text-gray-500">{search.details}</p>
-            </div>
-            <button
-              className="text-gray-400"
-              onClick={() => deleteSearchLog(search.id)}
+      {/* searches가 비어있으면 메시지 표시, 아니면 리스트 출력 */}
+      {searches.length === 0 ? (
+        <p className="text-gray-500 text-center">최근 검색 기록이 없습니다.</p>
+      ) : (
+        <ul>
+          {searches.map((search) => (
+            <li
+              key={search.id}
+              className="flex justify-between items-center bg-white p-2 mb-2 rounded-lg shadow-md"
             >
-              &#10006;
-            </button>
-          </li>
-        ))}
-      </ul>
-      <button className="text-sm text-blue-500 mt-2" onClick={clearAllSearches}>
-        전체 삭제
-      </button>
+              <div>
+                <p className="font-bold">{search.title}</p>
+                <p className="text-sm text-gray-500">{search.details}</p>
+              </div>
+              <button
+                className="text-gray-400"
+                onClick={() => deleteSearchLog(search.id)}
+              >
+                &#10006;
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* searches가 비어있으면 전체 삭제 버튼을 숨김 */}
+      {searches.length > 0 && (
+        <button
+          className="text-sm text-blue-500 mt-2"
+          onClick={clearAllSearches}
+        >
+          전체 삭제
+        </button>
+      )}
     </section>
   );
 }

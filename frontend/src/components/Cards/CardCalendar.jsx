@@ -10,9 +10,7 @@ const CardCalendar = forwardRef(({ schedule }, ref) => {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: schedule.image
-            ? `url(${schedule.image})`
-            : "none", // 이미지가 없을 경우 처리
+          backgroundImage: schedule.image ? `url(${schedule.image})` : "none", // 이미지가 없을 경우 처리
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 0.3, // 배경 투명도
