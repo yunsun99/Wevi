@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import icon_arrow from "@/assets/icons/icon_arrow_left.png";
 import icon_menu from "@/assets/icons/icon_menu.png";
+// 성일
 
 function TopNavigationBar2({ title }) {
   return (
