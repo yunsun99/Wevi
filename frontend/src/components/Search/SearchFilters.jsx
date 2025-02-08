@@ -19,7 +19,7 @@ export default function SearchFilters() {
       {/* 옵션 필터링링 */}
       <div className="flex gap-4 mb-4 overflow-x-auto">
         <Region key="region" />
-        {filterState.selectedCategory === "웨딩홀" ? (
+        {filterState.selectedCategory === "weddinghall" ? (
           <select
             className="border border-[#D1D1D1] text-[#6E6E6E] p-2 rounded-full flex-shrink-0"
             value={filterState.inoutside || ""}

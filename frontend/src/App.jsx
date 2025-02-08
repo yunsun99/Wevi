@@ -14,7 +14,8 @@ import AiPlannerStartPage from "./pages/aiplannerstartpage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Test from "./pages/testpage";
 import { RecoilRoot } from "recoil";
-import SearchList from "./pages/searchlist";
+import SearchList from "./pages/searchlistpage";
+import SearchDetail from "./pages/searchdetailpage";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Loginpage /> },
@@ -34,7 +35,8 @@ const router = createBrowserRouter([
     ],
   },
   { path: "/test", element: <Test /> },
-  { path: "/searchlist", element: <SearchList /> },
+  { path: "/searchList", element: <SearchList /> },
+  { path: "/searchDetail", element: <SearchDetail/>},
 ]);
 
 function App() {

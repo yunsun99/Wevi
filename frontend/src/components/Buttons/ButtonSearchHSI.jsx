@@ -16,7 +16,7 @@ export default function ButtonSearch({ children, onClick = () => {} }) {
       region:"",
       subarea:"",
     }))
-    navigate("/searchlist");
+    navigate("/searchList");
   }
   return (
     <button
