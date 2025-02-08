@@ -10,6 +10,7 @@ import { useRecoilState } from "recoil";
 import { searchState } from "../atoms/searchState";
 import Search from "../components/Search/Search";
 import SearchFilters from "../components/Search/SearchFilters";
+import CardDetail from "../components/Cards/CardDetail";
 // 성일
 export default function SearchDetail() {
   const [selectedButton, setSelectedButton] = useRecoilState(searchState);
