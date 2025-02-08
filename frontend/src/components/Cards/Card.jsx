@@ -1,13 +1,19 @@
-import example_weddinghall from "@/assets/example_weddinghall.png";
+import { useNavigate } from "react-router-dom";
 
-// 성일
 export default function Card({ services }) {
+  const navigate = useNavigate();
+
+  function handleCardClick(id) {
+    navigate(`/searchDetail?id=${id}`);
+  }
+
   return (
     <>
       {services.map((service) => (
         <div
           key={service.id}
-          className="bg-white rounded-lg shadow-md overflow-hidden"
+          className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
+          onClick={() => handleCardClick(service.id)}
         >
           <img
             src={service.image}
