@@ -10,7 +10,7 @@ import Button1 from "../components/Buttons/Button1";
 import ButtonSearch from "../components/Buttons/ButtonSearchHSI";
 // 성일
 
-export default function SearchPage() {
+export default function Search() {
   return (
     <>
       <TopNavigationBar title="검색" />

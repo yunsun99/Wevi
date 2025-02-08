@@ -4,7 +4,7 @@ import icon_arrow from "@/assets/icons/icon_arrow_left.png";
 import icon_menu from "@/assets/icons/icon_menu.png";
 // 성일
 
-function TopNavigationBar({ title }) {
+function TopNavigationBar2({ title }) {
   return (
     <header className="flex items-center w-full sticky top-0 left-0 right-0 justify-between px-4 py-3 bg-[#FFFDFA] shadow-md z-10">
       {/* 뒤로가기로 수정하기기 */}
@@ -25,8 +25,8 @@ function TopNavigationBar({ title }) {
   );
 }
 
-TopNavigationBar.propTypes = {
+TopNavigationBar2.propTypes = {
   title: PropTypes.string.isRequired, // 검색 제목 (필수)
 };
 
-export default TopNavigationBar;
+export default TopNavigationBar2;

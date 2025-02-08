@@ -1,6 +1,6 @@
 import Button1 from "../components/Buttons/Button1";
 
-export default function SignUpDetailPage() {
+export default function SignUpDetail() {
   function handleLogin() {
     console.log("a");
   }
