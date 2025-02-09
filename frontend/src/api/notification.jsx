@@ -48,7 +48,7 @@ const data = [
   {
     notificationId: 4,
     userId: 4,
-    message: "연인 연동",
+    message: "하트 딩딩",
     vendor: "",
     type: 1,
     createdAt: "2024-05-02", // ✅ 2024-05-02
@@ -56,8 +56,8 @@ const data = [
   {
     notificationId: 5,
     userId: 4,
-    message: "연인 연동",
-    vendor: "연인 연동",
+    message: "수락",
+    vendor: "",
     type: 2,
     createdAt: "2024-05-02", // ✅ 2024-05-02
   },
