@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { searchState } from "../../atoms/searchState";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { searchDetailState } from "../../atoms/searchDetailState";
 
-export default function SearchCategoryBar() {
+export default function SearchDetailCategoryBar() {
   const handleButtonClick = (buttonName) => {
     if (selectedButton.selectedCategory !== buttonName) {
       setSelectedButton((prev) => ({
@@ -21,7 +22,7 @@ export default function SearchCategoryBar() {
     "px-4 py-4 flex-1 text-center text-sm font-semibold text-[#AC9261] hover:text-[#121212] hover:border-b-2 hover:border-black cursor-pointer";
   // 선택된 버튼
 
-  const [selectedButton, setSelectedButton] = useRecoilState(searchState);
+  const [selectedButton, setSelectedButton] = useRecoilState(searchDetailState);
 
   ////
   const navigate = useNavigate();
@@ -33,43 +34,43 @@ export default function SearchCategoryBar() {
       <div className="flex border-b border-gray-300  bg-white whitespace-nowrap ">
         <button
           className={
-            selectedButton.selectedCategory === "weddinghall"
+            selectedButton.selectedCategory === "informtaion"
               ? buttonActive
               : buttonInactive
           }
-          onClick={() => handleButtonClick("weddinghall")}
+          onClick={() => handleButtonClick("informtaion")}
         >
-          웨딩홀
+          정보
         </button>
         <button
           className={
-            selectedButton.selectedCategory === "dress"
+            selectedButton.selectedCategory === "360view"
               ? buttonActive
               : buttonInactive
           }
-          onClick={() => handleButtonClick("dress")}
+          onClick={() => handleButtonClick("360view")}
         >
-          드레스
+          360도 뷰
         </button>
         <button
           className={
-            selectedButton.selectedCategory === "studio"
+            selectedButton.selectedCategory === "location"
               ? buttonActive
               : buttonInactive
           }
-          onClick={() => handleButtonClick("studio")}
+          onClick={() => handleButtonClick("location")}
         >
-          스튜디오
+          위치
         </button>
         <button
           className={
-            selectedButton.selectedCategory === "hair&makeup"
+            selectedButton.selectedCategory === "review"
               ? buttonActive
               : buttonInactive
           }
-          onClick={() => handleButtonClick("hair&makeup")}
+          onClick={() => handleButtonClick("review")}
         >
-          헤어, 메이크업
+          리뷰
         </button>
       </div>
     </>

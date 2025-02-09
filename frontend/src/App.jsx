@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
+// import "./Calendar.css"
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import SignUpDetail from "./pages/SignUpDetail";
@@ -15,6 +16,9 @@ import AiPlannerStart from "./pages/AIPlannerStart";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Test from "./pages/testpage";
 import { RecoilRoot } from "recoil";
+import SearchList from "./pages/searchlistpage";
+import SearchDetail from "./pages/searchdetailpage";
+import ConsultationReservation from "./pages/ConsultationReservation";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -35,6 +39,10 @@ const router = createBrowserRouter([
     ],
   },
   { path: "/test", element: <Test /> },
+  { path: "/searchList", element: <SearchList /> },
+  { path: "/searchDetail", element: <SearchDetail/>},
+  { path: "/consultationReservation", element: <ConsultationReservation/>},
+
 ]);
 
 function App() {
