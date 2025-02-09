@@ -11,10 +11,10 @@ export default function ButtonSearch({ children, onClick = () => {} }) {
   function handleSearch() {
     setSelectedButton((prevState)=>({
       ...prevState,
-      inoutside:"",
-      price:"",
-      region:"",
-      subarea:"",
+      // inoutside:"",
+      // price:"",
+      // region:"",
+      // subarea:"",
     }))
     navigate("/searchList");
   }

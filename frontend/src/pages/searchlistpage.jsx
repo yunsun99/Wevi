@@ -13,9 +13,19 @@ import SearchFilters from "../components/Search/SearchFilters";
 // 성일
 export default function SearchList() {
   const [selectedButton, setSelectedButton] = useRecoilState(searchState);
+  const title =
+  selectedButton.selectedCategory === "weddinghall"
+    ? "웨딩홀"
+    : selectedButton.selectedCategory === "dress"
+    ? "드레스"
+    : selectedButton.selectedCategory === "studio"
+    ? "스튜디오"
+        : selectedButton.selectedCategory === "hair&makeup"
+    ? "헤어/메이크업"
+    : "카테고리 없음";  
   return (
     <>
-      <TopNavigationBar title={selectedButton.selectedCategory} />
+      <TopNavigationBar title={title} />
       <SearchCategoryBar />
       <section className="bg-white shadow-md p-4">
       <Search/>

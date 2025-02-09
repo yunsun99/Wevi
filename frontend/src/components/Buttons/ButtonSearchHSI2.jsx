@@ -22,7 +22,7 @@ export default function ButtonSearch2({ children, onClick = () => {} }) {
   return (
     <button
       className="w-full z-3 sticky bottom-28 bg-green-500 text-black py-3 rounded-lg hover:bg-green-600 transition"
-      onClick={handleSearch}
+      onClick={onClick}
     >
       {children}
     </button>

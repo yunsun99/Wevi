@@ -17,6 +17,7 @@ import Test from "./pages/testpage";
 import { RecoilRoot } from "recoil";
 import SearchList from "./pages/searchlistpage";
 import SearchDetail from "./pages/searchdetailpage";
+import ConsultationReservation from "./pages/ConsultationReservation";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -39,6 +40,8 @@ const router = createBrowserRouter([
   { path: "/test", element: <Test /> },
   { path: "/searchList", element: <SearchList /> },
   { path: "/searchDetail", element: <SearchDetail/>},
+  { path: "/consultationReservation", element: <ConsultationReservation/>},
+
 ]);
 
 function App() {
