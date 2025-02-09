@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import TopNavigationBar2 from "../components/Navigators/TopNavigationBar2";
 import VendorImage from "../components/Vendors/VendorImage";
+// import "react-calendar/dist/Calendar.css"; // 기본 CSS
+import "../Calendar.css"; // 커스터마이징 CSS
 
 export default function ConsultationReservation() {
   const [selectedDate, setSelectedDate] = useState(new Date()); // 초기값을 현재 날짜로 설정
   const [selectedTime, setSelectedTime] = useState(null);
+
+  const sundayToSaturday = ["일", "월", "화", "수", "목", "금", "토"];
 
   // 예제 데이터: 날짜별로 가능한 시간대
   const scheduleData = [
@@ -62,9 +66,13 @@ export default function ConsultationReservation() {
         {/* 캘린더 */}
         <div className="bg-white rounded-lg shadow-md p-4 mb-4">
           <Calendar
+            // locale="en-US"
             onChange={handleDateClick}
             value={selectedDate} // 선택된 날짜를 캘린더에 반영
             className="custom-calendar"
+            formatDay={(locale, date) =>
+                new Date(date).getDate() // "일" 글자를 제거하여 숫자만 표시
+              }
           />
         </div>
 
