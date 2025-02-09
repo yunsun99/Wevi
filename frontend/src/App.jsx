@@ -43,6 +43,8 @@ const router = createBrowserRouter([
   { path: "/searchDetail", element: <SearchDetail/>},
   { path: "/consultationReservation", element: <ConsultationReservation/>},
 
+
+
 ]);
 
 function App() {
