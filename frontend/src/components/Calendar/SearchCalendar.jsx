@@ -1,17 +1,22 @@
 import React, { useState, useRef } from "react";
 import icon_calendar from "../../assets/icons/icon_calendar.png";
+import { useRecoilState } from "recoil";
+import { searchState } from "../../atoms/searchState";
 
 export default function SearchCalendar() {
   // 날짜 상태 관리
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useRecoilState(searchState);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const datePickerRef = useRef(null); // 날짜 입력창의 위치를 참조하기 위한 ref
 
   // 날짜 변경 핸들러
   const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
+    setSelectedDate((prevState)=>({
+      ...prevState,
+      date: e.target.value
+    }));
     setIsCalendarVisible(false); // 날짜 선택 후 캘린더 숨기기
-    console.log(selectedDate);
+    console.log(selectedDate.date);
   };
 
   // 캘린더 모달을 토글하는 함수
@@ -43,7 +48,7 @@ export default function SearchCalendar() {
 
         {/* 날짜 표시 */}
         <span className="flex-1 bg-transparent px-4 text-sm text-gray-700">
-          {selectedDate ? selectedDate : "날짜 선택"}
+          {selectedDate.date ? selectedDate.date : "날짜 선택"}
         </span>
       </div>
 
@@ -58,7 +63,7 @@ export default function SearchCalendar() {
         >
           <input
             type="date"
-            value={selectedDate}
+            value={selectedDate.date || ""}
             onChange={handleDateChange}
             className="w-full p-2 border rounded-md focus:outline-none"
           />

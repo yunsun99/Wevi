@@ -8,5 +8,7 @@ export const searchState = atom({
     price:"",
     region:"",
     subarea:"",
+    date: "",
+    time: "",
   },
 });

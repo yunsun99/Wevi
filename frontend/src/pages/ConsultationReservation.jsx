@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import dayjs from "dayjs"; // 날짜 처리 라이브러리
 import TopNavigationBar2 from "../components/Navigators/TopNavigationBar2";
 import VendorImage from "../components/Vendors/VendorImage";
 // import "react-calendar/dist/Calendar.css"; // 기본 CSS
 import "../Calendar.css"; // 커스터마이징 CSS
+import { useRecoilState } from "recoil";
+import { searchState } from "../atoms/searchState";
 
 export default function ConsultationReservation() {
-  const [selectedDate, setSelectedDate] = useState(new Date()); // 초기값을 현재 날짜로 설정
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useRecoilState(searchState); // 초기값을 현재 날짜로 설정
+//   const [selectedTime, setSelectedTime] = useRecoilState(searchState);
 
   // 예제 데이터: 날짜별로 가능한 시간대
   const scheduleData = [
@@ -20,19 +22,40 @@ export default function ConsultationReservation() {
     { date: "2025-02-10", times: ["09:00", "10:30", "13:30", "15:00"] },
   ];
 
+  // ✅ 컴포넌트가 마운트될 때 `searchState.date` 값을 불러와 설정
+  useEffect(() => {
+    if (!selectedDate.date) {
+      setSelectedDate((prevState) => ({
+        ...prevState,
+        date: dayjs().format("YYYY-MM-DD"), // 기본값을 오늘 날짜로 설정
+      }));
+    }
+  }, [setSelectedDate, selectedDate.date]);
+
+  // ✅ 선택된 날짜가 변경될 때 로그 확인 (디버깅용)
+  useEffect(() => {
+    console.log("Updated selectedDate:", selectedDate);
+  }, [selectedDate]);
+
   const handleDateClick = (date) => {
-    setSelectedDate(date); // 현재 선택된 날짜를 업데이트
-    setSelectedTime(null); // 시간 초기화
+    setSelectedDate((prevState)=>({
+        ...prevState,
+        date:dayjs(date).format("YYYY-MM-DD"),
+        time:null
+    })); // 현재 선택된 날짜를 업데이트
   };
 
   const handleTimeClick = (time) => {
-    setSelectedTime(time);
-  };
+    setSelectedDate((prevState)=>({
+        ...prevState,
+        time:time
+    })); // 현재 선택된 시간을 업데이트
+    };
 
   // 선택된 날짜에 해당하는 시간대 필터링
   const availableTimes =
     scheduleData.find(
-      (schedule) => schedule.date === dayjs(selectedDate).format("YYYY-MM-DD")
+      (schedule) => schedule.date === dayjs(selectedDate.date).format("YYYY-MM-DD")
     )?.times || [];
 
   // 오전과 오후로 시간대 구분
@@ -56,7 +79,7 @@ export default function ConsultationReservation() {
           <Calendar
             locale="en-US" // 일요일 시작
             onChange={handleDateClick}
-            value={selectedDate} // 선택된 날짜를 캘린더에 반영
+            value={selectedDate.date || new Date()} // 선택된 날짜를 캘린더에 반영
             className="custom-calendar"
             formatShortWeekday={(locale, date) =>
               ["일", "월", "화", "수", "목", "금", "토"][dayjs(date).day()]
@@ -69,7 +92,7 @@ export default function ConsultationReservation() {
         </div>
 
         {/* 시간 선택 */}
-        {selectedDate && (
+        {selectedDate.date && (
           <div className="p-4 bg-white rounded-lg shadow-md">
             {/* 오전 시간 */}
             {morningTimes.length > 0 && (
@@ -81,7 +104,7 @@ export default function ConsultationReservation() {
                       key={time}
                       onClick={() => handleTimeClick(time)}
                       className={`p-2 border rounded ${
-                        selectedTime === time
+                        selectedDate.time === time
                           ? "bg-green-500 text-white"
                           : "bg-gray-100"
                       }`}
@@ -103,7 +126,7 @@ export default function ConsultationReservation() {
                       key={time}
                       onClick={() => handleTimeClick(time)}
                       className={`p-2 border rounded ${
-                        selectedTime === time
+                        selectedDate.time === time
                           ? "bg-green-500 text-white"
                           : "bg-gray-100"
                       }`}
@@ -127,20 +150,20 @@ export default function ConsultationReservation() {
         {/* 다음 버튼 */}
         <button
           className={`mt-4 w-full p-3 rounded-lg ${
-            selectedDate && selectedTime
+            selectedDate.date && selectedDate.time
               ? "bg-green-500 text-white cursor-pointer"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}
           onClick={() => {
-            if (selectedDate && selectedTime) {
+            if (selectedDate.date && selectedDate.time) {
               alert(
-                `선택된 날짜: ${dayjs(selectedDate).format(
+                `선택된 날짜: ${dayjs(selectedDate.date).format(
                   "YYYY년 MM월 DD일"
-                )}, 시간: ${selectedTime}`
+                )}, 시간: ${selectedDate.time}`
               );
             }
           }}
-          disabled={!selectedDate || !selectedTime} // 하나라도 false면 비활성화
+          disabled={!selectedDate.date || !selectedDate.time} // 하나라도 false면 비활성화
         >
           다음
         </button>
