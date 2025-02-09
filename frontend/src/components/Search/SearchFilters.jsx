@@ -17,7 +17,7 @@ export default function SearchFilters() {
   return (
     <>
       {/* 옵션 필터링링 */}
-      <div className="flex gap-4 mb-4 overflow-x-auto">
+      <div className="flex gap-4 mb-4 overflow-x-auto scrollbar-hide">
         <Region key="region" />
         {filterState.selectedCategory === "weddinghall" ? (
           <select

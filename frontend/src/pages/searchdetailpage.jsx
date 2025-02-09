@@ -11,13 +11,14 @@ import { searchState } from "../atoms/searchState";
 import Search from "../components/Search/Search";
 import SearchFilters from "../components/Search/SearchFilters";
 import CardDetail from "../components/Cards/CardDetail";
+import SearchDetailCategoryBar from "../components/Bars/SearchDetailCategoryBar";
 // 성일
 export default function SearchDetail() {
   const [selectedButton, setSelectedButton] = useRecoilState(searchState);
   return (
     <>
       <TopNavigationBar title={selectedButton.selectedCategory} />
-      <SearchCategoryBar />
+      <SearchDetailCategoryBar/>
       <CardDetail/>
       <BottomNavigationBar />    
       </>
