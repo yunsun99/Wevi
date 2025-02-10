@@ -22,11 +22,12 @@ public abstract class Schedule extends BaseEntity {
     private int id; // 스케줄ID
 
     @Column
-    private LocalDateTime startTime;
+    private LocalDateTime startDateTime;
 
     @Column
-    private LocalDateTime endTime;
+    private LocalDateTime endDateTime;
 
+    @Column
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,4 +38,6 @@ public abstract class Schedule extends BaseEntity {
     @JoinColumn(name = "vendor_id", referencedColumnName = "user_id")
     private Vendor vendor;
 
+    @Column(insertable = false, updatable = false, name = "dtype")
+    private String dtype;
 }

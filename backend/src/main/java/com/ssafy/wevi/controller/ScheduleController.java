@@ -8,10 +8,7 @@ import com.ssafy.wevi.service.CustomerService;
 import com.ssafy.wevi.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -127,4 +124,21 @@ public class ScheduleController {
         );
     }
 
+    // ===== 상담 일정 추가 ===== //
+    // 상담 일정 추가
+    @PostMapping("/consultation/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponseDto<ConsultationDto> addConsultation(@RequestBody ConsultationDto consultationDto) {
+        // 로그인한 유저 ID 가져오기
+        String customerId = SecurityUtils.getAuthenticatedUserId();
+        // 상담 등록
+        ConsultationDto consultationResponseDto = scheduleService.addConsultation(consultationDto, Integer.valueOf(customerId));
+
+        return new ApiResponseDto<>(
+                HttpStatus.CREATED.value(),
+                true,
+                "Consultaion created successfully.",
+                consultationResponseDto
+        );
+    }
 }

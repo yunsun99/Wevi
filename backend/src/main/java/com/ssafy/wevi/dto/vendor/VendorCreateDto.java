@@ -21,6 +21,7 @@ public class VendorCreateDto {
     private String addressDetail;
     private String phone;
     private String registrationNumber;
+    private Integer category;
     private String businessHour;
     private String homepage;
     private String price;

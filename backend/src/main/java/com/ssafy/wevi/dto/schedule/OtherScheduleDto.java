@@ -9,11 +9,15 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OtherScheduleDto extends ScheduleDto{
+public class OtherScheduleDto{
     // 일정 공통
     private int id;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+//    private LocalDateTime startTime;
+//    private LocalDateTime endTime;
+    private String startDate;
+    private String startTime;
+    private String endDate;
+    private String endTime;
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

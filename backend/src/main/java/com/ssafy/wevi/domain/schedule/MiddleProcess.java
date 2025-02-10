@@ -24,4 +24,9 @@ public class MiddleProcess extends Schedule{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "middle_process_step_id", nullable = false)
     private MiddleProcessStep middleProcessStep;
+
+    // 계약과 연동
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contract_id", referencedColumnName = "schedule_id", nullable = false)
+    private Contract contract;
 }

@@ -1,10 +1,8 @@
 package com.ssafy.wevi.controller;
 
+import com.ssafy.wevi.config.SecurityUtils;
 import com.ssafy.wevi.dto.ApiResponseDto;
-import com.ssafy.wevi.dto.vendor.DoDto;
-import com.ssafy.wevi.dto.vendor.SigunguDto;
-import com.ssafy.wevi.dto.vendor.VendorCreateDto;
-import com.ssafy.wevi.dto.vendor.VendorDetailResponseDto;
+import com.ssafy.wevi.dto.vendor.*;
 import com.ssafy.wevi.service.VendorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +84,124 @@ public class VendorController {
         }
     }
 
+    @GetMapping("/vendorlist/{doId}/{sigunguId}/{category}")
+    public ApiResponseDto<List<VendorResponseDto>> getVendorList(
+            @PathVariable Integer doId,
+            @PathVariable Integer sigunguId,
+            @PathVariable Integer category) {
 
+        List<VendorResponseDto> vendors = vendorService.findVendorsByLocationAndCategory(
+                doId, sigunguId, category);
 
+        if (vendors != null && !vendors.isEmpty()) {
+            return new ApiResponseDto<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "업체 목록 조회 성공",
+                    vendors
+            );
+        } else {
+            return new ApiResponseDto<>(
+                    HttpStatus.NO_CONTENT.value(),
+                    true,
+                    "업체 목록이 비어있습니다",
+                    null
+            );
+        }
+    }
+
+    @GetMapping("/{vendorId}")
+    public ApiResponseDto<VendorDetailResponseDto> getVendorById(@PathVariable Integer vendorId) {
+        VendorDetailResponseDto vendorDetailResponseDto = vendorService.findVendorById(vendorId);
+
+        if (vendorDetailResponseDto != null) {
+            return new ApiResponseDto<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "업체 상세 조회 성공",
+                    vendorDetailResponseDto
+            );
+        } else {
+            return new ApiResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    false,
+                    "해당 ID의 업체가 존재하지 않습니다.",
+                    null
+            );
+        }
+    }
+
+    @GetMapping("/{vendorId}/reviews")
+    public ApiResponseDto<List<ReviewDto>> getReviewListByVendorId(@PathVariable Integer vendorId) {
+        List<ReviewDto> reviews = vendorService.getReviewListByVendorId(vendorId);
+        if (reviews != null && !reviews.isEmpty()) {
+            return new ApiResponseDto<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "리뷰 목록 조회 성공",
+                    reviews
+            );
+        } else {
+            return new ApiResponseDto<>(
+                    HttpStatus.NO_CONTENT.value(),
+                    true,
+                    "리뷰가 없습니다.",
+                    null
+            );
+        }
+    }
+
+    @PostMapping("/{vendorId}/reviews")
+    public ApiResponseDto<ReviewDto> createReview(@PathVariable Integer vendorId, @RequestBody ReviewDto reviewDto) {
+        Integer customerId = Integer.valueOf(SecurityUtils.getAuthenticatedUserId());
+
+        ReviewDto review = vendorService.createReview(vendorId, customerId, reviewDto);
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "리뷰 생성 성공",
+                review
+        );
+    }
+
+    @PatchMapping("/reviews/{reviewId}")
+    public ApiResponseDto<ReviewDto> updateReview(@PathVariable Integer reviewId, @RequestBody ReviewDto reviewDto) {
+//        Integer customerId = Integer.valueOf(SecurityUtils.getAuthenticatedUserId());
+//        if (reviewDto.getCustomerId() != customerId) {
+//            return new ApiResponseDto<>(
+//                    HttpStatus.BAD_REQUEST.value(),
+//                    false,
+//                    "리뷰를 업데이트할 권한이 없습니다.",
+//                    null
+//            );
+//        }
+
+        ReviewDto review = vendorService.updateReview(reviewId, reviewDto);
+        if (review != null) {
+            return new ApiResponseDto<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "리뷰 업데이트 성공",
+                    review
+            );
+        } else {
+            return new ApiResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    false,
+                    "리뷰 업데이트 실패",
+                    null
+            );
+        }
+    }
+
+    @DeleteMapping("/reviews/{reviewId}")
+    public ApiResponseDto<ReviewDto> deleteReview(@PathVariable Integer reviewId) {
+        vendorService.deleteReview(reviewId);
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "리뷰 삭제 성공",
+                null
+        );
+    }
 }
