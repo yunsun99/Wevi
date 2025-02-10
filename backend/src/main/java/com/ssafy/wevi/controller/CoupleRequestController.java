@@ -3,6 +3,8 @@ package com.ssafy.wevi.controller;
 import com.ssafy.wevi.config.SecurityUtils;
 import com.ssafy.wevi.domain.CoupleRequest;
 import com.ssafy.wevi.dto.ApiResponseDto;
+import com.ssafy.wevi.dto.CoupleRequestDto;
+import com.ssafy.wevi.dto.CoupleRequestUpdateDto;
 import com.ssafy.wevi.service.CoupleRequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +22,10 @@ public class CoupleRequestController {
     // 커플 요청 보내기
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponseDto<CoupleRequest> createCoupleRequest(@RequestBody String spouseEmail) {
-        String customerId = SecurityUtils.getAuthenticatedUserId();
+    public ApiResponseDto<CoupleRequest> createCoupleRequest(@RequestBody CoupleRequestDto coupleRequestDto) {
+        Integer customerId = Integer.valueOf(SecurityUtils.getAuthenticatedUserId());
 
-        CoupleRequest coupleRequestResponse = coupleRequestService.createCoupleRequest(Integer.valueOf(customerId), spouseEmail);
+        CoupleRequest coupleRequestResponse = coupleRequestService.createCoupleRequest(customerId, coupleRequestDto.getSpouseEmail());
 
         return new ApiResponseDto<>(
                 HttpStatus.CREATED.value(),
@@ -33,4 +35,19 @@ public class CoupleRequestController {
         );
     }
 
+    // 커플 요청 응답 보내기
+    @PatchMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponseDto<CoupleRequest> updateCoupleRequest(@RequestBody CoupleRequestUpdateDto coupleRequestResponseDto) {
+        Integer customerId = Integer.valueOf(SecurityUtils.getAuthenticatedUserId());
+
+        CoupleRequest coupleRequestResponse = coupleRequestService.updateCoupleRequest(customerId, coupleRequestResponseDto.getStatus());
+
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "CoupleRequest updated successfully.",
+                coupleRequestResponse
+        );
+    }
 }
