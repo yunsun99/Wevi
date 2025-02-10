@@ -43,6 +43,17 @@ public class CoupleRequestController {
 
         CoupleRequest coupleRequestResponse = coupleRequestService.updateCoupleRequest(customerId, coupleRequestResponseDto.getStatus());
 
+        // 커플 요청이 거절된 경우
+        if (coupleRequestResponse == null) {
+            return new ApiResponseDto<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "CoupleRequest rejected successfully.",
+                    null
+            );
+        }
+
+        // 커플 요청이 수락된 경우
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
                 true,
