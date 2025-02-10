@@ -17,7 +17,7 @@ export const signupState = atom({
     password: "",
     phone: "",
     zonecode: "",
-    autoRoadAddress: "",
+    autoRoadAddress: "tmp",
     addressDetail: "",
   },
 });

@@ -17,25 +17,25 @@ export function useInput(formData, setFormData, fieldName, validationFn) {
     setDidEdit(true);
   }
 
-  const formatPhoneNumber = (value) => {
-    value = value.replace(/\D/g, ""); // 숫자만 남기기
-    if (value.length < 4) return value;
-    if (value.length < 8) return `${value.slice(0, 3)}-${value.slice(3)}`;
-    if (value.length === 10)
-      return `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(6)}`;
-    return `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7, 11)}`;
-  };
+  // const formatPhoneNumber = (value) => {
+  //   value = value.replace(/\D/g, ""); // 숫자만 남기기
+  //   if (value.length < 4) return value;
+  //   if (value.length < 8) return `${value.slice(0, 3)}-${value.slice(3)}`;
+  //   if (value.length === 10)
+  //     return `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(6)}`;
+  //   return `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7, 11)}`;
+  // };
 
-  const handlePhoneChange = (e) => {
-    const formatted = formatPhoneNumber(e.target.value);
-    setFormData((prev) => ({ ...prev, phone: formatted }));
-  };
+  // const handlePhoneChange = (e) => {
+  //   const formatted = formatPhoneNumber(e.target.value);
+  //   setFormData((prev) => ({ ...prev, phone: formatted }));
+  // };
 
   return {
     value: formData[fieldName] || "",
     handelInputChange,
     handleInputBlur,
-    handlePhoneChange,
+    // handlePhoneChange,
     hasError: didEdit && !valueIsValid,
   };
 }

@@ -31,7 +31,7 @@ const Signup2 = ({ formData, setFormData, onPrevious }) => {
   // 휴대전화 입력 관리
   const {
     value: phoneValue,
-    handlePhoneChange: handlePhoneChange,
+    handelInputChange: handlePhoneChange,
     handleInputBlur: handlePhoneBlur,
     hasError: phoneHasError,
   } = useInput(formData, setFormData, "phone", (value) => isNotEmpty(value));
@@ -54,7 +54,7 @@ const Signup2 = ({ formData, setFormData, onPrevious }) => {
     isNotEmpty(value)
   );
 
-  // 모든 입력이 유효하면 '다음' 버튼 활성화
+  // 모든 입력이 유효하면 '가입 완료' 버튼 활성화
   const [isFormValid, setIsFormValid] = useState(false);
   useEffect(() => {
     setIsFormValid(
@@ -85,7 +85,7 @@ const Signup2 = ({ formData, setFormData, onPrevious }) => {
     try {
       const userCode = await handleSignUp(formData);
       setError(userCode);
-      if (userCode === 200) {
+      if (userCode === 200 || userCode === 201) {
         navigate("/");
       }
     } catch (err) {
@@ -142,7 +142,7 @@ const Signup2 = ({ formData, setFormData, onPrevious }) => {
             <Input
               label="주소"
               id="zonecode"
-              type="number"
+              type="text"
               name="zonecode"
               value={zonecodeValue}
               onChange={handlezonecodeChange}

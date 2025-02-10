@@ -46,8 +46,9 @@ export async function emailCertification(email) {
 export async function handleSignUp(formData) {
   try {
     const jsonData = JSON.stringify(formData);
+    console.log(formData);
 
-    const response = await api.post(`/api/auth/login`, jsonData, {
+    const response = await api.post(`/api/user/signup`, jsonData, {
       headers: {
         "Content-Type": "application/json",
       },

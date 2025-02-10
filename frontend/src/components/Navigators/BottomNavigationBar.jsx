@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 function BottomNavigationBar() {
   return (
-    <nav className="bg-[#FFFDFA] sticky bottom-0 w-full flex justify-around py-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1),0_-2px_4px_-2px_rgba(0,0,0,0.1)]">
+    <nav className="bg-[#FFFDFA] fixed bottom-0 w-full flex justify-around py-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1),0_-2px_4px_-2px_rgba(0,0,0,0.1)]">
       {/* 홈 */}
       <Link to="/" className="flex flex-1 flex-col items-center gap-1">
         <img
