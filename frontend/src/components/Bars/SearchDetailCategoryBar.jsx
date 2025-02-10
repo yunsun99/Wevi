@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { searchDetailState } from "../../atoms/searchDetailState";
 
 export default function SearchDetailCategoryBar() {
+  console.log("detail");
   const handleButtonClick = (buttonName) => {
     if (selectedButton.selectedCategory !== buttonName) {
       setSelectedButton((prev) => ({

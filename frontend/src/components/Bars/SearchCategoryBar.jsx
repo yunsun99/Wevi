@@ -4,6 +4,7 @@ import { searchState } from "../../atoms/searchState";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function SearchCategoryBar() {
+  console.log("A");
   const handleButtonClick = (buttonName) => {
     if (selectedButton.selectedCategory !== buttonName) {
       setSelectedButton((prev) => ({

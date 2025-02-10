@@ -28,10 +28,55 @@ export default function Schedule() {
       startTime: "19:00",
       endDate: "2025-02-10",
       endTime: "21:00",
-      title: "웨딩 촬영 상담",
+      title: "웨딩홀 점검",
       createdAt: null,
       updatedAt: null,
       dtype: "consultation",
+      category: "weddinghall",
+      contractId: null,
+      vendorName: "라벤더 웨딩홀",
+    },
+    {
+      id: 4,
+      startDate: "2025-02-10",
+      startTime: "19:00",
+      endDate: "2025-02-10",
+      endTime: "21:00",
+      title: "드레스 가봉",
+      createdAt: null,
+      updatedAt: null,
+      dtype: "middle_process",
+      category: "dress",
+      contractId: 2,
+      vendorName: "라벤더 웨딩홀",
+    },
+    {
+      id: 5,
+      startDate: "2025-02-10",
+      startTime: "19:00",
+      endDate: "2025-02-10",
+      endTime: "21:00",
+      title: "사진셀렉 및 후보정",
+      createdAt: null,
+      updatedAt: null,
+      dtype: "consultation",
+      category: "studio",
+      contractId: null,
+      vendorName: "라벤더 웨딩홀",
+    },
+    {
+      id: 6,
+      startDate: "2025-02-10",
+      startTime: "19:00",
+      endDate: "2025-02-10",
+      endTime: "21:00",
+      title: "헤어메이크업 계약",
+      createdAt: null,
+      updatedAt: null,
+      dtype: "contract",
+      category: "hairmakeup",
+      contractId: null,
+      vendorName: "라벤더 웨딩홀",
     },
     {
       id: 2,
@@ -43,6 +88,9 @@ export default function Schedule() {
       createdAt: null,
       updatedAt: null,
       dtype: "contract",
+      category: "weddinghall",
+      contractId: null,
+      vendorName: "라벤더 웨딩홀",
     },
     {
       id: 3,
@@ -54,6 +102,9 @@ export default function Schedule() {
       createdAt: null,
       updatedAt: null,
       dtype: "other_schedule",
+      category: "weddinghall",
+      contractId: null,
+      vendorName: "라벤더 웨딩홀",
     },
     {
       id: 4,
@@ -65,8 +116,14 @@ export default function Schedule() {
       createdAt: null,
       updatedAt: null,
       dtype: "middle_process",
+      category: "weddinghall",
+      contractId: 1,
+      vendorName: "라벤더 웨딩홀",
     },
   ];
+
+  const date = selectedDate.date;
+  const formattedDate = dayjs(date).format("M월 D일"); // "2월 25일"로 변환
   return (
     <>
       <TopNavigationBar />
@@ -75,15 +132,17 @@ export default function Schedule() {
         setSelectedDate={setSelectedDate}
         handleDateClick={handleDateClick}
       />
+      <h1 className="text-lg font-bold mb-4">{formattedDate}</h1>
+
       {/* schedules에서 selectedDate.date와 startDate가 같은 항목만 필터링 */}
-      <div className="h-[calc(100vh-32rem)]">
-        <ListView
-          data={schedules.filter(
-            (schedule) => schedule.startDate === selectedDate.date
-          )}
-          CardComponent={CardSchedule}
-        />
-      </div>
+      {/* <div className="h-[calc(100vh-32rem)]"> */}
+      <ListView
+        data={schedules.filter(
+          (schedule) => schedule.startDate === selectedDate.date
+        )}
+        CardComponent={CardSchedule}
+      />
+      {/* </div> */}
       <BottomNavigationBar />
     </>
   );
