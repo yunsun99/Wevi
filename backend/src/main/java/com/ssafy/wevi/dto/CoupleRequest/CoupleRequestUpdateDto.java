@@ -1,4 +1,4 @@
-package com.ssafy.wevi.dto;
+package com.ssafy.wevi.dto.CoupleRequest;
 
 import lombok.*;
 

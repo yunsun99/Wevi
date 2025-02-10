@@ -3,8 +3,9 @@ package com.ssafy.wevi.controller;
 import com.ssafy.wevi.config.SecurityUtils;
 import com.ssafy.wevi.domain.CoupleRequest;
 import com.ssafy.wevi.dto.ApiResponseDto;
-import com.ssafy.wevi.dto.CoupleRequestDto;
-import com.ssafy.wevi.dto.CoupleRequestUpdateDto;
+import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestDto;
+import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestResponseDto;
+import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestUpdateDto;
 import com.ssafy.wevi.service.CoupleRequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +23,10 @@ public class CoupleRequestController {
     // 커플 요청 보내기
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponseDto<CoupleRequest> createCoupleRequest(@RequestBody CoupleRequestDto coupleRequestDto) {
+    public ApiResponseDto<CoupleRequestResponseDto> createCoupleRequest(@RequestBody CoupleRequestDto coupleRequestDto) {
         Integer customerId = Integer.valueOf(SecurityUtils.getAuthenticatedUserId());
 
-        CoupleRequest coupleRequestResponse = coupleRequestService.createCoupleRequest(customerId, coupleRequestDto.getSpouseEmail());
+        CoupleRequestResponseDto coupleRequestResponse = coupleRequestService.createCoupleRequest(customerId, coupleRequestDto.getSpouseEmail());
 
         return new ApiResponseDto<>(
                 HttpStatus.CREATED.value(),
@@ -38,10 +39,10 @@ public class CoupleRequestController {
     // 커플 요청 응답 보내기
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponseDto<CoupleRequest> updateCoupleRequest(@RequestBody CoupleRequestUpdateDto coupleRequestResponseDto) {
+    public ApiResponseDto<CoupleRequestResponseDto> updateCoupleRequest(@RequestBody CoupleRequestUpdateDto coupleRequestUpdateDto) {
         Integer customerId = Integer.valueOf(SecurityUtils.getAuthenticatedUserId());
 
-        CoupleRequest coupleRequestResponse = coupleRequestService.updateCoupleRequest(customerId, coupleRequestResponseDto.getStatus());
+        CoupleRequestResponseDto coupleRequestResponse = coupleRequestService.updateCoupleRequest(customerId, coupleRequestUpdateDto.getStatus());
 
         // 커플 요청이 거절된 경우
         if (coupleRequestResponse == null) {
