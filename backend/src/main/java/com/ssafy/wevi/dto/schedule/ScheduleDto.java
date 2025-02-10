@@ -1,7 +1,7 @@
 package com.ssafy.wevi.dto.schedule;
 
-import com.ssafy.wevi.domain.Customer;
-import com.ssafy.wevi.domain.Vendor;
+import com.ssafy.wevi.domain.user.Customer;
+import com.ssafy.wevi.domain.user.Vendor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

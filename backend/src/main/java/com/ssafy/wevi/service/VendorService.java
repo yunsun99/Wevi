@@ -3,7 +3,7 @@ package com.ssafy.wevi.service;
 import com.ssafy.wevi.domain.Do;
 import com.ssafy.wevi.domain.Sigungu;
 import com.ssafy.wevi.domain.SigunguId;
-import com.ssafy.wevi.domain.Vendor;
+import com.ssafy.wevi.domain.user.Vendor;
 import com.ssafy.wevi.dto.vendor.*;
 import com.ssafy.wevi.enums.UserStatus;
 import com.ssafy.wevi.repository.DoRepository;

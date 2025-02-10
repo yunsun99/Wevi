@@ -1,9 +1,6 @@
 package com.ssafy.wevi.controller;
 
-import com.ssafy.wevi.domain.Vendor;
 import com.ssafy.wevi.dto.ApiResponseDto;
-import com.ssafy.wevi.dto.Customer.CustomerCreateDto;
-import com.ssafy.wevi.dto.Customer.CustomerResponseDto;
 import com.ssafy.wevi.dto.vendor.DoDto;
 import com.ssafy.wevi.dto.vendor.SigunguDto;
 import com.ssafy.wevi.dto.vendor.VendorCreateDto;
@@ -12,7 +9,6 @@ import com.ssafy.wevi.service.VendorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

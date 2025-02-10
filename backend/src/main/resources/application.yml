@@ -20,7 +20,7 @@ spring:
         # JPA? Hibernate? ???? SQL? ??(System.out?? ??)
         # show_sql: true
         format_sql: true
-    defer-datasource-initialization: true
+     #defer-datasource-initialization: true
 
 logging:
   level:
