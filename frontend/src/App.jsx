@@ -18,7 +18,7 @@ import Test from "./pages/testpage";
 import { RecoilRoot } from "recoil";
 import ConsultationReservation from "./pages/ConsultationReservation";
 import SearchList from "./pages/searchlist";
-import SearchDetail from "./pages/\bSearchDetail";
+import SearchDetail from "./pages/SearchDetail";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
