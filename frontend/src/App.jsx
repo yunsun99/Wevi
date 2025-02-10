@@ -17,7 +17,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Test from "./pages/testpage";
 import { RecoilRoot } from "recoil";
 import ConsultationReservation from "./pages/ConsultationReservation";
-import SearchList from "./pages/searchlist";
+import SearchList from "./pages/SearchList";
 import SearchDetail from "./pages/SearchDetail";
 
 const router = createBrowserRouter([
@@ -40,11 +40,8 @@ const router = createBrowserRouter([
   },
   { path: "/test", element: <Test /> },
   { path: "/searchList", element: <SearchList /> },
-  { path: "/searchDetail", element: <SearchDetail/>},
-  { path: "/consultationReservation", element: <ConsultationReservation/>},
-
-
-
+  { path: "/searchDetail", element: <SearchDetail /> },
+  { path: "/consultationReservation", element: <ConsultationReservation /> },
 ]);
 
 function App() {
