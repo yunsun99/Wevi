@@ -26,10 +26,10 @@ export default function CalendarComponent() {
   }, [selectedDate]);
 
   const handleDateClick = (date) => {
-    setSelectedDate((prevState)=>({
-        ...prevState,
-        date:dayjs(date).format("YYYY-MM-DD"),
-        time:null
+    setSelectedDate((prevState) => ({
+      ...prevState,
+      date: dayjs(date).format("YYYY-MM-DD"),
+      time: null,
     })); // 현재 선택된 날짜를 업데이트
   };
 
