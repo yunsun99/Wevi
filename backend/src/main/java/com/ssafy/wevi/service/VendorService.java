@@ -2,6 +2,7 @@ package com.ssafy.wevi.service;
 
 import com.ssafy.wevi.domain.*;
 import com.ssafy.wevi.domain.user.Vendor;
+import com.ssafy.wevi.domain.user.Customer;
 import com.ssafy.wevi.dto.vendor.*;
 import com.ssafy.wevi.enums.UserStatus;
 import com.ssafy.wevi.repository.*;

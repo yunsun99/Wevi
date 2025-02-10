@@ -1,5 +1,6 @@
 package com.ssafy.wevi.domain.user;
 
+import com.ssafy.wevi.domain.Category;
 import com.ssafy.wevi.domain.Sigungu;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -79,7 +79,7 @@ public class CoupleRequestService {
         notificationService.createCoupleRequestSentNotification(spouse, message, coupleRequest);
 
         // 수락된 경우 업데이트된 객체 반환
-        return toCoupleRequestResponseDto(coupleRequest);;
+        return toCoupleRequestResponseDto(coupleRequest);
     }
 
     private CoupleRequestResponseDto toCoupleRequestResponseDto(CoupleRequest coupleRequest) {

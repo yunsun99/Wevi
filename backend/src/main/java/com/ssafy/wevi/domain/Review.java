@@ -1,5 +1,7 @@
 package com.ssafy.wevi.domain;
 
+import com.ssafy.wevi.domain.user.Customer;
+import com.ssafy.wevi.domain.user.Vendor;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
