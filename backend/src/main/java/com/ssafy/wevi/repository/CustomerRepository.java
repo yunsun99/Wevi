@@ -1,6 +1,6 @@
 package com.ssafy.wevi.repository;
 
-import com.ssafy.wevi.domain.Customer;
+import com.ssafy.wevi.domain.user.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.ssafy.wevi.repository;
 
+import com.ssafy.wevi.domain.user.Vendor;
 import com.ssafy.wevi.domain.Category;
-import com.ssafy.wevi.domain.Vendor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

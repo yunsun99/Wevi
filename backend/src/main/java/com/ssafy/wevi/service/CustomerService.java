@@ -1,7 +1,6 @@
 package com.ssafy.wevi.service;
 
-import com.ssafy.wevi.domain.Customer;
-import com.ssafy.wevi.domain.User;
+import com.ssafy.wevi.domain.user.Customer;
 import com.ssafy.wevi.dto.Customer.CustomerCreateDto;
 import com.ssafy.wevi.dto.Customer.CustomerResponseDto;
 import com.ssafy.wevi.dto.Customer.CustomerSpouseResponseDto;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,20 +28,19 @@ public class CustomerService {
 
     @Transactional
     public CustomerResponseDto createCustomer(CustomerCreateDto customerCreateDto) {
-        Customer customer = new Customer();
-        customer.setEmail(customerCreateDto.getEmail());
-        customer.setNickname(customerCreateDto.getNickname());
-        customer.setName(customerCreateDto.getName());
-        customer.setPassword(passwordEncoder.encode(customerCreateDto.getPassword()));
-        customer.setPhone(customerCreateDto.getPhone());
-        customer.setZonecode(customerCreateDto.getZonecode());
-        customer.setAutoRoadAddress(customerCreateDto.getAutoRoadAddress());
-        customer.setAddressDetail(customerCreateDto.getAddressDetail());
-        customer.setStatus(UserStatus.ACTIVE.name());
-        customer.setCreatedAt(LocalDateTime.now());
+        Customer customer = Customer.builder()
+                .email(customerCreateDto.getEmail())
+                .nickname(customerCreateDto.getNickname())
+                .name(customerCreateDto.getName())
+                .password(passwordEncoder.encode(customerCreateDto.getPassword()))
+                .phone(customerCreateDto.getPhone())
+                .zonecode(customerCreateDto.getZonecode())
+                .autoRoadAddress(customerCreateDto.getAutoRoadAddress())
+                .addressDetail(customerCreateDto.getAddressDetail())
+                .status(UserStatus.ACTIVE.name())
+                .build();
 
         customerRepository.save(customer);
-
         return toCustomerResponseDto(customer);
     }
 
@@ -98,7 +95,7 @@ public class CustomerService {
             // 탈퇴 후 로그아웃 처리
             new SecurityContextLogoutHandler().logout(request, response, null);
         }, () -> {
-            throw new EntityNotFoundException("Customer not found");
+            throw new EntityNotFoundException("Customer not found");  // NoSuch로 바꾸쟝
         });
     }
 
@@ -110,18 +107,16 @@ public class CustomerService {
     private CustomerResponseDto toCustomerResponseDto(Customer customer) {
         if (customer == null) return null;
 
-        CustomerResponseDto customerResponseDto = new CustomerResponseDto();
-        customerResponseDto.setUserId(customer.getUserId());
-        customerResponseDto.setEmail(customer.getEmail());
-        customerResponseDto.setNickname(customer.getNickname());
-        customerResponseDto.setName(customer.getName());
-        customerResponseDto.setPhone(customer.getPhone());
-        customerResponseDto.setZonecode(customer.getZonecode());
-        customerResponseDto.setAutoRoadAddress(customer.getAutoRoadAddress());
-        customerResponseDto.setAddressDetail(customer.getAddressDetail());
-        customerResponseDto.setCreatedAt(customer.getCreatedAt());
-        customerResponseDto.setSpouseId(customer.getSpouse() != null ? customer.getSpouse().getUserId() : null);
-
-        return customerResponseDto;
+        return CustomerResponseDto.builder()
+                .userId(customer.getUserId())
+                .email(customer.getEmail())
+                .nickname(customer.getNickname())
+                .name(customer.getName())
+                .phone(customer.getPhone())
+                .zonecode(customer.getZonecode())
+                .autoRoadAddress(customer.getAutoRoadAddress())
+                .addressDetail(customer.getAddressDetail())
+                .spouseId(customer.getSpouse() != null ? customer.getSpouse().getUserId() : null)
+                .build();
     }
 }
