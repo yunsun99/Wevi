@@ -8,10 +8,12 @@ import weddinghallImage from "../../assets/backgroundImages/weddinghall.png";
 import studioImage from "../../assets/backgroundImages/studio.png";
 import hairMakeupImage from "../../assets/backgroundImages/hair_makeup.png";
 
-
-
-export default function TimelineSlider() {
+export default function ProgressCard() {
   const data = [
+    {
+      title: "예식장",
+      items: Array(10).fill({ status: "계약 완료", time: "25.01.25 09:50" }),
+    },
     {
       title: "드레스",
       items: [
@@ -20,10 +22,6 @@ export default function TimelineSlider() {
         { status: "스튜디오 드레스 가봉", time: "25.01.25 09:50" },
         { status: "웨딩촬영", time: "25.01.25 09:50" },
       ],
-    },
-    {
-      title: "예식장",
-      items: Array(10).fill({ status: "계약 완료", time: "25.01.25 09:50" }),
     },
     {
       title: "스튜디오",
@@ -43,40 +41,58 @@ export default function TimelineSlider() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <Swiper navigation={true} modules={[Navigation]} className="mySwiper ㅗ h-full">
-        {data.map((category, index) => (
-          <SwiperSlide key={index} >
-            <div
-              className="p-4 rounded-lg h-196 relative z-0 text-white"
-              style={{
-                background: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), ${categoryBackgrounds[category.title]}`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            >
-              <h3 className="text-center font-bold text-lg mb-4">
-                {category.title}
-              </h3>
-              <ul className="space-y-4">
-                {category.items.map((item, idx) => (
-                  <li key={idx} className="flex justify-between items-center">
-                    <div className="flex items-center">
-                      <span className="w-4 h-4 bg-white rounded-full mr-4"></span>
-                      <p>{item.status}</p>
+    <>
+      <div className="flex flex-col h-screen">
+        {/* Swiper가 들어갈 중간 영역 */}
+        <div className="flex-grow bg-gray-100 overflow-auto">
+          <div className="w-full max-w-md mx-auto h-full flex items-center justify-center p-4">
+            <div className="w-full h-full rounded-lg overflow-hidden shadow-lg">
+              <Swiper
+                navigation={true}
+                modules={[Navigation]}
+                className="mySwiper h-full"
+              >
+                {data.map((category, index) => (
+                  <SwiperSlide key={index}>
+                    <div
+                      className="p-4 rounded-lg h-full text-white"
+                      style={{
+                        background: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), ${
+                          categoryBackgrounds[category.title]
+                        }`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                      }}
+                    >
+                      <h3 className="text-center font-bold text-lg mb-4">
+                        {category.title}
+                      </h3>
+                      <ul className="space-y-4">
+                        {category.items.map((item, idx) => (
+                          <li
+                            key={idx}
+                            className="flex justify-between items-center"
+                          >
+                            <div className="flex items-center">
+                              <span className="w-4 h-4 bg-white rounded-full mr-4"></span>
+                              <p>{item.status}</p>
+                            </div>
+                            <p className="text-sm text-gray-200">{item.time}</p>
+                            <button className="bg-gray-800 text-white text-sm py-1 px-3 rounded">
+                              완료
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <p className="text-sm text-gray-200">{item.time}</p>
-                    <button className="bg-gray-800 text-white text-sm py-1 px-3 rounded">
-                      완료
-                    </button>
-                  </li>
+                  </SwiperSlide>
                 ))}
-              </ul>
+              </Swiper>
             </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

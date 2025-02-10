@@ -5,9 +5,9 @@ import ProgressCard from "../components/Progress/ProgressCard";
 export default function Progress() {
   return (
     <>
-    <TopNavigationBar/>
-    <ProgressCard/>
-    <BottomNavigationBar/>
+      <TopNavigationBar />
+      <ProgressCard />
+      <BottomNavigationBar />
     </>
   );
 }

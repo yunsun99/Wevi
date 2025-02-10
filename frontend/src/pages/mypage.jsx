@@ -1,7 +1,7 @@
-export default function MyPage(){
-    return (
-        <>
-        <a>my page</a>
-        </>
-    );
+export default function MyPage() {
+  return (
+    <>
+      <a>my page</a>
+    </>
+  );
 }
