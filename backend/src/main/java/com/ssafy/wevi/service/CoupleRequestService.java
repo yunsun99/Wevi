@@ -55,24 +55,32 @@ public class CoupleRequestService {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("해당 ID의 사용자를 찾을 수 없습니다: " + customerId));
 
-        // 수신된 커플 요청이 있는지 확인
+        // 수신된 커플 요청 확인
         CoupleRequest coupleRequest = customer.getReceivedRequest();
         if (coupleRequest == null) {
             throw new IllegalStateException("해당 사용자는 커플 요청을 받은 적이 없습니다.");
         }
 
-        // 상태 업데이트
+        // 상대방 사용자 정보 조회
+        Customer spouse = coupleRequest.getSender();
+
+        // 상태가 "REJECTED"인 경우, 요청 삭제 후 void 반환
+        if (CoupleRequestStatus.REJECTED.name().equals(status)) {
+            String message = customer.getName() + "님이 커플 연동 신청을 거절하였습니다.";
+            notificationService.createCoupleRequestSentNotification(spouse, message, coupleRequest);
+            coupleRequestRepository.delete(coupleRequest); // 요청 삭제
+            return null; // 거절된 경우 반환값 없음
+        }
+
+        // 상태가 "ACCEPTED"인 경우, 상태 업데이트
         coupleRequest.setStatus(status);
         coupleRequestRepository.save(coupleRequest);
 
-        // 상대방 사용자 정보 조회
-        Customer spouse = customerRepository.findById(coupleRequest.getSender().getUserId())
-                .orElseThrow(() -> new NoSuchElementException("요청을 보낸 사용자를 찾을 수 없습니다."));
-
         // 알림 메시지 설정 및 전송
-        String message = customer.getName() + "님이 커플 연동 신청을 " + (status.equals(CoupleRequestStatus.ACCEPTED.name()) ? "수락" : "거절") + "하였습니다.";
+        String message = customer.getName() + "님이 커플 연동 신청을 수락하였습니다.";
         notificationService.createCoupleRequestSentNotification(spouse, message, coupleRequest);
 
+        // 수락된 경우 업데이트된 객체 반환
         return coupleRequest;
     }
 
