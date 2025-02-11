@@ -21,4 +21,15 @@ public class SecurityUtils {
         // 인증 정보 안에서 userId 가져오기 (UserDetailsService.loadUserByUsername 메서드에서 리턴한 UserDetails.getUsername의 값)
         return authentication.getName();
     }
+
+    public static Boolean isAuthenticated() {
+        // 현재 요청의 인증 정보 가져오기
+        Authentication authentication = securityContextHolderStrategy.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new AccessDeniedException("Access denied");
+        }
+
+        return true;
+    }
 }

@@ -25,6 +25,9 @@ public class Notification extends BaseEntity {
     private User receiver;  // 소비자 or 업체
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String message;
 
     @Column(nullable = false)
