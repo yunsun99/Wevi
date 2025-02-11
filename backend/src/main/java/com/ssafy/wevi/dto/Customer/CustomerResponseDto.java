@@ -1,5 +1,6 @@
 package com.ssafy.wevi.dto.Customer;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
 public class CustomerResponseDto {
     private Integer userId;
     private String email;
@@ -16,6 +18,5 @@ public class CustomerResponseDto {
     private String zonecode;
     private String autoRoadAddress;
     private String addressDetail;
-    private LocalDateTime createdAt;
     private Integer spouseId;
 }

@@ -1,25 +1,34 @@
 package com.ssafy.wevi.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Getter
 @Setter
-@EntityListeners(AuditingEntityListener.class)
-public class BaseEntity {
-    @CreatedDate
+@SuperBuilder
+@NoArgsConstructor
+public abstract class BaseEntity {
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
+    @Column
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

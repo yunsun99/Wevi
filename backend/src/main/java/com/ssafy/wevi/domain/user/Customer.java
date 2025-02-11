@@ -1,15 +1,17 @@
-package com.ssafy.wevi.domain;
+package com.ssafy.wevi.domain.user;
 
+import com.ssafy.wevi.domain.CoupleRequest;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "customers")
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 @DiscriminatorValue("customer")
 //@PrimaryKeyJoinColumn(name = "customer_id")
 public class Customer extends User {
@@ -43,4 +45,10 @@ public class Customer extends User {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "spouse_id")   // 사실 이거 안써도 똑같음
     private Customer spouse;
+
+    @OneToOne(mappedBy = "sender", fetch = FetchType.LAZY)
+    private CoupleRequest sentRequest;  // Customer 엔티티에서 보낸 요청을 쉽게 조회하기 위해 양방향 매핑 사용
+
+    @OneToOne(mappedBy = "receiver", fetch = FetchType.LAZY)
+    private CoupleRequest receivedRequest;  // Customer 엔티티에서 받은 요청을 쉽게 조회하기 위해 양방향 매핑 사용
 }
