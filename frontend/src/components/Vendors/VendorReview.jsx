@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ReviewModal from "../Modals/ReviewModal";
 
 export default function VendorReview() {
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const reviews = [
     {
       id: 1,
@@ -26,12 +29,20 @@ export default function VendorReview() {
     },
   ];
 
+  // 리뷰 쓰기 버튼 핸들러
+  function handleReviewWrite() {
+    setIsModalOpen(true); // 모달 열기
+  }
+
   return (
     <div className="bg-gray-50 p-4">
       {/* 제목과 리뷰 쓰기 버튼 */}
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-bold">리뷰</h3>
-        <button className="text-blue-500 text-sm flex items-center">
+        <button
+          className="text-blue-500 text-sm flex items-center"
+          onClick={handleReviewWrite}
+        >
           ✏️ 리뷰 쓰기
         </button>
       </div>
@@ -65,6 +76,11 @@ export default function VendorReview() {
           <p className="text-sm text-gray-700">{review.reviewText}</p>
         </div>
       ))}
+
+      {/* 리뷰 모달 */}
+      {isModalOpen && (
+        <ReviewModal onClose={() => setIsModalOpen(false)} />
+      )}
     </div>
   );
 }
