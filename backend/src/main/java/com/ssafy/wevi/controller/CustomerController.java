@@ -66,6 +66,7 @@ public class CustomerController {
         );
     }
 
+    // 배우자 정보 조회하기
     @GetMapping("/spouse")
     public ApiResponseDto<CustomerSpouseResponseDto> getSpouseInfo() {
         // 로그인한 유저 ID 가져오기
@@ -84,7 +85,7 @@ public class CustomerController {
             );
         } else {   // 베우자가 없는 경우
             return new ApiResponseDto<>(
-                    HttpStatus.OK.value(),
+                    HttpStatus.NO_CONTENT.value(),
                     true,
                     "No spouse information found.",
                     null
@@ -92,11 +93,12 @@ public class CustomerController {
         }
     }
 
+    // 회원 정보 수정하기
     @PatchMapping
     public ApiResponseDto<CustomerResponseDto> updateCustomer(@RequestBody CustomerUpdateDto customerUpdateDto) {
-        String customerId = SecurityUtils.getAuthenticatedUserId();
+        Integer customerId = Integer.valueOf(SecurityUtils.getAuthenticatedUserId());
 
-        CustomerResponseDto customerResponseDto = customerService.updateCustomer(Integer.valueOf(customerId), customerUpdateDto);
+        CustomerResponseDto customerResponseDto = customerService.updateCustomer(customerId, customerUpdateDto);
 
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
@@ -106,6 +108,7 @@ public class CustomerController {
         );
     }
 
+    // 회원 탈퇴하기
     @PatchMapping("/deactivate")
     public ApiResponseDto<CustomerResponseDto> deactivateCustomer(HttpServletRequest request, HttpServletResponse response) {
         String customerId = SecurityUtils.getAuthenticatedUserId();
