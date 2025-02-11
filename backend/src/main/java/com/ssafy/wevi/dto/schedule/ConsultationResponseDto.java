@@ -9,11 +9,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ContractDto{
+public class ConsultationResponseDto {
     // 일정 공통
     private int id;
 //    private LocalDateTime startTime;
 //    private LocalDateTime endTime;
+
     private String startDate;
     private String startTime;
     private String endDate;
@@ -21,11 +22,10 @@ public class ContractDto{
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer categoryId;
 
-    // 계약 별도 컬럼
-    private int price;  // 계약금액
-    private LocalDateTime contractDate; // 계약일
-    private String detail;  // 계약 세부사항
+    // 상담 별도
+    private String request;
 
 
     // 객체 직접 참조 X
@@ -42,4 +42,5 @@ public class ContractDto{
     private String vendorName;
     private String vendorAutoRoadAddress;
     private String vendorPhone;
+
 }

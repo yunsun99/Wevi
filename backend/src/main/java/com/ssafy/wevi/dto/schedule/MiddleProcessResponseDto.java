@@ -1,19 +1,16 @@
 package com.ssafy.wevi.dto.schedule;
 
+import com.ssafy.wevi.enums.MiddleProcessStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class CommonScheduleDto {
-    // 일정 공통
+public class MiddleProcessResponseDto {
     private int id;
-//    private LocalDateTime startTime;
-//    private LocalDateTime endTime;
     private String startDate;
     private String startTime;
     private String endDate;
@@ -21,5 +18,10 @@ public class CommonScheduleDto {
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String dtype;
+    private Integer categoryId;
+
+    // 중간과정 별도 컬럼
+    private String detail;  // 세부내용
+    private String stepName; // 중간 단계명
+    private MiddleProcessStatus status; // 상태
 }

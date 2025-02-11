@@ -6,7 +6,6 @@ logging:
   level:
     root: info
     sql: debug
-    # JPA? Hibernate? ???? SQL? ??(logger? ??)
     org.hibernate.SQL: debug
 #    org.hibernate.type: trace
     org.springframework.security: debug

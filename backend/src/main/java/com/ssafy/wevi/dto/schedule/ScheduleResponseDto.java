@@ -1,32 +1,32 @@
 package com.ssafy.wevi.dto.schedule;
 
-import com.ssafy.wevi.enums.MiddleProcessStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class ScheduleResponseDto {
-    // 공통
-    private int id;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    // 일정 공통
+    private Integer id;
+//    private LocalDateTime startTime;
+//    private LocalDateTime endTime;
+    private String startDate;
+    private String startTime;
+    private String endDate;
+    private String endTime;
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String dtype;
+    private Integer categoryId;
 
-    // 상담
-    private String request; // 요청사항
+    // 중간 과정의 경우 계약 상세정보 조회를 위해 계약ID 제공
+    private Integer contractId;
 
-    // 계약
-    private int price;  // 계약금액
-    private LocalDateTime contractDate; // 계약일
-
-    // 중간과정
-    private MiddleProcessStatus status;
-
-    private String detail;   // 계약, 중간, 수기 공통
+    // 수기 등록이 아닐 경우 업체명까지 추가
+    private String vendorName;
 }
