@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Calendar from "react-calendar";
 import dayjs from "dayjs"; // 날짜 처리 라이브러리
-import "../../Calendar.css"; // 커스터마이징 CSS
+import "react-calendar/dist/Calendar.css"; // 기본 CSS 불러오기
+import "@/Calendar.css"; // 추가 커스텀 CSS 적용
 
 export default function CalendarComponent({
   selectedDate,

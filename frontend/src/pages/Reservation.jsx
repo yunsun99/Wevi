@@ -3,8 +3,8 @@ import CardReservation from "../components/Cards/CardReservation";
 import BottomNavigationBar from "../components/Navigators/BottomNavigationBar";
 import TopNavigationBar from "../components/Navigators/TopNavigationBar";
 import { useEffect, useState } from "react";
-import { getConsultationInfo, getContractInfo } from "../api/reservation";
 import TopNavigationBar2 from "../components/Navigators/TopNavigationBar2";
+import { getConsultationInfo, getContractInfo } from "../api/schedule";
 export default function Reservation() {
   const [reservationData, setReservationData] = useState();
   const tempdata = useLocation().state;
