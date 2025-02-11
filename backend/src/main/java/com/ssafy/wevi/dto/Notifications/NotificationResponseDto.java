@@ -1,4 +1,4 @@
-package com.ssafy.wevi.dto;
+package com.ssafy.wevi.dto.Notifications;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 public class NotificationResponseDto {
     private Integer notificationId;
-    private String type;   // type에 따라 title이 정해짐
+    private String type;
     private String title;
     private String message;
     private Boolean isRead;
