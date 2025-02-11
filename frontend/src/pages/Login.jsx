@@ -13,6 +13,8 @@ import logo from "@/assets/logo.png";
 import Input from "@/components/Inputs/Input_gray";
 import Button1 from "@/components/Buttons/Button1";
 import { Link } from "react-router-dom";
+import { requestFCMToken } from "../api/firebase";
+import { sendFCMToken } from "../api/auth";
 
 export default function Login() {
   const [error, setError] = useState(null); // 로그인 실패 메시지
@@ -55,6 +57,8 @@ export default function Login() {
     try {
       const userCode = await handleLogin(formData.username, formData.password);
       setUser(userCode);
+      const currentToken = await requestFCMToken();
+      await sendFCMToken(currentToken);
       if (userCode === 200) {
         navigate("/");
       }
