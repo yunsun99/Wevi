@@ -12,7 +12,7 @@ import Hamburger from "./pages/Hamburger";
 import MyPage from "./pages/MyPage";
 import Progress from "./pages/Progress";
 import Search from "./pages/Search";
-import AiPlannerStart from "./pages/AIPlannerStart";
+import AiPlanner from "./pages/AIPlanner";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Test from "./pages/testpage";
 import { RecoilRoot } from "recoil";
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
       { path: "/mypage", element: <MyPage /> },
       { path: "/progress", element: <Progress /> },
       { path: "/search", element: <Search /> },
-      { path: "/aiplanner", element: <AiPlannerStart /> },
+      { path: "/aiplanner", element: <AiPlanner /> },
     ],
   },
   { path: "/test", element: <Test /> },

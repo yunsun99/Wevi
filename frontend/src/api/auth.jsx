@@ -59,3 +59,17 @@ export async function handleSignUp(formData) {
     return error.response ? error.response.status : 500;
   }
 }
+
+export async function sendFCMToken(token) {
+  try {
+    const response = await api.post(`/api/users/fcm-token`, token, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.status;
+  } catch (error) {
+    console.log(error);
+    return error.response ? error.response.status : 500;
+  }
+}

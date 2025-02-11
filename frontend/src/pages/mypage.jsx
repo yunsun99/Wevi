@@ -18,11 +18,7 @@ export default function MyPage() {
   ];
 
   const handleButtonClick = () => {
-    if (user.spouseId) {
-      navigate("/"); // ✅ spouseId가 있으면 해당 페이지로 이동
-    } else {
-      navigate("/couplelink"); // ✅ spouseId가 없으면 커플 연동 페이지로 이동
-    }
+    navigate("/couplelink"); // ✅ spouseId가 없으면 커플 연동 페이지로 이동
   };
 
   useEffect(() => {
