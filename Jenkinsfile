@@ -58,6 +58,7 @@ pipeline {
                             cp "$prodFile" src/main/resources/application-prod.yml
                             cp "$fireFile" src/main/resources/firebase-service-account.json
                             chmod 644 src/main/resources/application-*.yml
+                            chmod 644 src/main/resources/firebase-*.json
                         '''
                         }
                         
