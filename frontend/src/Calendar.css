@@ -1,54 +1,54 @@
 .react-calendar {
-    border: none !important;
-    background-color: #f8f9fa !important;
-    border-radius: 8px !important;
-    font-family: "Arial", sans-serif;
-    padding: 16px !important;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .react-calendar__navigation {
-    display: flex !important;
-    justify-content: space-between !important;
-    margin-bottom: 16px !important;
-  }
-  
-  .react-calendar__navigation button {
-    color: #333 !important;
-    background: none !important;
-    border: none !important;
-    font-size: 16px !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-  }
-  
-  .react-calendar__navigation button:hover {
-    color: #38a169 !important;
-  }
-  
-  .react-calendar__tile {
-    padding: 10px !important;
-    border-radius: 8px !important;
-    text-align: center !important;
-  }
-  
-  .react-calendar__tile--now {
-    background-color: #e9ecef !important;
-    font-weight: bold !important;
-  }
-  
-  .react-calendar__tile--active {
-    background-color: #38a169 !important;
-    color: #fff !important;
-  }
-  
-  .react-calendar__tile:enabled:hover {
-    background-color: #f1f3f5 !important;
-  }
-  .react-calendar__tile--active:enabled:focus {
-    background-color: #38a169 !important; /* 초록색 배경 */
-    color: #fff !important; /* 흰색 텍스트 */
-    -webkit-tap-highlight-color: transparent; /* 모바일 터치 하이라이트 제거 */
-  }
+  border: none !important;
+  background-color: #f8f9fa !important;
+  border-radius: 8px !important;
+  font-family: "Arial", sans-serif;
+  padding: 16px !important;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.react-calendar__navigation {
+  display: flex !important;
+  justify-content: space-between !important;
+  margin-bottom: 16px !important;
+}
+
+.react-calendar__navigation button {
+  color: #333 !important;
+  background: none !important;
+  border: none !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+}
+
+.react-calendar__navigation button:hover {
+  color: #38a169 !important;
+}
+
+.react-calendar__tile {
+  padding: 10px !important;
+  border-radius: 8px !important;
+  text-align: center !important;
+}
+
+.react-calendar__tile--now {
+  background-color: #e9ecef !important;
+  font-weight: bold !important;
+}
+
+.react-calendar__tile--active {
+  background-color: #38a169 !important;
+  color: #fff !important;
+}
+
+.react-calendar__tile:enabled:hover {
+  background-color: #f1f3f5 !important;
+}
+.react-calendar__tile--active:enabled:focus {
+  background-color: #38a169 !important; /* 초록색 배경 */
+  color: #fff !important; /* 흰색 텍스트 */
+  -webkit-tap-highlight-color: transparent; /* 모바일 터치 하이라이트 제거 */
+}
