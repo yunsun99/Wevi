@@ -5,93 +5,144 @@ import TopNavigationBar from "../components/Navigators/TopNavigationBar.jsx";
 import scheduleData from "../scheduleData.js";
 import CardCalendar from "../components/Cards/CardCalendar.jsx";
 import BottomNavigationBar from "../components/Navigators/BottomNavigationBar.jsx";
+import CalendarComponent from "../components/Calendar/CalendarComponent.jsx";
+import { scheduleState } from "../atoms/schedulState.jsx";
+import { useRecoilState } from "recoil";
+import dayjs from "dayjs";
+import ScheduleList from "../components/Cards/CardSchedule.jsx";
+import ListView from "../components/ListView/ListView.jsx";
+import CardSchedule from "../components/Cards/CardSchedule.jsx";
 
 export default function Schedule() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [filteredSchedules, setFilteredSchedules] = useState([]); // 선택된 날짜의 일정 저장
-  const scheduleRefs = useRef({}); // 날짜별 첫 번째 일정의 ref 저장
-
-  // 날짜 클릭 시 해당 날짜의 일정 필터링
+  const [selectedDate, setSelectedDate] = useRecoilState(scheduleState); // 초기값을 현재 날짜로 설정
   const handleDateClick = (date) => {
-    setSelectedDate(date);
+    setSelectedDate((prevState) => ({
+      ...prevState,
+      date: dayjs(date).format("YYYY-MM-DD"),
+    }));
+  }; // 현재 선택된 날짜를 업데이트
+  const schedules = [
+    {
+      id: 1,
+      startDate: "2025-02-10",
+      startTime: "19:00",
+      endDate: "2025-02-10",
+      endTime: "21:00",
+      title: "웨딩홀 점검",
+      createdAt: null,
+      updatedAt: null,
+      dtype: "consultation",
+      category: "weddinghall",
+      contractId: null,
+      vendorName: "라벤더 웨딩홀",
+    },
+    {
+      id: 4,
+      startDate: "2025-02-10",
+      startTime: "19:00",
+      endDate: "2025-02-10",
+      endTime: "21:00",
+      title: "드레스 가봉",
+      createdAt: null,
+      updatedAt: null,
+      dtype: "middle_process",
+      category: "dress",
+      contractId: 2,
+      vendorName: "라벤더 웨딩홀",
+    },
+    {
+      id: 5,
+      startDate: "2025-02-10",
+      startTime: "19:00",
+      endDate: "2025-02-10",
+      endTime: "21:00",
+      title: "사진셀렉 및 후보정",
+      createdAt: null,
+      updatedAt: null,
+      dtype: "consultation",
+      category: "studio",
+      contractId: null,
+      vendorName: "라벤더 웨딩홀",
+    },
+    {
+      id: 6,
+      startDate: "2025-02-10",
+      startTime: "19:00",
+      endDate: "2025-02-10",
+      endTime: "21:00",
+      title: "헤어메이크업 계약",
+      createdAt: null,
+      updatedAt: null,
+      dtype: "contract",
+      category: "hairmakeup",
+      contractId: null,
+      vendorName: "라벤더 웨딩홀",
+    },
+    {
+      id: 2,
+      startDate: "2025-02-15",
+      startTime: "23:00",
+      endDate: "2025-02-16",
+      endTime: "01:00",
+      title: "웨딩 계약",
+      createdAt: null,
+      updatedAt: null,
+      dtype: "contract",
+      category: "weddinghall",
+      contractId: null,
+      vendorName: "라벤더 웨딩홀",
+    },
+    {
+      id: 3,
+      startDate: "2025-02-20",
+      startTime: "22:00",
+      endDate: "2025-02-21",
+      endTime: "00:00",
+      title: "기타 일정",
+      createdAt: null,
+      updatedAt: null,
+      dtype: "other_schedule",
+      category: "weddinghall",
+      contractId: null,
+      vendorName: "라벤더 웨딩홀",
+    },
+    {
+      id: 4,
+      startDate: "2025-02-20",
+      startTime: "22:00",
+      endDate: "2025-02-21",
+      endTime: "00:00",
+      title: "중간과정",
+      createdAt: null,
+      updatedAt: null,
+      dtype: "middle_process",
+      category: "weddinghall",
+      contractId: 1,
+      vendorName: "라벤더 웨딩홀",
+    },
+  ];
 
-    /** 한국시간으로 변환
-     * iso는 세계 시간 기준
-     * Sat Feb 08 2025 00:00:00 GMT+0900 (한국 표준시) => 2025-02-08
-     */
-    const formattedDate = `${date.getFullYear()}-${String(
-      date.getMonth() + 1
-    ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-
-    // 선택된 날짜에 해당하는 일정 필터링
-    const schedulesForDate = scheduleData.filter(
-      (schedule) => schedule.date === formattedDate
-    );
-
-    // 상태 업데이트
-    setFilteredSchedules(schedulesForDate);
-
-    // 해당 날짜의 첫 번째 일정으로 스크롤
-    if (scheduleRefs.current[formattedDate]?.length > 0) {
-      scheduleRefs.current[formattedDate][0].scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
-
+  const date = selectedDate.date;
+  const formattedDate = dayjs(date).format("M월 D일"); // "2월 25일"로 변환
   return (
     <>
       <TopNavigationBar />
-      <div className="min-h-screen bg-gray-100 p-4">
-        {/* 📅 캘린더 */}
-        <div className="bg-white rounded-lg shadow-md p-4 mb-4">
-          <Calendar
-            style={{
-              width: "100%",
-              maxWidth: "1024px",
-              margin: "0 auto",
-              borderRadius: "8px",
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            }}
-            className="custom-calendar"
-            onChange={handleDateClick}
-            value={selectedDate}
-            tileClassName={({ date, view }) =>
-              view === "month" &&
-              scheduleData.some(
-                (s) => s.date === date.toISOString().split("T")[0]
-              )
-                ? "highlight-date"
-                : null
-            }
-          />
-        </div>
+      <CalendarComponent
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        handleDateClick={handleDateClick}
+      />
+      <h1 className="text-lg font-bold mb-4">{formattedDate}</h1>
 
-        {/* 📝 일정 리스트 */}
-        <div className="space-y-4">
-          {filteredSchedules.length > 0 ? (
-            filteredSchedules.map((schedule, index) => (
-              <CardCalendar
-                key={index}
-                schedule={schedule}
-                ref={(el) => {
-                  if (el) {
-                    if (!scheduleRefs.current[schedule.date]) {
-                      scheduleRefs.current[schedule.date] = [];
-                    }
-                    scheduleRefs.current[schedule.date].push(el);
-                  }
-                }}
-              />
-            ))
-          ) : (
-            <p className="text-center text-gray-500">
-              선택한 날짜에 일정이 없습니다.
-            </p>
-          )}
-        </div>
-      </div>
+      {/* schedules에서 selectedDate.date와 startDate가 같은 항목만 필터링 */}
+      {/* <div className="h-[calc(100vh-32rem)]"> */}
+      <ListView
+        data={schedules.filter(
+          (schedule) => schedule.startDate === selectedDate.date
+        )}
+        CardComponent={CardSchedule}
+      />
+      {/* </div> */}
       <BottomNavigationBar />
     </>
   );

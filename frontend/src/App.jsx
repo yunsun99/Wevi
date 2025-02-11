@@ -20,6 +20,7 @@ import ConsultationReservation from "./pages/ConsultationReservation";
 import SearchList from "./pages/SearchList";
 import SearchDetail from "./pages/SearchDetail";
 import CoupleLink from "./pages/CoupleLink";
+import Reservation from "./pages/Reservation";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
   { path: "/searchDetail", element: <SearchDetail /> },
   { path: "/consultationReservation", element: <ConsultationReservation /> },
   { path: "/couplelink", element: <CoupleLink /> },
+  { path: "/reservation", element: <Reservation /> },
 ]);
 
 function App() {
