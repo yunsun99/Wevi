@@ -75,10 +75,10 @@ INSERT INTO customers (user_id, spouse_id, address_detail, auto_road_address, na
 VALUES
     (1, null, '1123', '서울 양천구 목동2서로1길 1', '김싸피', '김싸피', '010-1234-5678', '01234'),
     (11, null, '101동 101호', '서울 양천구 목동서로1길 1', '정윤선', '쟈몽', '010-1234-5678', '01234');
--- UPDATE customers SET spouse_id = 11 WHERE user_id = 1;
--- UPDATE customers SET spouse_id = 1 WHERE user_id = 11;
--- INSERT INTO couple_requests (couple_request_id, sender_id, receiver_id, status, created_at, updated_at)
--- VALUES (1, 1, 11, 'ACCEPTED', NOW(), NOW());
+UPDATE customers SET spouse_id = 11 WHERE user_id = 1;
+UPDATE customers SET spouse_id = 1 WHERE user_id = 11;
+INSERT INTO couple_requests (couple_request_id, sender_id, receiver_id, status, created_at, updated_at)
+VALUES (1, 1, 11, 'ACCEPTED', NOW(), NOW());
 
 INSERT INTO `vendors` (
     category_id, do_id, is_indoor, min_price, sigungu_code, user_id, address_detail, auto_road_address,

@@ -29,7 +29,7 @@ public class ScheduleService {
     // ========= 등록 ========//
     // 상담 등록
     @Transactional
-    public ConsultationDto addConsultation(ConsultationCreateDto consultationCreaetDto, Integer customerId) {
+    public ConsultationResponseDto addConsultation(ConsultationCreateDto consultationCreaetDto, Integer customerId) {
         Consultation consultation = new Consultation();
 
         consultation.setStartDateTime(stringToLocalDateTime(consultationCreaetDto.getStartDate(),consultationCreaetDto.getStartTime()));
@@ -44,31 +44,31 @@ public class ScheduleService {
 
         scheduleRepository.save(consultation);
 
-        return toConsultationDto(consultation);
+        return toConsultationResponseDto(consultation);
     }
 
     //==========조회=========//
 
     // 상담 단건 조회
     @Transactional(readOnly = true)
-    public ConsultationDto findConsultationById(Integer id) {
+    public ConsultationResponseDto findConsultationById(Integer id) {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow();
 
         if (schedule instanceof Consultation) {
-            return toConsultationDto((Consultation) schedule);
+            return toConsultationResponseDto((Consultation) schedule);
         } else {
             throw new IllegalArgumentException("해당 ID는 상담 일정이 아닙니다.");
         }
     }
     // 계약 단건 조회
     @Transactional(readOnly = true)
-    public ContractDto findContractById(Integer id) {
+    public ContractResponseDto findContractById(Integer id) {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow();
 
         if (schedule instanceof Contract) {
-            return toContractDto((Contract) schedule);
+            return toContractResponseDto((Contract) schedule);
         } else {
             throw new IllegalArgumentException("해당 ID는 계약 일정이 아닙니다.");
         }
@@ -153,6 +153,78 @@ public class ScheduleService {
         } else {
             throw new IllegalArgumentException("해당하는 일정이 없습니다.");
         }
+    }
+    // 예약 내역 조회
+    @Transactional(readOnly = true)
+    public List<ConsultationResponseDto> findAllConsultation(Integer userId) {
+        // 업체인지 소비자인지 확인하기 위해 유저 조회
+        User user = userRepository.findById(userId).orElseThrow();
+
+        List<Schedule> scheduleList = new ArrayList<>();
+
+        // 업체일 때:
+        if (user instanceof Vendor) {
+            scheduleList = scheduleRepository.findAllConsultationByVendorId(userId);
+            // 소비자일 때
+        } else {
+            Customer spouse = customerRepository.findById(userId).orElseThrow().getSpouse();
+            if (spouse == null) {
+                scheduleList = scheduleRepository.findAllConsultationByCustomerId(userId);
+            } else {
+                scheduleList = scheduleRepository.findAllConsultationWithSpouse(userId, spouse.getUserId());
+            }
+        }
+        // 반환타입으로 변환하여 반환
+        if (scheduleList.size() > 0) {
+            return toConsultationList(scheduleList);
+        } else {
+            throw new IllegalArgumentException("해당하는 일정이 없습니다.");
+        }
+    }
+    // 계약 내역 조회
+    @Transactional(readOnly = true)
+    public List<ContractResponseDto> findAllContract(Integer userId) {
+        // 업체인지 소비자인지 확인하기 위해 유저 조회
+        User user = userRepository.findById(userId).orElseThrow();
+
+        List<Schedule> scheduleList = new ArrayList<>();
+
+        // 업체일 때:
+        if (user instanceof Vendor) {
+            scheduleList = scheduleRepository.findAllContractByVendorId(userId);
+            // 소비자일 때
+        } else {
+            Customer spouse = customerRepository.findById(userId).orElseThrow().getSpouse();
+            if (spouse == null) {
+                scheduleList = scheduleRepository.findAllContractByCustomerId(userId);
+            } else {
+                scheduleList = scheduleRepository.findAllContractWithSpouse(userId, spouse.getUserId());
+            }
+        }
+        // 반환타입으로 변환하여 반환
+        if (scheduleList.size() > 0) {
+            return toContractList(scheduleList);
+        } else {
+            throw new IllegalArgumentException("해당하는 일정이 없습니다.");
+        }
+    }
+
+    private List<ContractResponseDto> toContractList(List<Schedule> scheduleList) {
+        List<ContractResponseDto> contractResponseList = new ArrayList<>();
+        for (int i=0; i<scheduleList.size(); i++) {
+            contractResponseList.add(toContractResponseDto((Contract) scheduleList.get(i)));
+        }
+        return contractResponseList;
+    }
+
+    private List<ConsultationResponseDto> toConsultationList(List<Schedule> scheduleList) {
+        List<ConsultationResponseDto> consultationResponseList = new ArrayList<>();
+
+        for (int i=0; i<scheduleList.size(); i++) {
+            consultationResponseList.add(toConsultationResponseDto((Consultation) scheduleList.get(i)));
+        }
+
+        return consultationResponseList;
     }
 
     // Schedule 리스트 -> MiddleProcess 리스트 타입 변환 메서드
@@ -289,8 +361,8 @@ public class ScheduleService {
     }
 
 
-    private ContractDto toContractDto(Contract schedule) {
-        ContractDto contractDto = new ContractDto();
+    private ContractResponseDto toContractResponseDto(Contract schedule) {
+        ContractResponseDto contractDto = new ContractResponseDto();
 
         // 날짜 형식 변환
         String[] startDateTime = dateTimeToString(schedule.getStartDateTime());
@@ -321,19 +393,18 @@ public class ScheduleService {
         return contractDto;
     }
 
-    private ConsultationDto toConsultationDto(Consultation consultation) {
-        ConsultationDto consultationDto = new ConsultationDto();
+    private ConsultationResponseDto toConsultationResponseDto(Consultation consultation) {
+        ConsultationResponseDto consultationDto = new ConsultationResponseDto();
 
+        // 날짜 형식 변환
         String[] startDateTime = dateTimeToString(consultation.getStartDateTime());
         String[] endDateTime = dateTimeToString(consultation.getEndDateTime());
-
-        consultationDto.setId(consultation.getId());
-//        consultationDto.setStartTime(consultation.getStartDateTime());
-//        consultationDto.setEndTime(consultation.getEndDateTime());
         consultationDto.setStartDate(startDateTime[0]);
         consultationDto.setStartTime(startDateTime[1]);
         consultationDto.setEndDate(endDateTime[0]);
         consultationDto.setEndTime(endDateTime[1]);
+
+        consultationDto.setId(consultation.getId());
         consultationDto.setTitle(consultation.getTitle());
         consultationDto.setCreatedAt(consultation.getCreatedAt());
         consultationDto.setUpdatedAt(consultation.getUpdatedAt());
@@ -349,5 +420,4 @@ public class ScheduleService {
 
         return consultationDto;
     }
-
 }
