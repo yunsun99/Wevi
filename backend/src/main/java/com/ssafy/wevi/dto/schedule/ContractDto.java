@@ -21,6 +21,7 @@ public class ContractDto{
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer categoryId;
 
     // 계약 별도 컬럼
     private int price;  // 계약금액

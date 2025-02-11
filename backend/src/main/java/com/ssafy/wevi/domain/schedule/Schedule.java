@@ -1,12 +1,12 @@
 package com.ssafy.wevi.domain.schedule;
 
 import com.ssafy.wevi.domain.BaseEntity;
+import com.ssafy.wevi.domain.Category;
 import com.ssafy.wevi.domain.user.Customer;
 import com.ssafy.wevi.domain.user.Vendor;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,10 +21,10 @@ public abstract class Schedule extends BaseEntity {
     @Column(name = "schedule_id")
     private int id; // 스케줄ID
 
-    @Column
+    @Column(name = "start_date_time", nullable = true)
     private LocalDateTime startDateTime;
 
-    @Column
+    @Column(name = "end_date_time", nullable = true)
     private LocalDateTime endDateTime;
 
     @Column
@@ -40,4 +40,8 @@ public abstract class Schedule extends BaseEntity {
 
     @Column(insertable = false, updatable = false, name = "dtype")
     private String dtype;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 }
