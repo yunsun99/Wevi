@@ -26,7 +26,7 @@ public class ScheduleController {
     // 상담 상세 조회
     @GetMapping("/consultation/{id}")
     public ApiResponseDto<?> getOneConsultation(@PathVariable Integer id) {
-        ConsultationDto consultationDto = scheduleService.findConsultationById(id);
+        ConsultationResponseDto consultationDto = scheduleService.findConsultationById(id);
         if (consultationDto == null) {
             return new ApiResponseDto<>(
                     HttpStatus.NOT_FOUND.value(),
@@ -45,7 +45,7 @@ public class ScheduleController {
     // 계약 상세 조회
     @GetMapping("/contract/{id}")
     public ApiResponseDto<?> getOneContract(@PathVariable Integer id) {
-        ContractDto contractDto = scheduleService.findContractById(id);
+        ContractResponseDto contractDto = scheduleService.findContractById(id);
         if (contractDto == null) {
             return new ApiResponseDto<>(
                     HttpStatus.NOT_FOUND.value(),
@@ -90,14 +90,6 @@ public class ScheduleController {
 
         List<ScheduleResponseDto> scheduleList =  scheduleService.findAllSchedules(Integer.valueOf(customerId));
 
-        if (scheduleList.size() <= 0) {
-            return new ApiResponseDto<>(
-                    HttpStatus.NOT_FOUND.value(),
-                    false,
-                    "Schedules not found.",
-                    null
-            );
-        }
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
                 true,
@@ -116,14 +108,6 @@ public class ScheduleController {
 
         List<MiddleProcessResponseDto> middleProcessList =  scheduleService.findAllMiddleProcesses(Integer.valueOf(customerId));
 
-        if (middleProcessList.size() <= 0) {
-            return new ApiResponseDto<>(
-                    HttpStatus.NOT_FOUND.value(),
-                    false,
-                    "MiddleProcess not found.",
-                    null
-            );
-        }
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
                 true,
@@ -132,15 +116,44 @@ public class ScheduleController {
         );
     }
 
+    // 상담 예약 내역 조회
+    @GetMapping("/consultations")
+    public ApiResponseDto<?> getAllConsultation() {
+        // 로그인한 유저 ID 가져오기
+        String userId = SecurityUtils.getAuthenticatedUserId();
+        List<ConsultationResponseDto> consultationResponseList =  scheduleService.findAllConsultation(Integer.valueOf(userId));
+
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "MiddleProcess found successfully.",
+                consultationResponseList
+        );
+    }
+    // 계약 내역 조회
+    @GetMapping("/contracts")
+    public ApiResponseDto<?> getAllContract() {
+        // 로그인한 유저 ID 가져오기
+        String userId = SecurityUtils.getAuthenticatedUserId();
+        List<ContractResponseDto> consultationResponseList =  scheduleService.findAllContract(Integer.valueOf(userId));
+
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "MiddleProcess found successfully.",
+                consultationResponseList
+        );
+    }
+
     // ===== 상담 일정 추가 ===== //
     // 상담 일정 추가
     @PostMapping("/consultation/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponseDto<ConsultationDto> addConsultation(@RequestBody ConsultationCreateDto consultationCreateDto) {
+    public ApiResponseDto<ConsultationResponseDto> addConsultation(@RequestBody ConsultationCreateDto consultationCreateDto) {
         // 로그인한 유저 ID 가져오기
         String customerId = SecurityUtils.getAuthenticatedUserId();
         // 상담 등록
-        ConsultationDto consultationResponseDto = scheduleService.addConsultation(consultationCreateDto, Integer.valueOf(customerId));
+        ConsultationResponseDto consultationResponseDto = scheduleService.addConsultation(consultationCreateDto, Integer.valueOf(customerId));
 
         return new ApiResponseDto<>(
                 HttpStatus.CREATED.value(),
