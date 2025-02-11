@@ -1,9 +1,9 @@
 package com.ssafy.wevi.service;
 
-import com.ssafy.wevi.domain.Customer;
-import com.ssafy.wevi.domain.User;
-import com.ssafy.wevi.domain.Vendor;
 import com.ssafy.wevi.domain.schedule.*;
+import com.ssafy.wevi.domain.user.Customer;
+import com.ssafy.wevi.domain.user.User;
+import com.ssafy.wevi.domain.user.Vendor;
 import com.ssafy.wevi.dto.schedule.*;
 import com.ssafy.wevi.repository.*;
 import lombok.RequiredArgsConstructor;

@@ -71,7 +71,6 @@ INSERT INTO `users` (
       (10,'2025-02-09 07:21:10.449670',NULL,'vendor',NULL,NULL,'dress2@test.com','$2a$10$2LpSCbUmtBUyR2MezprunORJxC//a0OZ55pSiKZDr9Vi1TkVTfJXW','ACTIVE'),
       (11,'2025-02-09 07:21:10.449670',NULL,'customer',NULL,NULL,'spouse@test.com','$2a$10$2LpSCbUmtBUyR2MezprunORJxC//a0OZ55pSiKZDr9Vi1TkVTfJXW','ACTIVE');
 
-<<<<<<< HEAD
 INSERT INTO customers (user_id, spouse_id, address_detail, auto_road_address, name, nickname, phone, zonecode)
 VALUES
     (1, null, '1123', '서울 양천구 목동2서로1길 1', '김싸피', '김싸피', '010-1234-5678', '01234'),
@@ -80,9 +79,6 @@ VALUES
 -- UPDATE customers SET spouse_id = 1 WHERE user_id = 11;
 -- INSERT INTO couple_requests (couple_request_id, sender_id, receiver_id, status, created_at, updated_at)
 -- VALUES (1, 1, 11, 'ACCEPTED', NOW(), NOW());
-=======
-INSERT INTO `customers` (spouse_id, user_id, address_detail, auto_road_address, name, nickname, phone, zonecode) VALUES (NULL,1,'101동 101호','서울 양천구 목동서로1길 1','정윤선','쟈몽','01012345678','01234');
->>>>>>> back
 
 INSERT INTO `vendors` (
     category_id, do_id, is_indoor, min_price, sigungu_code, user_id, address_detail, auto_road_address,
