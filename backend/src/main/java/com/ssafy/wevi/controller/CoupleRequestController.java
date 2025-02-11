@@ -3,6 +3,7 @@ package com.ssafy.wevi.controller;
 import com.ssafy.wevi.config.SecurityUtils;
 import com.ssafy.wevi.domain.CoupleRequest;
 import com.ssafy.wevi.dto.ApiResponseDto;
+import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestDeleteDto;
 import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestDto;
 import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestResponseDto;
 import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestUpdateDto;
@@ -60,6 +61,22 @@ public class CoupleRequestController {
                 true,
                 "CoupleRequest updated successfully.",
                 coupleRequestResponse
+        );
+    }
+
+    // 커플 요청 취소하기
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ApiResponseDto<Void> cancelCoupleRequest(@RequestBody CoupleRequestDeleteDto coupleRequestDeleteDto) {
+        Integer customerId = Integer.valueOf(SecurityUtils.getAuthenticatedUserId());
+
+        coupleRequestService.cancelCoupleRequest(customerId, coupleRequestDeleteDto.getCoupleRequestId());
+
+        return new ApiResponseDto<>(
+                HttpStatus.NO_CONTENT.value(),
+                true,
+                "CoupleRequest canceled successfully.",
+                null
         );
     }
 }

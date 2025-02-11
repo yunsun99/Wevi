@@ -6,6 +6,7 @@ import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestResponseDto;
 import com.ssafy.wevi.enums.CoupleRequestStatus;
 import com.ssafy.wevi.repository.CoupleRequestRepository;
 import com.ssafy.wevi.repository.CustomerRepository;
+import com.ssafy.wevi.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ public class CoupleRequestService {
     private final CustomerRepository customerRepository;
     private final CoupleRequestRepository coupleRequestRepository;
     private final NotificationService notificationService;
+    private final NotificationRepository notificationRepository;
 
     // 커플 요청 보내기
     @Transactional
@@ -79,6 +81,26 @@ public class CoupleRequestService {
         return toCoupleRequestResponseDto(coupleRequest);
     }
 
+    // 커플 요청 취소
+    @Transactional
+    public void cancelCoupleRequest(Integer customerId, Integer coupleRequestId) {
+        // 해당 id의 coupleRequest가 존재하지 않는 경우
+        CoupleRequest coupleRequest = coupleRequestRepository.findById(coupleRequestId)
+                .orElseThrow(() -> new NoSuchElementException("해당 ID의 커플요청을 찾을 수 없습니다: " + coupleRequestId));
+
+        // 보낸 사람만 삭제 가능하도록 검증
+        if (!coupleRequest.getSender().getUserId().equals(customerId)) {
+            throw new SecurityException("본인이 보낸 요청만 취소할 수 있습니다.");
+        }
+
+        // 상대에게 전송된 커플요청 알림 삭제
+        notificationRepository.deleteByCoupleRequest(coupleRequest);
+
+        // 커플요청 삭제
+        coupleRequestRepository.delete(coupleRequest);
+    }
+
+    // 커플 요청 응답 형식으로 변환
     private CoupleRequestResponseDto toCoupleRequestResponseDto(CoupleRequest coupleRequest) {
         if (coupleRequest == null) return null;
 
