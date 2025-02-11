@@ -34,8 +34,8 @@ export default function ProgressCard() {
   ];
 
   const categoryBackgrounds = {
-    드레스: `url(${dressImage})`,
     예식장: `url(${weddinghallImage})`,
+    드레스: `url(${dressImage})`,
     스튜디오: `url(${studioImage})`,
     "헤어/메이크업": `url(${hairMakeupImage})`,
   };
@@ -56,7 +56,7 @@ export default function ProgressCard() {
               spaceBetween={16} // 카드 간격
               slidesPerView={1.3} // 양쪽 카드 일부 보이기
               centeredSlides={true} // 현재 슬라이드 중앙 배치
-              initialSlide={1} // 첫 번째 슬라이드가 중앙에 위치
+              initialSlide={0} // 첫 번째 슬라이드가 중앙에 위치
             >
               {data.map((category, index) => (
                 <SwiperSlide key={index}>
