@@ -36,6 +36,13 @@ public class WebExceptionHandler {
         return new ApiResponseDto<>(HttpStatus.BAD_REQUEST.value(), false, e.getMessage(), null);
     }
 
+    @ExceptionHandler(SecurityException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponseDto<Void> handleSecurityException(SecurityException e) {
+        log.warn("SecurityException: {}", e.getMessage());
+        return new ApiResponseDto<>(HttpStatus.BAD_REQUEST.value(), false, e.getMessage(), null);
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ApiResponseDto<Void> handleAccessDeniedException(AccessDeniedException e) {
