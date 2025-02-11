@@ -21,6 +21,7 @@ public class OtherScheduleDto{
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer categoryId;
 
     // 수기일정 별도 컬럼
     private String detail;  // 세부내용

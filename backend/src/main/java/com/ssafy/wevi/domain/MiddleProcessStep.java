@@ -15,8 +15,10 @@ public class MiddleProcessStep {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false, unique = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     private String name;
+
+    private boolean isVisit;
 }

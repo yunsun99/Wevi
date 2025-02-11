@@ -22,6 +22,7 @@ public class MiddleProcessDto{
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer categoryId;
 
     // 중간과정 별도 컬럼
     private String detail;  // 세부내용

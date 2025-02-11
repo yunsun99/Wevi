@@ -55,7 +55,7 @@ INSERT INTO `sigungu` (sigungu_id, do_id, sigungu_name) VALUES
     -- 제주도 (do_region_id = 39)
     (1, 39, '남제주군'), (2, 39, '북제주군'), (3, 39, '서귀포시'), (4, 39, '제주시');
 
-INSERT INTO `categories` VALUES (1, '예식장'), (2, '스튜디오'), (3, '드레스'), (4, '메이크업');
+INSERT INTO `categories` VALUES (1, 'weddinghall'), (2, 'studio'), (3, 'dress'), (4, 'makeup'), (5, 'others');
 
 INSERT INTO `users` (
     user_id, created_at, updated_at, dtype, auth_id, auth_provider, email, password, status
@@ -68,9 +68,17 @@ INSERT INTO `users` (
       (6,'2025-02-09 07:16:28.266947',NULL,'vendor',NULL,NULL,'makeup1@test.com','$2a$10$jft0KaGIiJnMKQX2c6WJ1uYPJeaZKEDTuufVbQJsQvK0eYjvyxEF.','ACTIVE'),
       (7,'2025-02-09 07:19:51.992539',NULL,'vendor',NULL,NULL,'studio2@test.com','$2a$10$FVSh.gO8oOah8LGGPaTdxOZttjam9vgrP4Yfg8ILiVCFyWLI/dBgi','ACTIVE'),
       (9,'2025-02-09 07:20:56.299648',NULL,'vendor',NULL,NULL,'makeup2@test.com','$2a$10$bUO9mDoi/ABtze2g6hy2keCFrQRDjiJKqFsGBgVV4FtghladupoGW','ACTIVE'),
-      (10,'2025-02-09 07:21:10.449670',NULL,'vendor',NULL,NULL,'dress2@test.com','$2a$10$2LpSCbUmtBUyR2MezprunORJxC//a0OZ55pSiKZDr9Vi1TkVTfJXW','ACTIVE');
+      (10,'2025-02-09 07:21:10.449670',NULL,'vendor',NULL,NULL,'dress2@test.com','$2a$10$2LpSCbUmtBUyR2MezprunORJxC//a0OZ55pSiKZDr9Vi1TkVTfJXW','ACTIVE'),
+      (11,'2025-02-09 07:21:10.449670',NULL,'customer',NULL,NULL,'spouse@test.com','$2a$10$2LpSCbUmtBUyR2MezprunORJxC//a0OZ55pSiKZDr9Vi1TkVTfJXW','ACTIVE');
 
-INSERT INTO `customers` VALUES (NULL,1,'101동 101호','서울 양천구 목동서로1길 1','정윤선','쟈몽','01012345678','01234');
+INSERT INTO customers (user_id, spouse_id, address_detail, auto_road_address, name, nickname, phone, zonecode)
+VALUES
+    (1, null, '1123', '서울 양천구 목동2서로1길 1', '김싸피', '김싸피', '010-1234-5678', '01234'),
+    (11, null, '101동 101호', '서울 양천구 목동서로1길 1', '정윤선', '쟈몽', '010-1234-5678', '01234');
+-- UPDATE customers SET spouse_id = 11 WHERE user_id = 1;
+-- UPDATE customers SET spouse_id = 1 WHERE user_id = 11;
+-- INSERT INTO couple_requests (couple_request_id, sender_id, receiver_id, status, created_at, updated_at)
+-- VALUES (1, 1, 11, 'ACCEPTED', NOW(), NOW());
 
 INSERT INTO `vendors` (
     category_id, do_id, is_indoor, min_price, sigungu_code, user_id, address_detail, auto_road_address,
@@ -86,28 +94,75 @@ INSERT INTO `vendors` (
       (4,3,_binary '\0',100000,2,9,'2층','대전광역시 동구 중앙로 567','09:30 - 19:30','전문 아티스트가 맞춤 메이크업을 제공합니다.','http://www.beauty-makeup.com','박뷰티 메이크업','박예은','010-5678-9012','공용 주차장 이용 가능','042-1234-5678','신부 화장 150,000원, 일반 화장 100,000원','310-78-54321','대전역 1호선','54321'),
       (3,4,_binary '\0',300000,1,10,'5층','대구광역시 남구 패션로 789','10:00 - 21:00','고급스러운 디자인의 웨딩 드레스 전문점입니다.','http://www.elegance-dress.com','엘레강스 드레스','김하늘','010-6789-0123','주차 타워 이용 가능','053-7890-1234','웨딩 드레스 500,000원, 턱시도 300,000원','410-98-76543','대구역 2호선','67890');
 
-INSERT INTO schedules (schedule_id, start_date_time, end_date_time, title, customer_id, vendor_id, dtype) VALUES
-    (1, '2025-02-10 10:00:00', '2025-02-10 12:00:00', '웨딩 촬영 상담', 1, 2, 'consultation'),
-    (2, '2025-02-15 14:00:00', '2025-02-15 16:00:00', '웨딩 계약', 1, 2, 'contract'),
-    (3, '2025-02-20 13:00:00', '2025-02-20 15:00:00', '기타 일정', 1, 2, 'other_schedule'),
-    (4, '2025-02-20 13:00:00', '2025-02-20 15:00:00', '중간과정', 1, 2, 'middle_process');
+INSERT INTO schedules (schedule_id, start_date_time, end_date_time, title, customer_id, vendor_id, dtype, category_id) VALUES
+    (1, '2025-02-10 10:00:00', '2025-02-10 12:00:00', '웨딩 촬영 상담', 1, 2, 'consultation', 2),
+    (2, '2025-02-15 14:00:00', '2025-02-15 16:00:00', '웨딩홀 계약', 1, 2, 'contract', 1),
+    (3, '2025-02-15 14:00:00', '2025-02-15 16:00:00', '스튜디오 계약', 1, 2, 'contract', 2),
+    (4, '2025-02-15 14:00:00', '2025-02-15 16:00:00', '드레스 계약', 1, 2, 'contract', 3),
+    (5, '2025-02-15 14:00:00', '2025-02-15 16:00:00', '메이크업 계약', 1, 2, 'contract', 4),
+    (6, '2025-02-15 14:00:00', '2025-02-15 16:00:00', '메이크업 상담', 11, 6, 'consultation', 4),
+    (7, '2025-02-20 13:00:00', '2025-02-20 15:00:00', '기타 일정', 1, 2, 'other_schedule', 5),
+    (8, '2025-02-20 13:00:00', '2025-02-20 15:00:00', '웨딩홀 중간과정', 1, 2, 'middle_process', 1),
+    (9, '2025-02-20 13:00:00', '2025-02-20 15:00:00', '웨딩홀 중간과정', 1, 2, 'middle_process', 1),
+    (10, '2025-02-20 13:00:00', '2025-02-20 15:00:00', '웨딩홀 중간과정', 1, 2, 'middle_process', 1),
+    (11, '2025-02-20 13:00:00', '2025-02-20 15:00:00', '웨딩홀 중간과정', 1, 2, 'middle_process', 1),
+    (12, '2025-02-20 13:00:00', '2025-02-20 15:00:00', '웨딩홀 상담', 1, 2, 'consultation', 1);
 
 INSERT INTO consultations (schedule_id, request) VALUES
-    (1, '드레스 선택과 메이크업 상담을 원합니다.');
+    (1, '드레스 선택과 메이크업 상담을 원합니다.'),
+    (12, '메이크업 해줘잉.');
 
 INSERT INTO contracts (schedule_id, price, detail, contract_date) VALUES
-    (2, 5000000, '웨딩 촬영 및 드레스 대여 포함', '2025-02-20 13:00:00');
+    (2, 5000000, '웨딩 홀', '2025-02-20 13:00:00'),
+    (3, 5000000, '스튜디오', '2025-02-20 13:00:00'),
+    (4, 5000000, '드레스!', '2025-02-20 13:00:00'),
+    (5, 5000000, '메이크업', '2025-02-20 13:00:00');
 
-INSERT INTO middle_process_steps (middle_process_step_id, category_id, name) VALUES
-    (1, 3, '계약서 작성'),
-    (2, 1, '계약서 검토'),
-    (3, 2, '최종 결제');
+INSERT INTO middle_process_steps (middle_process_step_id, name, category_id, is_visit)
+VALUES
+-- 🏛️ 웨딩홀 (category_id = 1)
+(1, '계약 완료', 1, true),
+(2, '웨딩홀 점검', 1, false),
+(3, '웨딩홀 리허설', 1, true),
+(4, '본식', 1, true),
 
+-- 📸 스튜디오 (category_id = 2)
+(11, '계약 완료', 2, true),
+(12, '웨딩촬영용 드레스 셀렉', 2, true),
+(13, '웨딩촬영용 드레스 가봉', 2, true),
+(14, '배송중', 2, false),
+(15, '배송완료', 2, false),
+(16, '본식용 드레스 셀렉', 2, true),
+(17, '본식용 드레스 가봉', 2, true),
+(18, '배송중', 2, false),
+(19, '배송완료', 2, false),
+(20, '본식', 2, true),
+
+-- 👗 드레스 (category_id = 3)
+(21, '계약 완료', 3, true),
+(22, '웨딩쵤영', 3, true),
+(23, '사진 셀렉', 3, true),
+(24, '사진 수정', 3, true),
+(25, '2차 수정', 3, true),
+(26, '액자/앨범 제작 완료', 3, false),
+(27, '계약 액자/앨범 수령', 3, true),
+(28, '본식 스냅', 3, true),
+
+-- 💄 메이크업 (category_id = 4)
+(31, '계약 완료', 4, true),
+(32, '웨딩촬영 메이크업', 4, true),
+(33, '본식 메이크업', 4, true);
+
+-- ✅ middle_processes 테이블 수정 (contract_id 값을 실제 존재하는 schedule_id로 변경)
 INSERT INTO middle_processes (schedule_id, middle_process_step_id, status, detail, contract_id) VALUES
-    (4, 1, 'IN_PROGRESS', '드레스 가봉 늦춰질 예정', 2);
+-- 웨딩홀 관련 진행 단계
+(8, 1, 'COMPLETED', '웨딩홀 중간과정', 2),
+(9, 2, 'COMPLETED', '웨딩홀 중간과정', 2),
+(10, 3, 'PENDING', '웨딩홀 중간과정', 2),
+(11, 4, 'PENDING', '웨딩홀 중간과정', 2);
 
 INSERT INTO other_schedules (schedule_id, detail) VALUES
-    (3, '신혼여행 일정 논의');
+    (7, '신혼여행 일정 논의');
 
 INSERT INTO `reviews` (customer_id, review_id, vendor_id, created_at, updated_at, content) VALUES
     (1,1,2,'2025-02-10 06:46:22.998077',NULL,'좋은 서비스였습니다!'),
