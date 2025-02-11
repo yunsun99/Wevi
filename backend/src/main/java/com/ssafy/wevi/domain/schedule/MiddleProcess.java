@@ -21,6 +21,9 @@ public class MiddleProcess extends Schedule{
 
     private String detail;
 
+//    @Column(name = "is_visit", nullable = false)
+//    private boolean isVisit;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "middle_process_step_id", nullable = false)
     private MiddleProcessStep middleProcessStep;
@@ -29,4 +32,5 @@ public class MiddleProcess extends Schedule{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id", referencedColumnName = "schedule_id", nullable = false)
     private Contract contract;
+
 }

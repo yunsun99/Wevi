@@ -22,6 +22,7 @@ public class ConsultationDto{
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer categoryId;
 
     // 상담 별도
     private String request;

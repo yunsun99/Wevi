@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/schedule")
+@RequestMapping("/api/schedules")
 @RequiredArgsConstructor
 public class ScheduleController {
 
@@ -61,25 +61,7 @@ public class ScheduleController {
                 contractDto
         );
     }
-    // 중간과정 상세 조회
-    @GetMapping("/middle-process/{id}")
-    public ApiResponseDto<?> getOneMiddleProcess(@PathVariable Integer id) {
-        MiddleProcessDto middleProcessDto = scheduleService.findMiddleProcessById(id);
-        if (middleProcessDto == null) {
-            return new ApiResponseDto<>(
-                    HttpStatus.NOT_FOUND.value(),
-                    false,
-                    "MiddleProcess not found.",
-                    null
-            );
-        }
-        return new ApiResponseDto<>(
-                HttpStatus.OK.value(),
-                true,
-                "MiddleProcess found successfully.",
-                middleProcessDto
-        );
-    }
+
     // 수기등록 일정 상세 조회
     @GetMapping("/other-schedule/{id}")
     public ApiResponseDto<?> getOneOtherSchedule(@PathVariable Integer id) {
@@ -106,21 +88,47 @@ public class ScheduleController {
         // 로그인한 유저 ID 가져오기
         String customerId = SecurityUtils.getAuthenticatedUserId();
 
-        List<CommonScheduleDto> scheduleList =  scheduleService.findAllSchedules(Integer.valueOf(customerId));
+        List<ScheduleResponseDto> scheduleList =  scheduleService.findAllSchedules(Integer.valueOf(customerId));
 
         if (scheduleList.size() <= 0) {
             return new ApiResponseDto<>(
                     HttpStatus.NOT_FOUND.value(),
                     false,
-                    "CommonSchedule not found.",
+                    "Schedules not found.",
                     null
             );
         }
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
                 true,
-                "CommonSchedule found successfully.",
+                "Schedules found successfully.",
                 scheduleList
+        );
+    }
+
+    // 진행도(중간과정) 조회
+    @GetMapping("/progress")
+    public ApiResponseDto<?> getAllMiddleProcess() {
+        // 로그인한 유저 ID 가져오기
+        String customerId = SecurityUtils.getAuthenticatedUserId();
+
+        System.out.println("받음");
+
+        List<MiddleProcessResponseDto> middleProcessList =  scheduleService.findAllMiddleProcesses(Integer.valueOf(customerId));
+
+        if (middleProcessList.size() <= 0) {
+            return new ApiResponseDto<>(
+                    HttpStatus.NOT_FOUND.value(),
+                    false,
+                    "MiddleProcess not found.",
+                    null
+            );
+        }
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "MiddleProcess found successfully.",
+                middleProcessList
         );
     }
 
@@ -128,11 +136,11 @@ public class ScheduleController {
     // 상담 일정 추가
     @PostMapping("/consultation/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponseDto<ConsultationDto> addConsultation(@RequestBody ConsultationDto consultationDto) {
+    public ApiResponseDto<ConsultationDto> addConsultation(@RequestBody ConsultationCreateDto consultationCreateDto) {
         // 로그인한 유저 ID 가져오기
         String customerId = SecurityUtils.getAuthenticatedUserId();
         // 상담 등록
-        ConsultationDto consultationResponseDto = scheduleService.addConsultation(consultationDto, Integer.valueOf(customerId));
+        ConsultationDto consultationResponseDto = scheduleService.addConsultation(consultationCreateDto, Integer.valueOf(customerId));
 
         return new ApiResponseDto<>(
                 HttpStatus.CREATED.value(),
