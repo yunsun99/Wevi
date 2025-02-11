@@ -1,4 +1,4 @@
-INSERT INTO `do` VALUES
+INSERT INTO `do` (do_id, do_name) VALUES
     (1, '서울'), (2, '인천'), (3, '대전'), (4, '대구'), (5, '광주'), (6, '부산'), (7, '울산'), (8, '세종특별자치시'),
     (31, '경기도'), (32, '강원도'), (33, '충청북도'), (34, '충청남도'), (35, '경상북도'), (36, '경상남도'), (37, '전라북도'),
     (38, '전라남도'), (39, '제주도');
@@ -55,7 +55,7 @@ INSERT INTO `sigungu` (sigungu_id, do_id, sigungu_name) VALUES
     -- 제주도 (do_region_id = 39)
     (1, 39, '남제주군'), (2, 39, '북제주군'), (3, 39, '서귀포시'), (4, 39, '제주시');
 
-INSERT INTO `categories` VALUES (1, '예식장'), (2, '스튜디오'), (3, '드레스'), (4, '메이크업');
+INSERT INTO `categories` (category_id, name) VALUES (1, '예식장'), (2, '스튜디오'), (3, '드레스'), (4, '메이크업');
 
 INSERT INTO `users` (
     user_id, created_at, updated_at, dtype, auth_id, auth_provider, email, password, status
@@ -70,7 +70,7 @@ INSERT INTO `users` (
       (9,'2025-02-09 07:20:56.299648',NULL,'vendor',NULL,NULL,'makeup2@test.com','$2a$10$bUO9mDoi/ABtze2g6hy2keCFrQRDjiJKqFsGBgVV4FtghladupoGW','ACTIVE'),
       (10,'2025-02-09 07:21:10.449670',NULL,'vendor',NULL,NULL,'dress2@test.com','$2a$10$2LpSCbUmtBUyR2MezprunORJxC//a0OZ55pSiKZDr9Vi1TkVTfJXW','ACTIVE');
 
-INSERT INTO `customers` VALUES (NULL,1,'101동 101호','서울 양천구 목동서로1길 1','정윤선','쟈몽','01012345678','01234');
+INSERT INTO `customers` (spouse_id, user_id, address_detail, auto_road_address, name, nickname, phone, zonecode) VALUES (NULL,1,'101동 101호','서울 양천구 목동서로1길 1','정윤선','쟈몽','01012345678','01234');
 
 INSERT INTO `vendors` (
     category_id, do_id, is_indoor, min_price, sigungu_code, user_id, address_detail, auto_road_address,
