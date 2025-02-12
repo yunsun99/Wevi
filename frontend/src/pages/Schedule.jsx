@@ -18,7 +18,7 @@ export default function Schedule() {
     }));
   };
 
-  const [scheduleData, setScheduleData] = useState();
+  const [scheduleData, setScheduleData] = useState([]);
 
   useEffect(() => {
     const axiosSchedules = async () => {

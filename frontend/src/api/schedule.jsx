@@ -10,16 +10,14 @@ const api = axios.create({
 // 일정 정보 불러오기기
 export async function getSchedules() {
   try {
-    // const response = await api.get("/api/schedules");
-    // if (response.status === 200) {
-    //   // response.data.profileImage = logo;
-    //   const data = response.data.schedules;
-    //   return data;
-    // } else {
-    //   return;
-    // }
-
-    return scheduledata;
+    const response = await api.get("/api/schedules");
+    if (response.status === 200) {
+      // response.data.profileImage = logo;
+      const data = response.data.schedules;
+      return data;
+    } else {
+      return;
+    }
   } catch (error) {
     console.log(error);
     return error.response ? error.response.status : 500;
