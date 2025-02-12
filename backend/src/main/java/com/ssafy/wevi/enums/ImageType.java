@@ -1,5 +1,5 @@
 package com.ssafy.wevi.enums;
 
 public enum ImageType {
-    VENDOR, REVIEW
+    VENDOR, REVIEW, PANORAMA, DETAIL;
 }

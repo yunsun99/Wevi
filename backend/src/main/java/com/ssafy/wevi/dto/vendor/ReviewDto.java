@@ -15,5 +15,5 @@ public class ReviewDto {
     private LocalDateTime updatedAt;    // 수정 시간
     private Integer customerId;         // 소비자 ID
     private Integer vendorId;           // 업체 ID
-    private List<ImageDto> Images;            // 이미지 Url
+    private List<ImageDto> Images;      // 이미지 Url
 }

@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class VendorService {
 
     private final VendorRepository vendorRepository;
@@ -31,12 +30,14 @@ public class VendorService {
     private final CustomerRepository customerRepository;
     private final ImageRepository imageRepository;
 
+    @Transactional(readOnly = true)
     public List<DoDto> getDoList() {
         return doRepository.findAll().stream()
                 .map(this::convertToDoDto)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<SigunguDto> getSigunguList(int doId) {
         return sigunguRepository.findByDoId(doId).stream()
                 .map(this::convertToSigunguDto)
@@ -107,7 +108,7 @@ public class VendorService {
     @Transactional(readOnly = true)
     public VendorDetailResponseDto findVendorById(Integer vendorId) {
 
-        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow(() -> new IllegalArgumentException("해당 업체가 존재하지 않습니다."));;
+        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow(() -> new IllegalArgumentException("해당 업체가 존재하지 않습니다."));
 
         return toVendorDetailResponseDto(vendor);
     }
@@ -211,6 +212,12 @@ public class VendorService {
         vendorDetailResponseDto.setSubway(vendor.getSubway());
         vendorDetailResponseDto.setParkinglot(vendor.getParkinglot());
         vendorDetailResponseDto.setCreatedAt(vendor.getCreatedAt());
+
+        List<Image> images = imageRepository.findByVendor(vendor);
+        List<ImageDto> imageDtoList = images.stream()
+                .map(this::convertToImageDto)
+                .collect(Collectors.toList());
+        vendorDetailResponseDto.setImages(imageDtoList);
 
         return vendorDetailResponseDto;
     }
