@@ -1,12 +1,7 @@
 import axios from "axios";
 import logo from "@/assets/logo.png";
 import profileImage from "@/assets/characters/couple_link.png";
-
-const api = axios.create({
-  baseURL: "http://localhost:8080",
-  "Content-Type": "application/json",
-  withCredentials: true,
-});
+import { api } from "./auth";
 
 // 마이페이지 정보 불러오기기
 export async function getUserInfo() {

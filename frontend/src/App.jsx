@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import "./App.css";
 // import "./Calendar.css"
 import Login from "./pages/Login";
@@ -17,7 +21,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Test from "./pages/testpage";
 import { RecoilRoot } from "recoil";
 import ConsultationReservation from "./pages/ConsultationReservation";
-import SearchList from "./pages/SearchList";
 import SearchDetail from "./pages/SearchDetail";
 import CoupleLink from "./pages/CoupleLink";
 import Reservation from "./pages/Reservation";
@@ -39,12 +42,15 @@ const router = createBrowserRouter([
       { path: "/hamburger", element: <Hamburger /> },
       { path: "/mypage", element: <MyPage /> },
       { path: "/progress", element: <Progress /> },
-      { path: "/search", element: <Search /> },
       { path: "/aiplanner", element: <AiPlanner /> },
     ],
   },
   { path: "/test", element: <Test /> },
-  { path: "/searchList", element: <SearchList /> },
+  {
+    path: "/search",
+    element: <Navigate replace to="/search/weddinghall" />,
+  },
+  { path: "/search/:category", element: <Search /> },
   { path: "/searchDetail", element: <SearchDetail /> },
   { path: "/consultationReservation", element: <ConsultationReservation /> },
   { path: "/couplelink", element: <CoupleLink /> },

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { searchState } from "../../atoms/searchState"; // Recoil 상태 불러오기
+import { searchFilterState } from "../../atoms/searchState"; // Recoil 상태 불러오기
 
 // regiondata를 컴포넌트 외부로 이동
 const regiondata = [
@@ -300,7 +300,7 @@ const regiondata = [
 ];
 
 export default function Region() {
-  const [selectedButton, setSelectedButton] = useRecoilState(searchState);
+  const [selectedButton, setSelectedButton] = useRecoilState(searchFilterState);
   const [subAreas, setSubAreas] = useState([]);
 
   // ✅ Recoil의 region 값이 변경될 때 subAreas 동기화
