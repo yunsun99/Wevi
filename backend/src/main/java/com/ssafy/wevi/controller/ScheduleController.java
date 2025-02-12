@@ -1,6 +1,7 @@
 package com.ssafy.wevi.controller;
 
 import com.ssafy.wevi.config.SecurityUtils;
+import com.ssafy.wevi.domain.user.Customer;
 import com.ssafy.wevi.domain.user.User;
 import com.ssafy.wevi.dto.ApiResponseDto;
 import com.ssafy.wevi.dto.schedule.*;
@@ -24,12 +25,16 @@ public class ScheduleController {
     private final CustomerService customerService;
     private final UserRepository userRepository;
 
-    //===== 조회 =====//
+    //===== 조회 (READ) =====//
 
     // 상담 상세 조회
-    @GetMapping("/consultation/{id}")
-    public ApiResponseDto<?> getOneConsultation(@PathVariable Integer id) {
-        ConsultationResponseDto consultationDto = scheduleService.findConsultationById(id);
+    @GetMapping("/consultation/{scheduleId}")
+    public ApiResponseDto<?> getConsultationDetail(@PathVariable Integer scheduleId) {
+        // 로그인한 유저 ID 가져오기
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+
+        ConsultationResponseDto consultationDto = scheduleService.getConsultationDetail(scheduleId, userId);
+
         if (consultationDto == null) {
             return new ApiResponseDto<>(
                     HttpStatus.NOT_FOUND.value(),
@@ -46,9 +51,12 @@ public class ScheduleController {
         );
     }
     // 계약 상세 조회
-    @GetMapping("/contract/{id}")
-    public ApiResponseDto<?> getOneContract(@PathVariable Integer id) {
-        ContractResponseDto contractDto = scheduleService.findContractById(id);
+    @GetMapping("/contract/{scheduleId}")
+    public ApiResponseDto<?> getContractDetail(@PathVariable Integer scheduleId) {// 로그인한 유저 ID 가져오기
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+
+        ContractResponseDto contractDto = scheduleService.getContractDetail(scheduleId, userId);
+
         if (contractDto == null) {
             return new ApiResponseDto<>(
                     HttpStatus.NOT_FOUND.value(),
@@ -66,9 +74,11 @@ public class ScheduleController {
     }
 
     // 수기등록 일정 상세 조회
-    @GetMapping("/other-schedule/{id}")
-    public ApiResponseDto<?> getOneOtherSchedule(@PathVariable Integer id) {
-        OtherScheduleDto otherScheduleDto = scheduleService.findOtherScheduleById(id);
+    @GetMapping("/other-schedule/{scheduleId}")
+    public ApiResponseDto<?> getOneOtherSchedule(@PathVariable Integer scheduleId) {// 로그인한 유저 ID 가져오기
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+
+        OtherScheduleDto otherScheduleDto = scheduleService.findOtherScheduleById(scheduleId, userId);
         if (otherScheduleDto == null) {
             return new ApiResponseDto<>(
                     HttpStatus.NOT_FOUND.value(),
@@ -91,7 +101,7 @@ public class ScheduleController {
         // 로그인한 유저 ID 가져오기
         String customerId = SecurityUtils.getAuthenticatedUserId();
 
-        List<ScheduleResponseDto> scheduleList =  scheduleService.findAllSchedules(Integer.valueOf(customerId));
+        List<ScheduleResponseDto> scheduleList =  scheduleService.getAllSchedules(Integer.valueOf(customerId));
 
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
@@ -106,8 +116,6 @@ public class ScheduleController {
     public ApiResponseDto<?> getAllMiddleProcess() {
         // 로그인한 유저 ID 가져오기
         String customerId = SecurityUtils.getAuthenticatedUserId();
-
-        System.out.println("받음");
 
         List<MiddleProcessResponseDto> middleProcessList =  scheduleService.findAllMiddleProcesses(Integer.valueOf(customerId));
 
@@ -148,7 +156,24 @@ public class ScheduleController {
         );
     }
 
-    // ===== 상담 일정 추가 ===== //
+    // 계약 내역 조회
+    @GetMapping("/middle-process-steps")
+    public ApiResponseDto<?> getMiddleProcessSteps() {
+        // 로그인한 유저 ID 가져오기
+        String userId = SecurityUtils.getAuthenticatedUserId();
+
+
+        List<MiddleProcessStepResponseDto> middleProcessStepResponseDtoList =  scheduleService.getMiddleProcessStep(Integer.valueOf(userId));
+
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "MiddleProcessSteps found successfully.",
+                middleProcessStepResponseDtoList
+        );
+    }
+
+    // ===== 등록 (CREATE) ===== //
     // 상담 일정 추가
     @PostMapping("/consultation/add")
     @ResponseStatus(HttpStatus.CREATED)
@@ -174,14 +199,42 @@ public class ScheduleController {
         Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
         User user = userRepository.findById(userId).orElseThrow();
 
-            // 상담 등록
-            ContractResponseDto contractResponseDto = scheduleService.addContract(contractCreateDto, userId);
+        if (user instanceof Customer) {
+            throw new IllegalArgumentException("업체만 계약을 등록할 수 있습니다.");
+        }
 
+        // 상담 등록
+        ContractResponseDto contractResponseDto = scheduleService.addContract(contractCreateDto, userId);
+
+        return new ApiResponseDto<>(
+                HttpStatus.CREATED.value(),
+                true,
+                "Contract created successfully.",
+                contractResponseDto
+        );
+    }
+
+    // ===== 삭제 (DELETE) ===== //
+    @DeleteMapping("/{scheduleId}")
+    private ApiResponseDto<?> removeSchedule (@PathVariable Integer scheduleId) {
+        // 로그인한 유저 ID 가져오기
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+
+        boolean result = scheduleService.deleteOneSchedule(scheduleId, userId);
+
+        if (result)
             return new ApiResponseDto<>(
-                    HttpStatus.CREATED.value(),
+                    HttpStatus.NO_CONTENT.value(),
                     true,
-                    "Contract created successfully.",
-                    contractResponseDto
+                    "Schedule deleteded successfully.",
+                    null
+            );
+        else
+            return new ApiResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    false,
+                    "Schedule deleteded failed.",
+                    null
             );
     }
 }

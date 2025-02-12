@@ -34,5 +34,8 @@ public class OtherScheduleDto{
     // 소비자 데이터
     private Integer customerId;
     private String customerName;
-//    private String customerPhone;
+
+    // 업체 데이터
+    private Integer vendorId;
+    private String vendorName;
 }

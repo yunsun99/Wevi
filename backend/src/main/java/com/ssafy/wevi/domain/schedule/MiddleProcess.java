@@ -37,4 +37,9 @@ public class MiddleProcess extends Schedule{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id", referencedColumnName = "schedule_id", nullable = false)
     private Contract contract;
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+        contract.getMiddleProcessList().add(this);
+    }
 }

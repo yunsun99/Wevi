@@ -12,12 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +35,16 @@ public class ScheduleService {
     public ConsultationResponseDto addConsultation(ConsultationCreateDto consultationCreateDto, Integer customerId) {
         Consultation consultation = new Consultation();
 
-        consultation.setStartDateTime(stringToLocalDateTime(consultationCreateDto.getStartDate(),consultationCreateDto.getStartTime()));
-        consultation.setEndDateTime(stringToLocalDateTime(consultationCreateDto.getStartDate(),consultationCreateDto.getStartTime()).plusHours(1));   // 1시간 추가!
+        // 이미 같은 시간에 예약되어 있는지 조회
+        LocalDateTime startDateTime = stringToLocalDateTime(consultationCreateDto.getStartDate(),consultationCreateDto.getStartTime());
+
+        if (!scheduleRepository.findConflictSchedule(startDateTime, startDateTime.plusHours(1), consultationCreateDto.getVendorId()).isEmpty()) {
+            System.out.println("===========있음==========="+scheduleRepository.findConflictSchedule(startDateTime, startDateTime.plusHours(1), consultationCreateDto.getVendorId()).get(0).getScheduleId());
+            throw new IllegalArgumentException("해당 업체에 이미 예약된 상담이 존재합니다.");
+        }
+
+        consultation.setStartDateTime(startDateTime);
+        consultation.setEndDateTime(startDateTime.plusHours(1));   // 1시간 추가!
         consultation.setTitle(consultationCreateDto.getTitle());
         consultation.setRequest(consultationCreateDto.getRequest());
         consultation.setDtype("consultation");
@@ -45,6 +52,7 @@ public class ScheduleService {
         consultation.setCustomer(customerRepository.findById(customerId).orElseThrow());
         consultation.setVendor(vendorRepository.findById(consultationCreateDto.getVendorId()).orElseThrow());
         consultation.setCategory(consultation.getVendor().getCategory());
+
 
         scheduleRepository.save(consultation);
 
@@ -129,74 +137,115 @@ public class ScheduleService {
 
     // 상담 단건 조회
     @Transactional(readOnly = true)
-    public ConsultationResponseDto findConsultationById(Integer id) {
-        Schedule schedule = scheduleRepository.findById(id)
+    public ConsultationResponseDto getConsultationDetail(Integer scheduleId, Integer userId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow();
 
-        if (schedule instanceof Consultation) {
-            return toConsultationResponseDto((Consultation) schedule);
-        } else {
-            throw new IllegalArgumentException("해당 ID는 상담 일정이 아닙니다.");
+        User user = userRepository.findById(userId).orElseThrow();
+
+
+        // 본인 일정인지 확인
+        if (isUserSchedule(user, schedule)) {
+            if (schedule instanceof Consultation) {
+                return toConsultationResponseDto((Consultation) schedule);
+            } else {
+                throw new IllegalArgumentException("해당 일정은 상담 일정이 아닙니다.");
+            }
+        }
+        else {
+            throw new IllegalArgumentException("본인과 관련한 일정이 아닙니다.");
+        }
+
+    }
+
+    // 유저 본인과 관련한 일정인지 여부를 확인
+    private boolean isUserSchedule(User user, Schedule schedule) {
+        // 소비자일 때
+        if (user instanceof Customer) {
+            Customer spouse = ((Customer) user).getSpouse();
+            return Objects.equals(user.getUserId(), schedule.getCustomer().getUserId()) ||
+                    (((Customer) user).getSpouse() != null && Objects.equals(((Customer) user).getSpouse().getUserId(), schedule.getCustomer().getUserId()));
+//            // 본인 것인지 확인
+//            if (user.getUserId() == schedule.getCustomer().getUserId()) {
+//                return true;
+//            } else {
+//                if (spouse == null) {
+//                    return false;
+//                } else {
+//                    if (spouse.getUserId() == schedule.getCustomer().getUserId()) {
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            }
+        } 
+        // 업체일 때
+        else {
+            // 본인 것인지 확인
+            return Objects.equals(user.getUserId(), schedule.getVendor().getUserId());
         }
     }
+
     // 계약 단건 조회
     @Transactional(readOnly = true)
-    public ContractResponseDto findContractById(Integer id) {
-        Schedule schedule = scheduleRepository.findById(id)
+    public ContractResponseDto getContractDetail(Integer scheduleId, Integer userId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow();
 
-        if (schedule instanceof Contract) {
-            return toContractResponseDto((Contract) schedule);
-        } else {
-            throw new IllegalArgumentException("해당 ID는 계약 일정이 아닙니다.");
+        User user = userRepository.findById(userId).orElseThrow();
+
+        // 본인 일정인지 확인
+        if (isUserSchedule(user, schedule)) {
+            if (schedule instanceof Contract) {
+                return toContractResponseDto((Contract) schedule);
+            } else {
+                throw new IllegalArgumentException("해당 ID는 계약 일정이 아닙니다.");
+            }
+        }
+        else {
+            throw new IllegalArgumentException("본인과 관련한 일정이 아닙니다.");
         }
     }
-    // 중간과정 단건 조회
-//    @Transactional(readOnly = true)
-//    public MiddleProcessDto findMiddleProcessById(Integer id) {
-//        Schedule schedule = scheduleRepository.findById(id)
-//                .orElseThrow();
-//
-//        if (schedule instanceof MiddleProcess) {
-//            return toMiddleProcessDto((MiddleProcess) schedule);
-//        } else {
-//            throw new IllegalArgumentException("해당 ID는 중간과정 일정이 아닙니다.");
-//        }
-//    }
+
     // 수기등록 일정 단건 조회
     @Transactional(readOnly = true)
-    public OtherScheduleDto findOtherScheduleById(Integer id) {
-        Schedule schedule = scheduleRepository.findById(id)
+    public OtherScheduleDto findOtherScheduleById(Integer scheduleId, Integer userId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow();
 
-        if (schedule instanceof OtherSchedule) {
-            return toOtherScheduleDto((OtherSchedule) schedule);
-        } else {
-            throw new IllegalArgumentException("해당 ID는 수기등록 일정이 아닙니다.");
+        User user = userRepository.findById(userId).orElseThrow();
+
+        // 본인 일정인지 확인
+        if (isUserSchedule(user, schedule)) {
+            if (schedule instanceof OtherSchedule) {
+                return toOtherScheduleDto((OtherSchedule) schedule);
+            } else {
+                throw new IllegalArgumentException("해당 ID는 수기등록 일정이 아닙니다.");
+            }
+        }
+        else {
+            throw new IllegalArgumentException("본인과 관련한 일정이 아닙니다.");
         }
     }
     // 일정 전체 조회
     @Transactional(readOnly = true)
-    public List<ScheduleResponseDto> findAllSchedules(Integer userId) {
+    public List<ScheduleResponseDto> getAllSchedules(Integer userId) {
         // 업체인지 소비자인지 확인하기 위해 유저 조회
         User user = userRepository.findById(userId).orElseThrow();
 
         List<Schedule> scheduleList = new ArrayList<>();
         // 업체일 때
         if (user instanceof Vendor) {
-            System.out.println("업체다");
             scheduleList = scheduleRepository.findAllScheduleByVendorId(userId);
 
             // 소비자일 때
         } else {
-        Customer spouse = customerRepository.findById(userId).orElseThrow().getSpouse();
+//        Customer spouse = customerRepository.findById(userId).orElseThrow().getSpouse();
         // 커플 여부 확인
-            if (spouse == null) {
-                System.out.println("커플아니다");
+            if (((Customer)user).getSpouse() == null) {
                 scheduleList = scheduleRepository.findAllScheduleByCustomerId(userId);
             } else {
-                System.out.println("커플이다");
-                scheduleList = scheduleRepository.findAllScheduleWithSpouse(userId, spouse.getUserId());
+                scheduleList = scheduleRepository.findAllScheduleWithSpouse(userId, ((Customer)user).getSpouse().getUserId());
             }
         }
         // 반환타입으로 변환하여 반환
@@ -289,6 +338,116 @@ public class ScheduleService {
         }
     }
 
+    // 카테고리별 중간과정 단계 조회
+    public List<MiddleProcessStepResponseDto> getMiddleProcessStep(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+
+        if (user instanceof Vendor) {
+            Integer categoryId = ((Vendor) user).getCategory().getId();
+            // 카테고리 조회
+            return toMiddleProcessStepResponseList(middleProcessStepRepository.findAllByCategoryId(categoryId));
+        } else {
+            throw new IllegalArgumentException("업체만 계약을 등록할 수 있습니다.");
+        }
+    }
+
+    private List<MiddleProcessStepResponseDto> toMiddleProcessStepResponseList(List<MiddleProcessStep> middleProcessStepList) {
+        List<MiddleProcessStepResponseDto> middleProcessStepResponseDtoList = new ArrayList<>();
+
+        for (MiddleProcessStep middleProcessStep : middleProcessStepList) {
+            middleProcessStepResponseDtoList.add(toMiddleProcessStepResponseDto(middleProcessStep));
+        }
+
+        return middleProcessStepResponseDtoList;
+    }
+
+    private MiddleProcessStepResponseDto toMiddleProcessStepResponseDto(MiddleProcessStep middleProcessStep) {
+        MiddleProcessStepResponseDto middleProcessStepResponseDto = new MiddleProcessStepResponseDto();
+
+        middleProcessStepResponseDto.setCategoryId(middleProcessStep.getCategory().getId());
+        middleProcessStepResponseDto.setCategoryName(middleProcessStep.getCategory().getName());
+        middleProcessStepResponseDto.setStepId(middleProcessStep.getMiddleProcessStepId());
+        middleProcessStepResponseDto.setStepName(middleProcessStep.getName());
+        middleProcessStepResponseDto.setVisit(middleProcessStep.isVisit());
+
+        return middleProcessStepResponseDto;
+    }
+
+    // ====== 삭제 ====== //
+    @Transactional
+    public boolean deleteOneSchedule(Integer scheduleId, Integer userId) {
+        // 업체인지 소비자인지 확인하기 위해 유저 조회
+        User user = userRepository.findById(userId).orElseThrow();
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();
+
+        if (schedule instanceof Consultation) {
+            // 상담 취소는 소비자만 가능
+            if (user instanceof Customer) {
+                // 본인 일정이거나 커플 일정이면 삭제 가능
+               if (schedule.getCustomer().getUserId() != userId && schedule.getCustomer().getUserId() != ((Customer) user).getSpouse().getUserId()) {
+                   // 예외처리
+                   throw new IllegalArgumentException("본인의 일정이거나 커플의 일정이 아니면 삭제할 수 없습니다.");
+               }
+
+               scheduleRepository.deleteById(scheduleId);
+               return true;
+
+            } else {
+                // 예외처리
+                throw new IllegalArgumentException("업체는 상담 일정을 삭제할 수 없습니다.");
+            }
+        } else if( schedule instanceof Contract ) {
+            // 계약일 땐 업체만 가능, 계약 + 중간과정 삭제
+            if (user instanceof Vendor) {
+                // 본인 일정일 경우에만 삭제 가능
+                if (userId != schedule.getVendor().getUserId()) {
+                    // 예외처리
+                    throw new IllegalArgumentException("본인의 일정이 아니면 계약을 삭제할 수 없습니다.");
+                }
+                // 계약에 속한 중간과정들 먼저 삭제..
+                scheduleRepository.deleteAll(((Contract) schedule).getMiddleProcessList());
+                // 계약도 삭제
+                scheduleRepository.deleteById(scheduleId);
+                return true;
+            } else {
+                // 예외처리
+                throw new IllegalArgumentException("소비자는 계약 일정을 삭제할 수 없습니다.");
+            }
+            // 중간과정일 땐 삭제 불가 에러
+        } else if (schedule instanceof MiddleProcess){
+        // 예외처리
+            throw new IllegalArgumentException("중간과정 단일건은 삭제 불가합니다.");
+            
+        } else {        // 수기 등록 일정일 때
+            // 소비자일 경우
+            if (user instanceof Customer) {
+                // 본인 일정이거나 커플 일정이면 삭제 가능
+                if (schedule.getCustomer().getUserId() != userId && schedule.getCustomer().getUserId() != ((Customer) user).getSpouse().getUserId()) {
+                    // 예외처리
+                    throw new IllegalArgumentException("본인의 일정이거나 커플의 일정이 아니면 삭제할 수 없습니다.");
+                }
+                scheduleRepository.deleteById(scheduleId);
+                return true;
+
+                // 업체일 경우
+            } else {
+                // 본인 일정일 경우에만 삭제 가능
+                if (userId != schedule.getVendor().getUserId()) {
+                    // 예외처리
+                    throw new IllegalArgumentException("본인의 일정이 아니면 계약을 삭제할 수 없습니다.");
+                }
+                scheduleRepository.deleteById(scheduleId);
+                return true;
+            }
+        }
+    }
+
+
+
+
+
+
+
 
     // ==================== 기타 로직 ==================== //
     private List<ContractResponseDto> toContractList(List<Schedule> scheduleList) {
@@ -344,7 +503,7 @@ public class ScheduleService {
         middleProcessResponseDto.setCreatedAt(schedule.getCreatedAt());
         middleProcessResponseDto.setUpdatedAt(schedule.getUpdatedAt());
         middleProcessResponseDto.setDetail(schedule.getDetail());
-        middleProcessResponseDto.setStepId(schedule.getMiddleProcessStep().getId());
+        middleProcessResponseDto.setStepId(schedule.getMiddleProcessStep().getMiddleProcessStepId());
         middleProcessResponseDto.setStepName(schedule.getMiddleProcessStep().getName());
         middleProcessResponseDto.setStatus(schedule.getStatus());
         middleProcessResponseDto.setCategoryId(schedule.getCategory().getId());
@@ -353,6 +512,7 @@ public class ScheduleService {
         return middleProcessResponseDto;
     }
     public LocalDateTime stringToLocalDateTime(String date, String time) {
+
         // 날짜 및 시간 패턴 지정 (Date: "YYYY-MM-DD", Time: "HH:mm")
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -369,6 +529,12 @@ public class ScheduleService {
         return resultDateTime;
     }
     public String[] dateTimeToString (LocalDateTime dateTime) {
+        // 변환할 타임존 설정 (한국 시간)
+        ZoneId zoneId = ZoneId.of("Asia/Seoul");
+
+        // UTC 기준 시간을 한국 시간으로 변환
+        ZonedDateTime koreaDateTime = dateTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId);
+
         // 변환 포맷 지정
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -448,6 +614,8 @@ public class ScheduleService {
         otherScheduleDto.setDetail(schedule.getDetail());
         otherScheduleDto.setCategoryId(schedule.getCategory().getId());
         otherScheduleDto.setCategoryName(schedule.getCategory().getName());
+        otherScheduleDto.setVendorId(schedule.getVendor().getUserId());
+        otherScheduleDto.setVendorName(schedule.getVendor().getName());
 
         return otherScheduleDto;
     }
