@@ -14,4 +14,5 @@ public class VendorResponseDto {
     private Integer sigunguId;
     private String sigunguName;
     private int minPrice;
+    private String imageUrl;
 }

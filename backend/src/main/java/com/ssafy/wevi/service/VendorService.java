@@ -185,6 +185,15 @@ public class VendorService {
         dto.setSigunguId(vendor.getSigunguCode().getSigunguId());
         dto.setSigunguName(vendor.getSigunguCode().getSigunguName());
         dto.setMinPrice(vendor.getMinPrice());
+
+        List<Image> images = imageRepository.findByVendor(vendor);
+        List<ImageDto> imageDtoList = images.stream()
+                .map(this::convertToImageDto)
+                .collect(Collectors.toList());
+
+        ImageDto imageDto = imageDtoList.get(0);
+
+        dto.setImageUrl(imageDto.getImageUrl());
         return dto;
     }
 
