@@ -10,7 +10,7 @@ export default function CardSchedule({ data }) {
   const categoryBackgroundMap = {
     weddinghall: weddinghall_schedule,
     dress: dress_schedule,
-    hairmakeup: hairmakeup_schedule,
+    makeup: hairmakeup_schedule,
     studio: studio_schedule,
   };
 
@@ -27,19 +27,19 @@ export default function CardSchedule({ data }) {
      */
     if (!data.dtype) {
       if (data.contractDate) {
-        return navigate(`/contractDetail/${data.id}`);
+        return navigate(`/contractDetail/${data.scheduleId}`);
       } else {
-        return navigate(`/consultationDetail/${data.id}`);
+        return navigate(`/consultationDetail/${data.scheduleId}`);
       }
     } else {
       if (data.dtype === "middle_process") {
-        return navigate(`/contractDetail/${data.id}`);
+        return navigate(`/contractDetail/${data.scheduleId}`);
       } else if (data.dtype === "contract") {
-        return navigate(`/contractDetail/${data.id}`);
+        return navigate(`/contractDetail/${data.scheduleId}`);
       } else if (data.dtype === "consultation") {
-        return navigate(`/consultationDetail/${data.id}`);
+        return navigate(`/consultationDetail/${data.scheduleId}`);
       } else {
-        return navigate(`/otherDetail/${data.id}`);
+        return navigate(`/otherDetail/${data.scheduleId}`);
       }
     }
   }

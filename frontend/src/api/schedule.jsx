@@ -27,15 +27,14 @@ export async function getSchedules() {
 // 예약리스트트 불러오기기
 export async function getConsultationList() {
   try {
-    // const response = await api.get("/api/schedules/consultations");
-    // if (response.status === 200) {
-    //   // response.data.profileImage = logo;
-    //   const data = response.data;
-    //   return data;
-    // } else {
-    //   return;
-    // }
-    return consultationlist;
+    const response = await api.get("/api/schedules/consultations");
+    if (response.status === 200) {
+      const data = response.data.data;
+      console.log(data);
+      return data;
+    } else {
+      return;
+    }
   } catch (error) {
     console.log(error);
     return error.response ? error.response.status : 500;
@@ -45,16 +44,13 @@ export async function getConsultationList() {
 // 예약 정보 불러오기기
 export async function getConsultationInfo(id) {
   try {
-    // const response = await api.get(`/api/schedules/consultation/${id}`);
-    // if (response.status === 200) {
-    //   // response.data.profileImage = logo;
-    //   const data = response.data;
-    //   return data;
-    // } else {
-    //   return;
-    // }
-
-    return consultationdata;
+    const response = await api.get(`/api/schedules/consultation/${id}`);
+    if (response.status === 200) {
+      const data = response.data.data;
+      return data;
+    } else {
+      return;
+    }
   } catch (error) {
     console.log(error);
     return error.response ? error.response.status : 500;
@@ -63,16 +59,13 @@ export async function getConsultationInfo(id) {
 // 계약 정보 불러오기기
 export async function getContractInfo(id) {
   try {
-    // const response = await api.get(`/api/schedules/contract/${id}`);
-    // if (response.status === 200) {
-    //   // response.data.profileImage = logo;
-    //   const data = response.data;
-    //   return data;
-    // } else {
-    //   return;
-    // }
-
-    return contractdata;
+    const response = await api.get(`/api/schedules/contract/${id}`);
+    if (response.status === 200) {
+      const data = response.data.data;
+      return data;
+    } else {
+      return;
+    }
   } catch (error) {
     console.log(error);
     return error.response ? error.response.status : 500;
