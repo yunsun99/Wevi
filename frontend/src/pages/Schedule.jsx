@@ -127,22 +127,24 @@ export default function Schedule() {
   return (
     <>
       <TopNavigationBar />
-      <CalendarComponent
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-        handleDateClick={handleDateClick}
-      />
-      <h1 className="text-lg font-bold mb-4">{formattedDate}</h1>
+      <div className="w-screen min-h-screen">
+        <CalendarComponent
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          handleDateClick={handleDateClick}
+        />
+        <h1 className="text-lg font-bold mb-4">{formattedDate}</h1>
 
-      {/* schedules에서 selectedDate.date와 startDate가 같은 항목만 필터링 */}
-      {/* <div className="h-[calc(100vh-32rem)]"> */}
-      <ListView
-        data={schedules.filter(
-          (schedule) => schedule.startDate === selectedDate.date
-        )}
-        CardComponent={CardSchedule}
-      />
-      {/* </div> */}
+        {/* schedules에서 selectedDate.date와 startDate가 같은 항목만 필터링 */}
+        {/* <div className="h-[calc(100vh-32rem)]"> */}
+        <ListView
+          data={schedules.filter(
+            (schedule) => schedule.startDate === selectedDate.date
+          )}
+          CardComponent={CardSchedule}
+        />
+        {/* </div> */}
+      </div>
       <BottomNavigationBar />
     </>
   );

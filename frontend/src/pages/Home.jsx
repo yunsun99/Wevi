@@ -9,14 +9,6 @@ import character_camera from "../assets/characters/character_camera2.png";
 import { useState } from "react";
 
 export default function Home() {
-  // 말풍선 내용 상태 관리
-  const [speechText, setSpeechText] = useState("안녕하세요");
-
-  // 말풍선 내용 변경 핸들러
-  const handleInputChange = (event) => {
-    setSpeechText(event.target.value); // 입력값으로 말풍선 업데이트
-  };
-
   return (
     <>
       <TopNavigationBar />

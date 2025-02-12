@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: "http://localhost:8080",
   withCredentials: true,
 });
@@ -73,3 +73,16 @@ export async function sendFCMToken(token) {
     return error.response ? error.response.status : 500;
   }
 }
+
+// 인증 상태를 업데이트하는 함수
+export const setupInterceptors = (setIsAuthenticated) => {
+  api.interceptors.response.use(
+    (response) => response, // 정상 응답 그대로 반환
+    (error) => {
+      if (error.response.status === 401 || error.response.status === 403) {
+        setIsAuthenticated(false); // 로그아웃 처리
+      }
+      return Promise.reject(error);
+    }
+  );
+};

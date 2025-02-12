@@ -4,12 +4,12 @@ import dayjs from "dayjs"; // 날짜 처리 라이브러리
 // import "../../Calendar.css"; // 커스터마이징 CSS
 
 import { useRecoilState } from "recoil";
-import { searchState } from "../../atoms/searchState";
+import { searchDateState } from "../../atoms/searchState";
 import ReservationModal from "../Modals/ReservationModal";
 
 export default function CalendarTimeSelect() {
   // 날짜 상태 관리
-  const [selectedDate, setSelectedDate] = useRecoilState(searchState); // 초기값을 현재 날짜로 설정
+  const [selectedDate, setSelectedDate] = useRecoilState(searchDateState); // 초기값을 현재 날짜로 설정
 
   // 예제 데이터: 날짜별로 가능한 시간대
   const scheduleData = [

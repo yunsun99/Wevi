@@ -8,10 +8,10 @@ import "../Calendar.css"; // 커스터마이징 CSS
 import { useRecoilState } from "recoil";
 import CalendarComponent from "../components/Calendar/CalendarComponent";
 import CalendarTimeSelect from "../components/Calendar/CalendarTimeSelect";
-import { searchState } from "../atoms/searchState";
+import { searchFilterState } from "../atoms/searchState";
 //
 export default function ConsultationReservation() {
-  const [selectedDate, setSelectedDate] = useRecoilState(searchState); // 초기값을 현재 날짜로 설정
+  const [selectedDate, setSelectedDate] = useRecoilState(searchFilterState); // 초기값을 현재 날짜로 설정
   const handleDateClick = (date) => {
     setSelectedDate((prevState) => ({
       ...prevState,

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import SearchCalendar from "../Calendar/SearchCalendar";
+import SearchCalendar from "../Search/SearchCalendar";
 import Search from "../Search/Search";
 import SearchFilters from "../Search/SearchFilters";
 

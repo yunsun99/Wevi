@@ -7,7 +7,7 @@ import logo from "@/assets/logo.png";
 
 function TopNavigationBar() {
   return (
-    <header className="z-3 flex items-center w-screen sticky  top-0 justify-between px-4 py-3 bg-[#FFFDFA] shadow-md">
+    <header className="z-3 flex items-center w-screen sticky  top-0 justify-between px-4 py-3 bg-[#FFFDFA]">
       {/* 로고 섹션 */}
       <Link to="/" className="flex items-center">
         <img

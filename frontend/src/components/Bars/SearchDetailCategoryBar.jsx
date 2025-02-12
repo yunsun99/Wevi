@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { searchState } from "../../atoms/searchState";
+// import { searchState } from "../../atoms/searchState";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { searchDetailState } from "../../atoms/searchDetailState";
+import { searchDetailState } from "../../atoms/searchState";
 
 export default function SearchDetailCategoryBar() {
   console.log("detail");

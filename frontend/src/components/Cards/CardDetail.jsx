@@ -9,14 +9,14 @@ import VendorOptionPrice from "../Vendors/VendorOptionPrice";
 import VendorReview from "../Vendors/VendorReview";
 import VendorSimpleInformation from "../Vendors/VendorSimpleInformation";
 import VendorVisitInformation from "../Vendors/VendorVisitInformation";
-import { searchDetailState } from "../../atoms/searchDetailState";
+import { searchDetailState } from "../../atoms/searchState";
 import { useNavigate } from "react-router-dom";
 
 export default function CardDetail() {
   const [selectedButton, setSelectedButton] = useRecoilState(searchDetailState);
-  const navigate = useNavigate()
-  function handleConsultationReservation(){
-    navigate('/consultationReservation')
+  const navigate = useNavigate();
+  function handleConsultationReservation() {
+    navigate("/consultationReservation");
   }
   return (
     <>
@@ -40,7 +40,9 @@ export default function CardDetail() {
         )}
 
         {selectedButton.selectedCategory === "review" ? <VendorReview /> : null}
-        <ButtonSearch2 onClick={handleConsultationReservation}>상담 예약</ButtonSearch2>
+        <ButtonSearch2 onClick={handleConsultationReservation}>
+          상담 예약
+        </ButtonSearch2>
       </div>
     </>
   );

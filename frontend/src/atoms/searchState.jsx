@@ -1,14 +1,46 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
-export const searchState = atom({
-  key: "searchState",
+export const selectedCategoryState = atom({
+  key: "selectedCategoryState",
+  default: "weddinghall",
+});
+
+export const searchTextState = atom({
+  key: "searchTextState",
+  default: "",
+});
+
+export const searchDateState = atom({
+  key: "searchDateState",
+  default: "",
+});
+
+export const searchFilterState = atom({
+  key: "searchFilterState",
   default: {
-    selectedCategory: "weddinghall",
-    inoutside: "",
+    sido: "",
+    sigungu: "",
     price: "",
-    region: "",
-    subarea: "",
-    date: "",
-    time: "",
+    inoutside: "",
+  },
+});
+
+// 검색 결과 상태
+export const searchResultsState = atom({
+  key: "searchResultsState",
+  default: [],
+});
+
+export const searchDetailState = atom({
+  key: "searchDetailState",
+  default: {
+    selectedCategory: "informtaion",
+    vendorSimpleInformation: "",
+    vendorInformation: "",
+    vendor360View: "",
+    vendorMagazine: "",
+    vendorOptionPrice: "",
+    vendorVisitInformation: "",
+    vendorBusinessInformation: "",
   },
 });
