@@ -19,7 +19,7 @@ public abstract class Schedule extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
-    private int id; // 스케줄ID
+    private int scheduleId; // 스케줄ID
 
     @Column(name = "start_date_time", nullable = true)
     private LocalDateTime startDateTime;

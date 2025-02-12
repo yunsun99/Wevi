@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MiddleProcessDto{
     // 일정 공통
-    private int id;
+    private int scheduleId;
 //    private LocalDateTime startTime;
 //    private LocalDateTime endTime;
     private String startDate;

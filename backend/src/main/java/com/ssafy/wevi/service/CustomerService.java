@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service
@@ -73,7 +72,6 @@ public class CustomerService {
             if (customerUpdateDto.getPassword() != null && !customerUpdateDto.getPassword().isBlank()) {
                 customer.setPassword(passwordEncoder.encode(customerUpdateDto.getPassword()));
             }
-
             customer.setNickname(customerUpdateDto.getNickname());
             customer.setPhone(customerUpdateDto.getPhone());
             customer.setZonecode(customerUpdateDto.getZonecode());

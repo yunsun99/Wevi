@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ScheduleResponseDto {
     // 일정 공통
-    private Integer id;
+    private Integer scheduleId;
 //    private LocalDateTime startTime;
 //    private LocalDateTime endTime;
     private String startDate;
@@ -23,6 +23,7 @@ public class ScheduleResponseDto {
     private LocalDateTime updatedAt;
     private String dtype;
     private Integer categoryId;
+    private String categoryName;
 
     // 중간 과정의 경우 계약 상세정보 조회를 위해 계약ID 제공
     private Integer contractId;

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ContractResponseDto {
     // 일정 공통
-    private int id;
+    private int scheduleId;
 //    private LocalDateTime startTime;
 //    private LocalDateTime endTime;
     private String startDate;
@@ -22,10 +22,11 @@ public class ContractResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Integer categoryId;
+    private String categoryName;
 
     // 계약 별도 컬럼
     private int price;  // 계약금액
-    private LocalDateTime contractDate; // 계약일
+//    private LocalDateTime contractDate; // 계약일
     private String detail;  // 계약 세부사항
 
 
