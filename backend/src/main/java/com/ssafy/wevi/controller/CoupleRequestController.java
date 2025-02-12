@@ -1,8 +1,8 @@
 package com.ssafy.wevi.controller;
 
 import com.ssafy.wevi.config.SecurityUtils;
-import com.ssafy.wevi.domain.CoupleRequest;
 import com.ssafy.wevi.dto.ApiResponseDto;
+import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestCancelDto;
 import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestDto;
 import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestResponseDto;
 import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestUpdateDto;
@@ -20,7 +20,7 @@ public class CoupleRequestController {
 
     private final CoupleRequestService coupleRequestService;
 
-    // 커플 요청 보내기
+    // 커플요청 보내기
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponseDto<CoupleRequestResponseDto> createCoupleRequest(@RequestBody CoupleRequestDto coupleRequestDto) {
@@ -36,7 +36,7 @@ public class CoupleRequestController {
         );
     }
 
-    // 커플 요청 응답 보내기
+    // 커플요청 응답 보내기
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
     public ApiResponseDto<CoupleRequestResponseDto> updateCoupleRequest(@RequestBody CoupleRequestUpdateDto coupleRequestUpdateDto) {
@@ -60,6 +60,38 @@ public class CoupleRequestController {
                 true,
                 "CoupleRequest updated successfully.",
                 coupleRequestResponse
+        );
+    }
+
+    // 커플요청 취소하기
+    @DeleteMapping("/cancel")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ApiResponseDto<Void> cancelCoupleRequest(@RequestBody CoupleRequestCancelDto coupleRequestCancelDto) {
+        Integer customerId = Integer.valueOf(SecurityUtils.getAuthenticatedUserId());
+
+        coupleRequestService.cancelCoupleRequest(customerId, coupleRequestCancelDto.getCoupleRequestId());
+
+        return new ApiResponseDto<>(
+                HttpStatus.NO_CONTENT.value(),
+                true,
+                "CoupleRequest canceled successfully.",
+                null
+        );
+    }
+
+    // 커플요청 끊기
+    @DeleteMapping("/disconnect")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ApiResponseDto<Void> deleteCoupleRequest() {
+        Integer customerId = Integer.valueOf(SecurityUtils.getAuthenticatedUserId());
+
+        coupleRequestService.deleteCoupleRequest(customerId);
+
+        return new ApiResponseDto<>(
+                HttpStatus.NO_CONTENT.value(),
+                true,
+                "CoupleRequest disconnected successfully.",
+                null
         );
     }
 }

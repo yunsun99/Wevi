@@ -4,10 +4,15 @@ import com.ssafy.wevi.domain.CoupleRequest;
 import com.ssafy.wevi.domain.Notification;
 import com.ssafy.wevi.domain.user.User;
 import com.ssafy.wevi.domain.schedule.Schedule;
+import com.ssafy.wevi.dto.Notifications.NotificationResponseDto;
 import com.ssafy.wevi.enums.NotificationType;
 import com.ssafy.wevi.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,9 +21,11 @@ public class NotificationService {
     private final FirebaseCloudMessagingService firebaseCloudMessagingService;
 
     // NotificationType: COUPLE_REQUEST_SENT
-    public void createCoupleRequestSentNotification(User receiver, String message, CoupleRequest coupleRequest) {
+    @Transactional
+    public void createCoupleRequestSentNotification(User receiver, String title, String message, CoupleRequest coupleRequest) {
         Notification notification = Notification.builder()
                 .receiver(receiver)
+                .title(title)
                 .message(message)
                 .type(NotificationType.COUPLE_REQUEST_SENT.name())
                 .coupleRequest(coupleRequest)  // 커플 요청 연결
@@ -28,14 +35,16 @@ public class NotificationService {
         notificationRepository.save(notification);
 
         if (receiver.getFcmToken() != null) {
-            firebaseCloudMessagingService.sendPushNotification(receiver.getFcmToken(), "❤ 커플 연동 신청", message);
+            firebaseCloudMessagingService.sendPushNotification(receiver.getFcmToken(), title, message);
         }
     }
 
     // NotificationType: COUPLE_REQUEST_RESPONSE
-    public void createCoupleRequestResponseNotification(User receiver, String message, CoupleRequest coupleRequest) {
+    @Transactional
+    public void createCoupleRequestResponseNotification(User receiver, String title, String message, CoupleRequest coupleRequest) {
         Notification notification = Notification.builder()
                 .receiver(receiver)
+                .title(title)
                 .message(message)
                 .type(NotificationType.COUPLE_REQUEST_RESPONSE.name())
                 .coupleRequest(coupleRequest)  // 커플 요청 연결
@@ -45,14 +54,16 @@ public class NotificationService {
         notificationRepository.save(notification);
 
         if (receiver.getFcmToken() != null) {
-            firebaseCloudMessagingService.sendPushNotification(receiver.getFcmToken(), "❤ 커플 연동 답장", message);
+            firebaseCloudMessagingService.sendPushNotification(receiver.getFcmToken(), title, message);
         }
     }
 
     // CONSULTATION_REGISTERED, CONTRACT_REGISTERED, SCHEDULE_REMINDER
-    public void createScheduleNotification(User receiver, String message, Schedule schedule) {
+    @Transactional
+    public void createScheduleNotification(User receiver, String title, String message, Schedule schedule) {
         Notification notification = Notification.builder()
                 .receiver(receiver)
+                .title(title)
                 .message(message)
                 .type("SCHEDULE_REMINDER")
                 .schedule(schedule)
@@ -62,7 +73,47 @@ public class NotificationService {
         notificationRepository.save(notification);
 
         if (receiver.getFcmToken() != null) {
-            firebaseCloudMessagingService.sendPushNotification(receiver.getFcmToken(), "📅 일정 알림", message);
+            firebaseCloudMessagingService.sendPushNotification(receiver.
+                    getFcmToken(), "📅 일정 알림", message);
         }
     }
+
+    public List<NotificationResponseDto> getNotifications(Integer userId) {
+        return notificationRepository.findByReceiver_UserId(userId).stream()
+                .map(notification -> NotificationResponseDto.builder()
+                        .notificationId(notification.getNotificationId())
+                        .title(notification.getTitle())
+                        .message(notification.getMessage())
+                        .type(notification.getType())
+                        .isRead(notification.getIsRead())
+                        .build()
+                )
+                .collect(Collectors.toList()); // 리스트로 변환
+    }
+
+    // 알림들을 한꺼번에 읽음 처리
+    @Transactional
+    public List<NotificationResponseDto> markNotificationsAsRead(List<Integer> notificationIds) {
+        if (notificationIds == null || notificationIds.isEmpty()) {
+            throw new IllegalArgumentException("Notification ID는 null이나 empty가 될 수 없습니다.");
+        }
+
+        // 알림들을 읽음 처리
+        notificationRepository.markNotificationsAsRead(notificationIds);
+
+        // 읽음 처리된 알림 목록 반환
+        List<Notification> updatedNotifications = notificationRepository.findAllById(notificationIds);
+
+        // NotificationResponseDto로 변환하여 반환
+        return updatedNotifications.stream()
+                .map(notification -> NotificationResponseDto.builder()
+                        .notificationId(notification.getNotificationId())  // Integer로 반환
+                        .type(notification.getType())
+                        .title(notification.getTitle())
+                        .message(notification.getMessage())
+                        .isRead(notification.getIsRead())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 }
