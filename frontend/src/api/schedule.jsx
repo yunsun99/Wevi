@@ -13,7 +13,7 @@ export async function getSchedules() {
     const response = await api.get("/api/schedules");
     if (response.status === 200) {
       // response.data.profileImage = logo;
-      const data = response.data.schedules;
+      const data = response.data.data;
       return data;
     } else {
       return;

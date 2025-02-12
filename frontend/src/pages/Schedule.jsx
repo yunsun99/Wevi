@@ -32,6 +32,10 @@ export default function Schedule() {
     axiosSchedules();
   }, []);
 
+  useEffect(() => {
+    console.log(scheduleData);
+  }, [scheduleData]);
+
   const sortedScheduleData = useMemo(() => {
     if (!scheduleData) return [];
     return [...scheduleData].sort((a, b) => {
