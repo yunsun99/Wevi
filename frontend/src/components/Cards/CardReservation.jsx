@@ -3,6 +3,13 @@ import image from "../../assets/example_weddinghall.png";
 
 export default function CardReservation({ data, category }) {
   console.log(data);
+  const now = new Date();
+  const reservationDateTime = new Date(`${data.startDate}T${data.startTime}`);
+  const isPastReservation = now > reservationDateTime;
+  function handleCancle() {
+    // 예약 취소
+    console.log("캔슬완");
+  }
   return (
     <>
       <div className="bg-white rounded-lg shadow-md p-4">
@@ -67,7 +74,15 @@ export default function CardReservation({ data, category }) {
           </div>
         ) : (
           <div className="flex justify-center">
-            <button className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600">
+            <button
+              className={`px-6 py-2 rounded-lg ${
+                isPastReservation
+                  ? "bg-gray-400 text-white cursor-not-allowed" // 🔹 예약 시간이 지났으면 회색 (비활성화)
+                  : "bg-red-500 text-white hover:bg-red-600" // 🔹 예약 가능하면 빨간색 (활성화)
+              }`}
+              disabled={isPastReservation} // 🔹 버튼 비활성화
+              onClick={handleCancle}
+            >
               예약 취소
             </button>
           </div>

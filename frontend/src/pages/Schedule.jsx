@@ -49,10 +49,12 @@ export default function Schedule() {
         setSelectedDate={setSelectedDate}
         handleDateClick={handleDateClick}
       />
-      <ScheduleList
-        selectedDate={selectedDate}
-        sortedScheduleData={sortedScheduleData}
-      />
+      <div className="flex w-screen flex-col h-[500px] overflow-y-auto bg-white rounded-lg shadow-md">
+        <ScheduleList
+          selectedDate={selectedDate}
+          sortedScheduleData={sortedScheduleData}
+        />
+      </div>
       <BottomNavigationBar />
     </>
   );

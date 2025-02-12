@@ -7,7 +7,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// 일정정 정보 불러오기기
+// 일정 정보 불러오기기
 export async function getSchedules() {
   try {
     // const response = await api.get("/api/schedules");
@@ -26,10 +26,28 @@ export async function getSchedules() {
   }
 }
 
-// 예약 정보 불러오기기
-export async function getConsultationInfo(url) {
+// 예약리스트트 불러오기기
+export async function getConsultationList() {
   try {
-    // const response = await api.get(url);
+    // const response = await api.get("/api/schedules/consultations");
+    // if (response.status === 200) {
+    //   // response.data.profileImage = logo;
+    //   const data = response.data;
+    //   return data;
+    // } else {
+    //   return;
+    // }
+    return consultationlist;
+  } catch (error) {
+    console.log(error);
+    return error.response ? error.response.status : 500;
+  }
+}
+
+// 예약 정보 불러오기기
+export async function getConsultationInfo(id) {
+  try {
+    // const response = await api.get(`/api/schedules/consultation/${id}`);
     // if (response.status === 200) {
     //   // response.data.profileImage = logo;
     //   const data = response.data;
@@ -45,9 +63,9 @@ export async function getConsultationInfo(url) {
   }
 }
 // 계약 정보 불러오기기
-export async function getContractInfo(url) {
+export async function getContractInfo(id) {
   try {
-    // const response = await api.get(url);
+    // const response = await api.get(`/api/schedules/contract/${id}`);
     // if (response.status === 200) {
     //   // response.data.profileImage = logo;
     //   const data = response.data;
@@ -74,7 +92,7 @@ const scheduledata = [
     createdAt: null,
     updatedAt: null,
     dtype: "consultation",
-    category: "weddinghall",
+    categoryName: "weddinghall",
     contractId: null,
     vendorName: "라벤더 웨딩홀",
   },
@@ -88,7 +106,7 @@ const scheduledata = [
     createdAt: null,
     updatedAt: null,
     dtype: "middle_process",
-    category: "dress",
+    categoryName: "dress",
     contractId: 2,
     vendorName: "라벤더 웨딩홀",
   },
@@ -102,7 +120,7 @@ const scheduledata = [
     createdAt: null,
     updatedAt: null,
     dtype: "consultation",
-    category: "studio",
+    categoryName: "studio",
     contractId: null,
     vendorName: "라벤더 웨딩홀",
   },
@@ -116,7 +134,7 @@ const scheduledata = [
     createdAt: null,
     updatedAt: null,
     dtype: "contract",
-    category: "hairmakeup",
+    categoryName: "hairmakeup",
     contractId: null,
     vendorName: "라벤더 웨딩홀",
   },
@@ -130,7 +148,7 @@ const scheduledata = [
     createdAt: null,
     updatedAt: null,
     dtype: "contract",
-    category: "weddinghall",
+    categoryName: "weddinghall",
     contractId: null,
     vendorName: "라벤더 웨딩홀",
   },
@@ -144,7 +162,7 @@ const scheduledata = [
     createdAt: null,
     updatedAt: null,
     dtype: "other_schedule",
-    category: "weddinghall",
+    categoryName: "weddinghall",
     contractId: null,
     vendorName: "라벤더 웨딩홀",
   },
@@ -158,9 +176,133 @@ const scheduledata = [
     createdAt: null,
     updatedAt: null,
     dtype: "middle_process",
-    category: "weddinghall",
+    categoryName: "weddinghall",
     contractId: 1,
     vendorName: "라벤더 웨딩홀",
+  },
+];
+
+const consultationlist = [
+  {
+    id: 1,
+    startDate: "2025-02-10",
+    startTime: "19:00",
+    endDate: "2025-02-10",
+    endTime: "21:00",
+    title: "웨딩 촬영 상담",
+    createdAt: null,
+    updatedAt: null,
+    categoryId: 2,
+    categoryName: "dress",
+    request: "드레스 선택과 메이크업 상담을 원합니다.",
+    customerId: 1,
+    customerName: "김싸피",
+    customerPhone: "010-1234-5678",
+    vendorId: 2,
+    vendorName: "라벤더 웨딩홀",
+    vendorAutoRoadAddress: "서울특별시 서초구 강남대로 123",
+    vendorPhone: "02-1234-5678",
+  },
+  {
+    id: 5,
+    startDate: "2025-02-10",
+    startTime: "19:00",
+    endDate: "2025-02-10",
+    endTime: "21:00",
+    title: "웨딩 촬영 상담",
+    createdAt: null,
+    updatedAt: null,
+    categoryId: 2,
+    categoryName: "studio",
+    request: "드레스 선택과 메이크업 상담을 원합니다.",
+    customerId: 1,
+    customerName: "김싸피",
+    customerPhone: "010-1234-5678",
+    vendorId: 2,
+    vendorName: "라벤더 웨딩홀",
+    vendorAutoRoadAddress: "서울특별시 서초구 강남대로 123",
+    vendorPhone: "02-1234-5678",
+  },
+  {
+    id: 6,
+    startDate: "2025-02-10",
+    startTime: "19:00",
+    endDate: "2025-02-10",
+    endTime: "21:00",
+    title: "웨딩 촬영 상담",
+    createdAt: null,
+    updatedAt: null,
+    categoryId: 2,
+    categoryName: "weddinghall",
+    request: "드레스 선택과 메이크업 상담을 원합니다.",
+    customerId: 1,
+    customerName: "김싸피",
+    customerPhone: "010-1234-5678",
+    vendorId: 2,
+    vendorName: "라벤더 웨딩홀",
+    vendorAutoRoadAddress: "서울특별시 서초구 강남대로 123",
+    vendorPhone: "02-1234-5678",
+  },
+  {
+    id: 2,
+    startDate: "2025-02-12",
+    startTime: "19:00",
+    endDate: "2025-02-10",
+    endTime: "21:00",
+    title: "웨딩 촬영 상담",
+    createdAt: null,
+    updatedAt: null,
+    categoryId: 2,
+    categoryName: "hairmakeup",
+    request: "드레스 선택과 메이크업 상담을 원합니다.",
+    customerId: 1,
+    customerName: "김싸피",
+    customerPhone: "010-1234-5678",
+    vendorId: 2,
+    vendorName: "라벤더 웨딩홀",
+    vendorAutoRoadAddress: "서울특별시 서초구 강남대로 123",
+    vendorPhone: "02-1234-5678",
+  },
+  {
+    id: 3,
+    startDate: "2025-02-10",
+    startTime: "19:00",
+    endDate: "2025-02-10",
+    endTime: "21:00",
+    title: "웨딩 촬영 상담",
+    createdAt: null,
+    updatedAt: null,
+    categoryId: 2,
+    categoryName: "hairmakeup",
+    request: "드레스 선택과 메이크업 상담을 원합니다.",
+    customerId: 1,
+    customerName: "김싸피",
+    customerPhone: "010-1234-5678",
+    vendorId: 2,
+    vendorName: "라벤더 웨딩홀",
+    vendorAutoRoadAddress: "서울특별시 서초구 강남대로 123",
+    vendorPhone: "02-1234-5678",
+  },
+  {
+    id: 12,
+    startDate: "2025-02-20",
+    startTime: "22:00",
+    endDate: "2025-02-21",
+    endTime: "00:00",
+    title: "웨딩홀 상담",
+    createdAt: null,
+    updatedAt: null,
+    categoryId: 1,
+    categoryName: "dress",
+
+    request: "메이크업 해줘잉.",
+    customerId: 1,
+    customerName: "김싸피",
+    customerPhone: "010-1234-5678",
+    vendorId: 2,
+    vendorName: "라벤더 웨딩홀",
+    vendorAutoRoadAddress: "서울특별시 서초구 강남대로 123",
+    vendorPhone: "02-1234-5678",
   },
 ];
 
@@ -203,3 +345,39 @@ const contractdata = {
   vendorAutoRoadAddress: "서울특별시 영등포구 여의대로 24",
   vendorPhone: "02-1234-5678",
 };
+
+/**
+ * 
+ * 일정전체체
+    id: 9,
+    startDate: "2025-02-20",
+    startTime: "22:00",
+    endDate: "2025-02-21",
+    endTime: "00:00",
+    title: "중간과정",
+    createdAt: null,
+    updatedAt: null,
+    dtype: "middle_process",
+    category: "weddinghall",
+    contractId: 1,
+    vendorName: "라벤더 웨딩홀",
+
+  * 상담리스트
+    id: 1,
+    startDate: "2025-02-10",
+    startTime: "19:00",
+    endDate: "2025-02-10",
+    endTime: "21:00",
+    title: "웨딩 촬영 상담",
+    createdAt: null,
+    updatedAt: null,
+    categoryId: 2,
+    request: "드레스 선택과 메이크업 상담을 원합니다.",
+    customerId: 1,
+    customerName: "김싸피",
+    customerPhone: "010-1234-5678",
+    vendorId: 2,
+    vendorName: "라벤더 웨딩홀",
+    vendorAutoRoadAddress: "서울특별시 서초구 강남대로 123",
+    vendorPhone: "02-1234-5678",
+ */
