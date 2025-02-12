@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useMemo } from "react";
 import ListView from "../ListView/ListView.jsx"; // 경로 확인!
 import CardSchedule from "../Cards/CardSchedule.jsx";
 import dayjs from "dayjs";
+import CardListView from "../ListView/CardListView.jsx";
 
 const ScheduleList = ({ selectedDate, sortedScheduleData }) => {
   const listRef = useRef(null);
@@ -33,25 +34,24 @@ const ScheduleList = ({ selectedDate, sortedScheduleData }) => {
   }, [selectedDate]);
 
   return (
-    <div
-      ref={listRef}
-      className="flex flex-col h-[500px] overflow-y-auto bg-white p-4 rounded-lg shadow-md"
-    >
-      {Object.entries(groupedScheduleData).map(([date, schedules]) => {
-        const formattedDate = dayjs(date).format("M월 D일");
+    <>
+      <div ref={listRef} className="w-screen">
+        {Object.entries(groupedScheduleData).map(([date, schedules]) => {
+          const formattedDate = dayjs(date).format("M월 D일");
 
-        return (
-          <div
-            key={date}
-            ref={(el) => (itemRefs.current[date] = el)} // 각 날짜별 요소 저장
-            className="mb-6"
-          >
-            <h1 className="text-lg font-bold">{formattedDate}</h1>
-            <ListView data={schedules} CardComponent={CardSchedule} />
-          </div>
-        );
-      })}
-    </div>
+          return (
+            <div
+              key={date}
+              ref={(el) => (itemRefs.current[date] = el)} // 각 날짜별 요소 저장
+              className="mb-3 w-screen"
+            >
+              <h1 className="ml-4 mt-4 text-lg font-bold">{formattedDate}</h1>
+              <CardListView data={schedules} CardComponent={CardSchedule} />
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 };
 

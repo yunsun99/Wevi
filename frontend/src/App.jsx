@@ -21,6 +21,9 @@ import SearchList from "./pages/SearchList";
 import SearchDetail from "./pages/SearchDetail";
 import CoupleLink from "./pages/CoupleLink";
 import Reservation from "./pages/Reservation";
+import ConsultationList from "./pages/ConsultationList";
+import ConsultationDetail from "./pages/ConsultationDetail";
+import ContractDetail from "./pages/ContractDetail";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -46,6 +49,9 @@ const router = createBrowserRouter([
   { path: "/consultationReservation", element: <ConsultationReservation /> },
   { path: "/couplelink", element: <CoupleLink /> },
   { path: "/reservation", element: <Reservation /> },
+  { path: "/consultationList", element: <ConsultationList /> },
+  { path: "/consultationDetail/:id", element: <ConsultationDetail /> },
+  { path: "/contractDetail/:id", element: <ContractDetail /> },
 ]);
 
 function App() {

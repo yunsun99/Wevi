@@ -14,7 +14,7 @@ export default function MyPage() {
     { label: "문의하기", path: "/" },
     { label: "회원정보 수정", path: "/" },
     { label: "계약 내역", path: "/" },
-    { label: "상담 내역", path: "/" },
+    { label: "상담 내역", path: "/consultationList" },
   ];
 
   const handleButtonClick = () => {
