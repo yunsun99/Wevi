@@ -1,11 +1,13 @@
 package com.ssafy.wevi.repository;
 
+import com.ssafy.wevi.domain.schedule.Consultation;
 import com.ssafy.wevi.domain.schedule.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -48,6 +50,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query("SELECT c FROM Contract c WHERE c.customer.userId = :customerId OR c.customer.spouse.userId = :spouseId")
     List<Schedule> findAllContractWithSpouse(@Param("customerId") Integer customerId,@Param("spouseId") Integer spouseId);
 
-    List<Schedule> findAllByCustomer_UserId(Integer UserId);
-
+    @Query("SELECT c FROM Consultation c WHERE c.vendor.userId = :vendorId AND c.startDateTime < :endDateTime AND c.endDateTime > :startDateTime")
+    List<Consultation> findConflictSchedule(@Param("startDateTime")LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("vendorId") Integer vendorId);
 }
