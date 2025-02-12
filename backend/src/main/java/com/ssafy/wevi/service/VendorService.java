@@ -3,6 +3,7 @@ package com.ssafy.wevi.service;
 import com.ssafy.wevi.domain.*;
 import com.ssafy.wevi.domain.user.Vendor;
 import com.ssafy.wevi.domain.user.Customer;
+import com.ssafy.wevi.dto.ImageDto;
 import com.ssafy.wevi.dto.vendor.*;
 import com.ssafy.wevi.enums.UserStatus;
 import com.ssafy.wevi.repository.*;
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class VendorService {
 
     private final VendorRepository vendorRepository;
@@ -28,13 +28,16 @@ public class VendorService {
     private final CategoryRepository categoryRepository;
     private final ReviewRepository reviewRepository;
     private final CustomerRepository customerRepository;
+    private final ImageRepository imageRepository;
 
+    @Transactional(readOnly = true)
     public List<DoDto> getDoList() {
         return doRepository.findAll().stream()
                 .map(this::convertToDoDto)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<SigunguDto> getSigunguList(int doId) {
         return sigunguRepository.findByDoId(doId).stream()
                 .map(this::convertToSigunguDto)
@@ -105,7 +108,7 @@ public class VendorService {
     @Transactional(readOnly = true)
     public VendorDetailResponseDto findVendorById(Integer vendorId) {
 
-        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow(() -> new IllegalArgumentException("해당 업체가 존재하지 않습니다."));;
+        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow(() -> new IllegalArgumentException("해당 업체가 존재하지 않습니다."));
 
         return toVendorDetailResponseDto(vendor);
     }
@@ -182,6 +185,15 @@ public class VendorService {
         dto.setSigunguId(vendor.getSigunguCode().getSigunguId());
         dto.setSigunguName(vendor.getSigunguCode().getSigunguName());
         dto.setMinPrice(vendor.getMinPrice());
+
+        List<Image> images = imageRepository.findByVendor(vendor);
+        List<ImageDto> imageDtoList = images.stream()
+                .map(this::convertToImageDto)
+                .collect(Collectors.toList());
+
+        ImageDto imageDto = imageDtoList.get(0);
+
+        dto.setImageUrl(imageDto.getImageUrl());
         return dto;
     }
 
@@ -210,6 +222,12 @@ public class VendorService {
         vendorDetailResponseDto.setParkinglot(vendor.getParkinglot());
         vendorDetailResponseDto.setCreatedAt(vendor.getCreatedAt());
 
+        List<Image> images = imageRepository.findByVendor(vendor);
+        List<ImageDto> imageDtoList = images.stream()
+                .map(this::convertToImageDto)
+                .collect(Collectors.toList());
+        vendorDetailResponseDto.setImages(imageDtoList);
+
         return vendorDetailResponseDto;
     }
 
@@ -221,6 +239,22 @@ public class VendorService {
         reviewDto.setUpdatedAt(review.getUpdatedAt());
         reviewDto.setCustomerId(review.getCustomer().getUserId());
         reviewDto.setVendorId(review.getVendor().getUserId());
+
+        List<Image> images = imageRepository.findByReview(review);
+        List<ImageDto> imageDtoList = images.stream()
+                .map(this::convertToImageDto)
+                .collect(Collectors.toList());
+        reviewDto.setImages(imageDtoList);
+
         return reviewDto;
+    }
+
+    private ImageDto convertToImageDto(Image image) {
+        ImageDto imageDto = new ImageDto();
+        imageDto.setImageType(image.getImageType().name());
+        imageDto.setOrderIndex(image.getOrderIndex());
+        imageDto.setImageUrl(image.getImageUrl());
+
+        return imageDto;
     }
 }
