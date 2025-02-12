@@ -26,7 +26,6 @@ public class Image {
 
     private Integer orderIndex;
 
-    @Column(nullable = false)
     private LocalDateTime createdAt; // 생성 시간
 
     @ManyToOne

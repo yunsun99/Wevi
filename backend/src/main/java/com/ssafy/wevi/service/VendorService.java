@@ -3,6 +3,7 @@ package com.ssafy.wevi.service;
 import com.ssafy.wevi.domain.*;
 import com.ssafy.wevi.domain.user.Vendor;
 import com.ssafy.wevi.domain.user.Customer;
+import com.ssafy.wevi.dto.ImageDto;
 import com.ssafy.wevi.dto.vendor.*;
 import com.ssafy.wevi.enums.UserStatus;
 import com.ssafy.wevi.repository.*;
@@ -28,6 +29,7 @@ public class VendorService {
     private final CategoryRepository categoryRepository;
     private final ReviewRepository reviewRepository;
     private final CustomerRepository customerRepository;
+    private final ImageRepository imageRepository;
 
     public List<DoDto> getDoList() {
         return doRepository.findAll().stream()
@@ -221,6 +223,22 @@ public class VendorService {
         reviewDto.setUpdatedAt(review.getUpdatedAt());
         reviewDto.setCustomerId(review.getCustomer().getUserId());
         reviewDto.setVendorId(review.getVendor().getUserId());
+
+        List<Image> images = imageRepository.findByReview(review);
+        List<ImageDto> imageDtoList = images.stream()
+                .map(this::convertToImageDto)
+                .collect(Collectors.toList());
+        reviewDto.setImages(imageDtoList);
+
         return reviewDto;
+    }
+
+    private ImageDto convertToImageDto(Image image) {
+        ImageDto imageDto = new ImageDto();
+        imageDto.setImageType(image.getImageType().name());
+        imageDto.setOrderIndex(image.getOrderIndex());
+        imageDto.setImageUrl(image.getImageUrl());
+
+        return imageDto;
     }
 }

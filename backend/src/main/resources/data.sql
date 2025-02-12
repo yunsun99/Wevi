@@ -169,3 +169,8 @@ INSERT INTO `reviews` (customer_id, review_id, vendor_id, created_at, updated_at
     (1,1,2,'2025-02-10 06:46:22.998077',NULL,'좋은 서비스였습니다!'),
     (1,2,2,'2025-02-10 06:46:43.161904',NULL,'맛있어요요요!'),
     (1,3,2,'2025-02-10 06:46:54.005500',NULL,'주차가 편리해요!');
+
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (1, 1, 1, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'REVIEW'),
+       (2, 2, 1, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'REVIEW'),
+       (3, 1, 2, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'REVIEW');

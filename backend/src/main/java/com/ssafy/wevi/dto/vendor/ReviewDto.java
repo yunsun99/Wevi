@@ -1,9 +1,11 @@
 package com.ssafy.wevi.dto.vendor;
 
+import com.ssafy.wevi.dto.ImageDto;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter @Setter
 public class ReviewDto {
@@ -13,5 +15,5 @@ public class ReviewDto {
     private LocalDateTime updatedAt;    // 수정 시간
     private Integer customerId;         // 소비자 ID
     private Integer vendorId;           // 업체 ID
-    private String ImageUrl;            // 이미지 Url
+    private List<ImageDto> Images;            // 이미지 Url
 }
