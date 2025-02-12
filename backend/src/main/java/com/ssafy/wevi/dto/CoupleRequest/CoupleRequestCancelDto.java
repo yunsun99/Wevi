@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CoupleRequestDeleteDto {
+public class CoupleRequestCancelDto {
     private int coupleRequestId;
 }
