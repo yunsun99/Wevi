@@ -33,7 +33,7 @@ export default function CardSchedule({ data }) {
       }
     } else {
       if (data.dtype === "middle_process") {
-        return navigate(`/contractDetail/${data.scheduleId}`);
+        return navigate(`/contractDetail/${data.contractId}`);
       } else if (data.dtype === "contract") {
         return navigate(`/contractDetail/${data.scheduleId}`);
       } else if (data.dtype === "consultation") {
