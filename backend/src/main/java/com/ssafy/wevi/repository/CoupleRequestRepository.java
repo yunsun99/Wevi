@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CoupleRequestRepository extends JpaRepository<CoupleRequest, Integer> {
+    public void deleteBySenderUserIdOrReceiverUserId(int senderUserId, int receiverUserId);
 }

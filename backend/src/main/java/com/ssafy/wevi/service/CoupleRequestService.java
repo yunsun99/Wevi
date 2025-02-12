@@ -70,6 +70,16 @@ public class CoupleRequestService {
         }
 
         // 상태가 "ACCEPTED"인 경우, 상태 업데이트
+
+        // customer의 배우자 정보 저장
+        customer.setSpouse(spouse);
+        customerRepository.save(customer);
+
+        // sposue의 배우자 정보 저장
+        spouse.setSpouse(customer);
+        customerRepository.save(spouse);
+
+        // coupleRequest 정보 저장
         coupleRequest.setStatus(status);
         coupleRequestRepository.save(coupleRequest);
 
@@ -98,6 +108,28 @@ public class CoupleRequestService {
 
         // 커플요청 삭제
         coupleRequestRepository.delete(coupleRequest);
+    }
+
+    // 커플연동 삭제 - 커플요청삭제
+    public void deleteCoupleRequest(Integer customerId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new NoSuchElementException("해당 ID의 사용자를 찾을 수 없습니다: " + customerId));
+
+        Integer spouseId = customer.getSpouse().getUserId();
+        Customer spouse = customerRepository.findById(spouseId).orElseThrow(() -> new NoSuchElementException("해당 ID의 배우자를 찾을 수 없습니다: " + spouseId));
+
+        // 본인의 spouse 정보를 초기화
+        customer.setSpouse(null);
+        customerRepository.save(customer);
+
+        // 배우자의 spouse 정보를 초기화
+        spouse.setSpouse(null);
+        customerRepository.save(spouse);
+
+        // userId가 sender 또는 receiver인 커플 요청 삭제
+        coupleRequestRepository.deleteBySenderUserIdOrReceiverUserId(customer.getUserId(), spouseId);
+
+
     }
 
     // 커플 요청 응답 형식으로 변환
