@@ -27,6 +27,7 @@ import Reservation from "./pages/Reservation";
 import ConsultationList from "./pages/ConsultationList";
 import ConsultationDetail from "./pages/ConsultationDetail";
 import ContractDetail from "./pages/ContractDetail";
+import ContractList from "./pages/ContractList";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
   { path: "/reservation", element: <Reservation /> },
   { path: "/consultationList", element: <ConsultationList /> },
   { path: "/consultationDetail/:id", element: <ConsultationDetail /> },
+  { path: "/contractList", element: <ContractList /> },
   { path: "/contractDetail/:id", element: <ContractDetail /> },
 ]);
 

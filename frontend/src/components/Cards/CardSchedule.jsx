@@ -26,7 +26,7 @@ export default function CardSchedule({ data }) {
      * other_schedule -> 사용자 정의 -> 사용자 정의 페이지로 요청?
      */
     if (!data.dtype) {
-      if (data.contractDate) {
+      if (data.price) {
         return navigate(`/contractDetail/${data.scheduleId}`);
       } else {
         return navigate(`/consultationDetail/${data.scheduleId}`);
