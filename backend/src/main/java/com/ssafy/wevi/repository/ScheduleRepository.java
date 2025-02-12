@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-
     // 전체 일정 조회
     // 소비자ID로 조회
     @Query("SELECT s FROM Schedule s WHERE s.customer.userId = :customerId")

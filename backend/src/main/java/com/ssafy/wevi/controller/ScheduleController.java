@@ -1,9 +1,11 @@
 package com.ssafy.wevi.controller;
 
 import com.ssafy.wevi.config.SecurityUtils;
+import com.ssafy.wevi.domain.user.User;
 import com.ssafy.wevi.dto.ApiResponseDto;
 import com.ssafy.wevi.dto.schedule.*;
 import com.ssafy.wevi.repository.ScheduleRepository;
+import com.ssafy.wevi.repository.UserRepository;
 import com.ssafy.wevi.service.CustomerService;
 import com.ssafy.wevi.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
     private final ScheduleRepository scheduleRepository;
     private final CustomerService customerService;
+    private final UserRepository userRepository;
 
     //===== 조회 =====//
 
@@ -161,5 +164,24 @@ public class ScheduleController {
                 "Consultaion created successfully.",
                 consultationResponseDto
         );
+    }
+    // 계약 등록 (업체)
+    // 각 카테고리별 계약을 등록
+    @PostMapping("/contract/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponseDto<?> registContract(@RequestBody ContractCreateDto contractCreateDto) {
+        // 로그인한 유저 ID 가져오기
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+        User user = userRepository.findById(userId).orElseThrow();
+
+            // 상담 등록
+            ContractResponseDto contractResponseDto = scheduleService.addContract(contractCreateDto, userId);
+
+            return new ApiResponseDto<>(
+                    HttpStatus.CREATED.value(),
+                    true,
+                    "Contract created successfully.",
+                    contractResponseDto
+            );
     }
 }

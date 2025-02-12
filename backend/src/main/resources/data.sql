@@ -61,7 +61,8 @@ INSERT INTO `users` (
     user_id, created_at, updated_at, dtype, auth_id, auth_provider, email, password, status
 ) VALUES
       (1,'2025-02-08 12:38:34.630324',NULL,'customer',NULL,NULL,'test@test.com','$2a$10$kRY19qCSG/Dt8CQYzt06YuACQgxLzvMG3GviCOHVKZLPh1bflbcPi','ACTIVE'),
-      (2,'2025-02-09 07:15:56.089971',NULL,'vendor',NULL,NULL,'weddinghall1@test.com','$2a$10$7yYA5GzV0Z8g1uQ/B91Gd.S4LxIg5jzKmVXg7bJOLX9evY1OEHGUm','ACTIVE'),
+--       (2,'2025-02-09 07:15:56.089971',NULL,'vendor',NULL,NULL,'weddinghall1@test.com','$2a$10$7yYA5GzV0Z8g1uQ/B91Gd.S4LxIg5jzKmVXg7bJOLX9evY1OEHGUm','ACTIVE'),
+      (2,'2025-02-09 07:15:56.089971',NULL,'vendor',NULL,NULL,'weddinghall1@test.com','$2a$10$kRY19qCSG/Dt8CQYzt06YuACQgxLzvMG3GviCOHVKZLPh1bflbcPi','ACTIVE'),
       (3,'2025-02-09 07:16:04.319151',NULL,'vendor',NULL,NULL,'weddinghall2@test.com','$2a$10$Mm9/rEzAMw8mMiNjmtO.QeqIM4NFNxeXaoTgpSnRuB7DCdBfkbH/K','ACTIVE'),
       (4,'2025-02-09 07:16:10.844163',NULL,'vendor',NULL,NULL,'studio1@test.com','$2a$10$6JIYC5foDU.EZ1hsOcQZeuI0LWHrLPeq1eHfRXvrGXoejjbNxD0FO','ACTIVE'),
       (5,'2025-02-09 07:16:16.561169',NULL,'vendor',NULL,NULL,'dress1@test.com','$2a$10$JMQTGnLmjAyeoGILmk8vbue1BLsYjPYYuU4CSnRMYSS3x2MisMxKi','ACTIVE'),
@@ -112,11 +113,11 @@ INSERT INTO consultations (schedule_id, request) VALUES
     (1, '드레스 선택과 메이크업 상담을 원합니다.'),
     (12, '메이크업 해줘잉.');
 
-INSERT INTO contracts (schedule_id, price, detail, contract_date) VALUES
-    (2, 5000000, '웨딩 홀', '2025-02-20 13:00:00'),
-    (3, 5000000, '스튜디오', '2025-02-20 13:00:00'),
-    (4, 5000000, '드레스!', '2025-02-20 13:00:00'),
-    (5, 5000000, '메이크업', '2025-02-20 13:00:00');
+INSERT INTO contracts (schedule_id, price, detail) VALUES
+    (2, 5000000, '웨딩 홀'),
+    (3, 5000000, '스튜디오'),
+    (4, 5000000, '드레스!'),
+    (5, 5000000, '메이크업');
 
 INSERT INTO middle_process_steps (middle_process_step_id, name, category_id, is_visit)
 VALUES
@@ -154,12 +155,12 @@ VALUES
 (33, '본식 메이크업', 4, true);
 
 -- ✅ middle_processes 테이블 수정 (contract_id 값을 실제 존재하는 schedule_id로 변경)
-INSERT INTO middle_processes (schedule_id, middle_process_step_id, status, detail, contract_id) VALUES
+INSERT INTO middle_processes (schedule_id, middle_process_step_id, status, detail, contract_id, complete_date_time) VALUES
 -- 웨딩홀 관련 진행 단계
-(8, 1, 'COMPLETED', '웨딩홀 중간과정', 2),
-(9, 2, 'COMPLETED', '웨딩홀 중간과정', 2),
-(10, 3, 'PENDING', '웨딩홀 중간과정', 2),
-(11, 4, 'PENDING', '웨딩홀 중간과정', 2);
+(8, 1, 'COMPLETED', '웨딩홀 중간과정', 2, '2025-02-20 13:00:00'),
+(9, 2, 'COMPLETED', '웨딩홀 중간과정', 2, '2025-02-20 13:00:00'),
+(10, 3, 'PENDING', '웨딩홀 중간과정', 2, null),
+(11, 4, 'PENDING', '웨딩홀 중간과정', 2, null);
 
 INSERT INTO other_schedules (schedule_id, detail) VALUES
     (7, '신혼여행 일정 논의');

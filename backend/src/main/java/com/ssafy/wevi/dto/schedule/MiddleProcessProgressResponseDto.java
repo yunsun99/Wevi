@@ -1,20 +1,11 @@
 package com.ssafy.wevi.dto.schedule;
 
 import com.ssafy.wevi.enums.MiddleProcessStatus;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
-@Getter
-@Setter
-@NoArgsConstructor
-public class MiddleProcessResponseDto {
+
+public class MiddleProcessProgressResponseDto {
     private int scheduleId;
-    private String startDate;
-    private String startTime;
-    private String endDate;
-    private String endTime;
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

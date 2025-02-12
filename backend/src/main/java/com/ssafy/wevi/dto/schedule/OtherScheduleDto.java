@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class OtherScheduleDto{
     // 일정 공통
-    private int id;
+    private int otherScheduleId;
 //    private LocalDateTime startTime;
 //    private LocalDateTime endTime;
     private String startDate;
@@ -22,6 +22,7 @@ public class OtherScheduleDto{
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Integer categoryId;
+    private String categoryName;
 
     // 수기일정 별도 컬럼
     private String detail;  // 세부내용
