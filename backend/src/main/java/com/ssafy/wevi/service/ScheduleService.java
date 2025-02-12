@@ -177,7 +177,7 @@ public class ScheduleService {
     }
     // 일정 전체 조회
     @Transactional(readOnly = true)
-    public List<ScheduleResponseDto> findAllSchedules(Integer userId) {
+    public List<ScheduleResponseDto> getAllSchedules(Integer userId) {
         // 업체인지 소비자인지 확인하기 위해 유저 조회
         User user = userRepository.findById(userId).orElseThrow();
 
@@ -189,14 +189,14 @@ public class ScheduleService {
 
             // 소비자일 때
         } else {
-        Customer spouse = customerRepository.findById(userId).orElseThrow().getSpouse();
+//        Customer spouse = customerRepository.findById(userId).orElseThrow().getSpouse();
         // 커플 여부 확인
-            if (spouse == null) {
+            if (((Customer)user).getSpouse() == null) {
                 System.out.println("커플아니다");
                 scheduleList = scheduleRepository.findAllScheduleByCustomerId(userId);
             } else {
                 System.out.println("커플이다");
-                scheduleList = scheduleRepository.findAllScheduleWithSpouse(userId, spouse.getUserId());
+                scheduleList = scheduleRepository.findAllScheduleWithSpouse(userId, ((Customer)user).getSpouse().getUserId());
             }
         }
         // 반환타입으로 변환하여 반환
@@ -288,6 +288,81 @@ public class ScheduleService {
             throw new IllegalArgumentException("해당하는 일정이 없습니다.");
         }
     }
+
+    // ====== 삭제 ====== //
+    @Transactional
+    public boolean deleteOneSchedule(Integer scheduleId, Integer userId) {
+        // 업체인지 소비자인지 확인하기 위해 유저 조회
+        User user = userRepository.findById(userId).orElseThrow();
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();
+
+        if (schedule instanceof Consultation) {
+            // 상담 취소는 소비자만 가능
+            if (user instanceof Customer) {
+                // 본인 일정이거나 커플 일정이면 삭제 가능
+               if (schedule.getCustomer().getUserId() != userId && schedule.getCustomer().getUserId() != ((Customer) user).getSpouse().getUserId()) {
+                   // 예외처리
+                   throw new IllegalArgumentException("본인의 일정이거나 커플의 일정이 아니면 삭제할 수 없습니다.");
+               }
+
+               scheduleRepository.deleteById(scheduleId);
+               return true;
+
+            } else {
+                // 예외처리
+                throw new IllegalArgumentException("업체는 상담 일정을 삭제할 수 없습니다.");
+            }
+        } else if( schedule instanceof Contract ) {
+            // 계약일 땐 업체만 가능, 계약 + 중간과정 삭제
+            if (user instanceof Vendor) {
+                // 본인 일정일 경우에만 삭제 가능
+                if (userId != schedule.getVendor().getUserId()) {
+                    // 예외처리
+                    throw new IllegalArgumentException("본인의 일정이 아니면 계약을 삭제할 수 없습니다.");
+                }
+                // 계약에 속한 중간과정들 먼저 삭제..
+                scheduleRepository.deleteAll(((Contract) schedule).getMiddleProcessList());
+                // 계약도 삭제
+                scheduleRepository.deleteById(scheduleId);
+                return true;
+            } else {
+                // 예외처리
+                throw new IllegalArgumentException("소비자는 계약 일정을 삭제할 수 없습니다.");
+            }
+            // 중간과정일 땐 삭제 불가 에러
+        } else if (schedule instanceof MiddleProcess){
+        // 예외처리
+            throw new IllegalArgumentException("중간과정 단일건은 삭제 불가합니다.");
+            
+        } else {        // 수기 등록 일정일 때
+            // 소비자일 경우
+            if (user instanceof Customer) {
+                // 본인 일정이거나 커플 일정이면 삭제 가능
+                if (schedule.getCustomer().getUserId() != userId && schedule.getCustomer().getUserId() != ((Customer) user).getSpouse().getUserId()) {
+                    // 예외처리
+                    throw new IllegalArgumentException("본인의 일정이거나 커플의 일정이 아니면 삭제할 수 없습니다.");
+                }
+                scheduleRepository.deleteById(scheduleId);
+                return true;
+
+                // 업체일 경우
+            } else {
+                // 본인 일정일 경우에만 삭제 가능
+                if (userId != schedule.getVendor().getUserId()) {
+                    // 예외처리
+                    throw new IllegalArgumentException("본인의 일정이 아니면 계약을 삭제할 수 없습니다.");
+                }
+                scheduleRepository.deleteById(scheduleId);
+                return true;
+            }
+        }
+    }
+
+
+
+
+
+
 
 
     // ==================== 기타 로직 ==================== //

@@ -20,6 +20,10 @@ public class MiddleProcessResponseDto {
     private LocalDateTime updatedAt;
     private Integer categoryId;
     private String categoryName;
+    private Integer vendorId;
+    private String vendorName;
+    private Integer customerId;
+    private String customerName;
 
     // 중간과정 별도 컬럼
     private Integer stepId; // 단계 ID

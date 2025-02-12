@@ -18,7 +18,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query("SELECT s FROM Schedule s WHERE s.vendor.userId = :vendorId")
     List<Schedule> findAllScheduleByVendorId(@Param("vendorId") Integer vendorId);
     // 소비자ID, 커플ID로 모두 조회
-    @Query("SELECT s FROM Schedule s WHERE s.customer.userId = :customerId OR s.customer.spouse.userId = :spouseId")
+    @Query("SELECT s FROM Schedule s WHERE s.customer.userId = :customerId OR s.customer.userId = :spouseId")
     List<Schedule> findAllScheduleWithSpouse(@Param("customerId") Integer customerId,@Param("spouseId") Integer spouseId);
 
     // 전체 중간과정 조회

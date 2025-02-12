@@ -24,7 +24,7 @@ public class ScheduleController {
     private final CustomerService customerService;
     private final UserRepository userRepository;
 
-    //===== 조회 =====//
+    //===== 조회 (READ) =====//
 
     // 상담 상세 조회
     @GetMapping("/consultation/{id}")
@@ -91,7 +91,7 @@ public class ScheduleController {
         // 로그인한 유저 ID 가져오기
         String customerId = SecurityUtils.getAuthenticatedUserId();
 
-        List<ScheduleResponseDto> scheduleList =  scheduleService.findAllSchedules(Integer.valueOf(customerId));
+        List<ScheduleResponseDto> scheduleList =  scheduleService.getAllSchedules(Integer.valueOf(customerId));
 
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
@@ -148,7 +148,7 @@ public class ScheduleController {
         );
     }
 
-    // ===== 상담 일정 추가 ===== //
+    // ===== 등록 (CREATE) ===== //
     // 상담 일정 추가
     @PostMapping("/consultation/add")
     @ResponseStatus(HttpStatus.CREATED)
@@ -182,6 +182,30 @@ public class ScheduleController {
                     true,
                     "Contract created successfully.",
                     contractResponseDto
+            );
+    }
+
+    // ===== 삭제 (DELETE) ===== //
+    @DeleteMapping("/{scheduleId}")
+    private ApiResponseDto<?> removeSchedule (@PathVariable Integer scheduleId) {
+        // 로그인한 유저 ID 가져오기
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+
+        boolean result = scheduleService.deleteOneSchedule(scheduleId, userId);
+
+        if (result)
+            return new ApiResponseDto<>(
+                    HttpStatus.NO_CONTENT.value(),
+                    true,
+                    "Schedule deleteded successfully.",
+                    null
+            );
+        else
+            return new ApiResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    false,
+                    "Schedule deleteded failed.",
+                    null
             );
     }
 }
