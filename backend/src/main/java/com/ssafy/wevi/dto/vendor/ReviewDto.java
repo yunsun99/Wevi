@@ -12,5 +12,6 @@ public class ReviewDto {
     private LocalDateTime createdAt;    // 생성 시간
     private LocalDateTime updatedAt;    // 수정 시간
     private Integer customerId;         // 소비자 ID
-    private Integer vendorId;           // 업체 ID;
+    private Integer vendorId;           // 업체 ID
+    private String ImageUrl;            // 이미지 Url
 }
