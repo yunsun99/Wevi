@@ -11,7 +11,6 @@ import SignUpDetail from "./pages/SignUpDetail";
 import SignupComplete from "./pages/SignUpComplete";
 import Home from "./pages/Home";
 import Notification from "./pages/Notification";
-import Calendar from "./pages/Schedule";
 import Hamburger from "./pages/Hamburger";
 import MyPage from "./pages/MyPage";
 import Progress from "./pages/Progress";
@@ -29,6 +28,7 @@ import ConsultationDetail from "./pages/ConsultationDetail";
 import ContractDetail from "./pages/ContractDetail";
 import RecoilNexus from "recoil-nexus";
 import ContractList from "./pages/ContractList";
+import Schedule from "./pages/Schedule";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/notification", element: <Notification /> },
-      { path: "/calendar", element: <Calendar /> },
+      { path: "/schedule", element: <Schedule /> },
       { path: "/hamburger", element: <Hamburger /> },
       { path: "/mypage", element: <MyPage /> },
       { path: "/progress", element: <Progress /> },
