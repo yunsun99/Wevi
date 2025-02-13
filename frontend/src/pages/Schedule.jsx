@@ -54,10 +54,12 @@ export default function Schedule() {
         handleDateClick={handleDateClick}
       />
       <div className="flex w-screen flex-col h-[500px] overflow-y-auto bg-white rounded-lg shadow-md">
-        <ScheduleList
-          selectedDate={selectedDate}
-          sortedScheduleData={sortedScheduleData}
-        />
+        {scheduleData ? (
+          <ScheduleList
+            selectedDate={selectedDate}
+            sortedScheduleData={sortedScheduleData}
+          />
+        ) : null}
       </div>
       <BottomNavigationBar />
     </>

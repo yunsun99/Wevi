@@ -3,13 +3,13 @@ import { api } from "./auth";
 
 export async function axiosNotification() {
   try {
-    // const response = await api.get(`/api/auth/login`, {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-
-    return data;
+    const response = await api.get("/api/users/notifications");
+    if (response.status === 200) {
+      const data = response.data.data;
+      return data;
+    } else {
+      return;
+    }
   } catch (error) {
     console.log(error);
     return error.response ? error.response.status : 500;
