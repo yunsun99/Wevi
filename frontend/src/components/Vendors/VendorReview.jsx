@@ -1,33 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReviewModal from "../Modals/ReviewModal";
+import { useRecoilState } from "recoil";
+import { vendorState } from "../../atoms/vendorState";
 
 export default function VendorReview() {
+  const [reviewData] = useRecoilState(vendorState);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
-  const reviews = [
-    {
-      id: 1,
-      username: "갓실버제",
-      profileImage: "/path/to/profile.png",
-      reviewText:
-        "오늘 데이트하러 와서 미리 예약하고 왔는데, 2인 플래터 먹구 비빔면까지 같이 먹었어요! 근데 직원분도 너무 친절하게 들어올 때부터 설명 잘 해주시고, 다음에는 다른 플래터 먹으러...",
-      images: [
-        "/path/to/image1.jpg",
-        "/path/to/image2.jpg",
-      ],
-    },
-    {
-      id: 2,
-      username: "갓실버제",
-      profileImage: "/path/to/profile.png",
-      reviewText:
-        "오늘 데이트하러 와서 미리 예약하고 왔는데, 2인 플래터 먹구 비빔면까지 같이 먹었어요! 근데 직원분도 너무 친절하게 들어올 때부터 설명 잘 해주시고, 다음에는 다른 플래터 먹으러...",
-      images: [
-        "/path/to/image1.jpg",
-        "/path/to/image2.jpg",
-      ],
-    },
-  ];
 
   // 리뷰 쓰기 버튼 핸들러
   function handleReviewWrite() {
@@ -48,8 +27,8 @@ export default function VendorReview() {
       </div>
 
       {/* 리뷰 리스트 */}
-      {reviews.map((review) => (
-        <div key={review.id} className="bg-white shadow-md p-4 mb-4">
+      {reviewData.map((review) => (
+        <div key={review.reviewId} className="bg-white shadow-md p-4 mb-4">
           {/* 프로필 섹션 */}
           <div className="flex items-center mb-4">
             <img
@@ -57,7 +36,7 @@ export default function VendorReview() {
               alt="프로필 이미지"
               className="w-10 h-10 rounded-full mr-3"
             />
-            <p className="text-sm font-bold">{review.username}</p>
+            <p className="text-sm font-bold">{review.customerId}</p>
           </div>
 
           {/* 이미지 섹션 */}
@@ -73,14 +52,12 @@ export default function VendorReview() {
           </div>
 
           {/* 리뷰 텍스트 */}
-          <p className="text-sm text-gray-700">{review.reviewText}</p>
+          <p className="text-sm text-gray-700">{review.content}</p>
         </div>
       ))}
 
       {/* 리뷰 모달 */}
-      {isModalOpen && (
-        <ReviewModal onClose={() => setIsModalOpen(false)} />
-      )}
+      {isModalOpen && <ReviewModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 }

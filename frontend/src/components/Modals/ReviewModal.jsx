@@ -14,12 +14,12 @@ export default function ReviewModal({ onClose }) {
 
         {/* 모달 내용 */}
         <div>
-          <img
+          {/* <img
             src="/path/to/image.jpg" // 이미지 경로를 넣어주세요
             alt="웨딩홀"
             className="rounded-lg mb-4 w-full"
-          />
-          <h3 className="text-xl font-bold mb-4">박성근웨딩홀</h3>
+          /> */}
+          {/* <h3 className="text-xl font-bold mb-4">박성근웨딩홀</h3> */}
 
           <label htmlFor="review" className="block text-lg font-semibold mb-2">
             리뷰작성

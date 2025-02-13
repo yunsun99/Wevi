@@ -39,6 +39,7 @@ const CardSearchDetail = React.memo(({ data }) => {
           <VendorOptionPrice data={data} />
           <VendorVisitInformation data={data} />
           <VendorBusinessInformation data={data} />
+          <VendorReview />
         </>
       ) : (
         <>
