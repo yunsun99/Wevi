@@ -19,10 +19,10 @@ export default function ProgressCard({ data }) {
 
   // ✅ 배경 이미지 매칭
   const categoryBackgrounds = {
-    예식장: `url(${weddinghallImage})`,
-    드레스: `url(${dressImage})`,
-    스튜디오: `url(${studioImage})`,
-    "헤어/메이크업": `url(${hairMakeupImage})`,
+    예식장: `url(https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/weddinghall.png)`,
+    드레스: `url(https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/dress.png)`,
+    스튜디오: `url(https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/studio.png)`,
+    "헤어/메이크업": `url(https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/hair_makeup.png)`,
   };
 
   // ✅ realdata를 categoryName 기준으로 그룹화
