@@ -14,7 +14,7 @@ export default function ProgressCard({ data }) {
     weddinghall: "예식장",
     dress: "드레스",
     studio: "스튜디오",
-    makup: "헤어/메이크업",
+    makeup: "헤어/메이크업",
   };
 
   // ✅ 배경 이미지 매칭
@@ -32,6 +32,7 @@ export default function ProgressCard({ data }) {
       acc[categoryTitle] = [];
     }
     acc[categoryTitle].push(item);
+    console.log(categoryTitle);
     return acc;
   }, {});
 
