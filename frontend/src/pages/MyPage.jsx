@@ -13,7 +13,7 @@ export default function MyPage() {
     { label: "공지사항", path: "/" },
     { label: "문의하기", path: "/" },
     { label: "회원정보 수정", path: "/" },
-    { label: "계약 내역", path: "/" },
+    { label: "계약 내역", path: "/contractList" },
     { label: "상담 내역", path: "/consultationList" },
   ];
 

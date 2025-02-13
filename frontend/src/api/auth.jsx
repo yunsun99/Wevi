@@ -77,9 +77,13 @@ export async function sendFCMToken(token) {
 // 인증 상태를 업데이트하는 함수
 export const setupInterceptors = (setIsAuthenticated) => {
   api.interceptors.response.use(
-    (response) => response, // 정상 응답 그대로 반환
+    (response) => {
+      console.log(response.status);
+      return response;
+    }, // 정상 응답 그대로 반환
     (error) => {
       if (error.response.status === 401 || error.response.status === 403) {
+        console.log(error.response.status);
         setIsAuthenticated(false); // 로그아웃 처리
       }
       return Promise.reject(error);
