@@ -18,7 +18,7 @@ export default function Schedule() {
     }));
   };
 
-  const [scheduleData, setScheduleData] = useState();
+  const [scheduleData, setScheduleData] = useState([]);
 
   useEffect(() => {
     const axiosSchedules = async () => {
@@ -31,6 +31,10 @@ export default function Schedule() {
     };
     axiosSchedules();
   }, []);
+
+  useEffect(() => {
+    console.log(scheduleData);
+  }, [scheduleData]);
 
   const sortedScheduleData = useMemo(() => {
     if (!scheduleData) return [];

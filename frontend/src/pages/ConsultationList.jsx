@@ -9,8 +9,8 @@ export default function ConsultationList() {
   useEffect(() => {
     const axiosConsultaionList = async () => {
       try {
-        const consultationList = await getConsultationList();
-        setConsultationList(consultationList);
+        const consultationData = await getConsultationList();
+        setConsultationList(consultationData);
       } catch (err) {
         console.log(err);
       }
@@ -24,7 +24,9 @@ export default function ConsultationList() {
   return (
     <>
       <TopNavigationBar2 title="상담 내역" />
-      <ScheduleList selectedDate={0} sortedScheduleData={consultationList} />
+      {consultationList ? (
+        <ScheduleList selectedDate={0} sortedScheduleData={consultationList} />
+      ) : null}
       <BottomNavigationBar />
     </>
   );
