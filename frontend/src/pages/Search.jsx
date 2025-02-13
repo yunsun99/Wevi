@@ -68,8 +68,8 @@ export default function Search() {
         onChangeCategory={handleCategoryChange}
       />
       <SearchBar />
-      <SearchFilters /> {/* ✅ 필터 입력 시 SearchFilters만 리렌더링 */}
-      <RecentSearch />
+      {/* 최근 검색 */}
+      {/* <RecentSearch /> */}
       <ListView data={searchResults} CardComponent={Card} />
       <ButtonSearch fetchData={fetchData} /> {/* ✅ 버튼 클릭 시 데이터 갱신 */}
       <BottomNavigationBar />

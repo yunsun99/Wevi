@@ -62,6 +62,20 @@ export async function handleSignUp(formData) {
   }
 }
 
+export async function handleLogout() {
+  try {
+    const response = await api.post(`/api/auth/logout`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.status; // 성공 시 응답 코드 반환 (예: 200)
+  } catch (error) {
+    console.log(error);
+    return error.response ? error.response.status : 500;
+  }
+}
+
 export async function sendFCMToken(token) {
   try {
     const response = await api.post(`/api/users/fcm-token`, token, {
