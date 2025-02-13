@@ -1,34 +1,57 @@
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import TopNavigationBar from "../components/Navigators/TopNavigationBar2";
 import BottomNavigationBar from "../components/Navigators/BottomNavigationBar";
+import { getVendorInfo } from "../api/search";
+import CardSearchDetail from "../components/Cards/CardSearchDetail";
 
-import SearchBar from "../components/Bars/SearchBar";
-import RecentSearch from "../components/Search/RecentSearch";
-import SearchCategoryBar from "../components/Bars/SearchCategoryBar";
-import ButtonSearch from "../components/Buttons/ButtonSearchHSI";
-import { useRecoilState } from "recoil";
-import { searchFilterState } from "../atoms/searchState";
-import Search from "../components/Search/Search";
-import SearchFilters from "../components/Search/SearchFilters";
-import CardDetail from "../components/Cards/CardDetail";
-import SearchDetailCategoryBar from "../components/Bars/SearchDetailCategoryBar";
 // 성일
 export default function SearchDetail() {
-  const [selectedButton, setSelectedButton] = useRecoilState(searchFilterState);
-  const title =
-    selectedButton.selectedCategory === "weddinghall"
-      ? "웨딩홀"
-      : selectedButton.selectedCategory === "dress"
-      ? "드레스"
-      : selectedButton.selectedCategory === "studio"
-      ? "스튜디오"
-      : selectedButton.selectedCategory === "hair&makeup"
-      ? "헤어/메이크업"
-      : "카테고리 없음";
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get("id"); // 쿼리 파라미터에서 id 값 가져오기
+  const [vendorData, setVendorData] = useState();
+  const [title, setTitle] = useState("gd"); // ⬅️ title을 상태로 선언
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    const axiosVendorInfo = async () => {
+      try {
+        const venderInfo = await getVendorInfo(id);
+        setVendorData(venderInfo);
+      } catch (err) {
+        console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
+      }
+    };
+    axiosVendorInfo();
+  }, [id]);
+
+  useEffect(() => {
+    if (!vendorData) {
+      return;
+    }
+    let newTitle;
+    if (vendorData.categoryId === 1) {
+      newTitle = "웨딩홀";
+    } else if (vendorData.categoryId === 2) {
+      newTitle = "스튜디오";
+    } else if (vendorData.categoryId === 3) {
+      newTitle = "드레스";
+    } else if (vendorData.categoryId === 4) {
+      newTitle = "헤어/메이크업";
+    } else {
+      newTitle = "기타";
+    }
+    setTitle(newTitle); // ⬅️ title을 상태로 업데이트
+    console.log(newTitle);
+  }, [vendorData]);
+
   return (
     <>
       <TopNavigationBar title={title} />
-      <SearchDetailCategoryBar />
-      <CardDetail />
+      {vendorData ? <CardSearchDetail data={vendorData} /> : null}
       <BottomNavigationBar />
     </>
   );
