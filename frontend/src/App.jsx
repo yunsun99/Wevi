@@ -7,7 +7,6 @@ import "./App.css";
 // import "./Calendar.css"
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import SignUpDetail from "./pages/SignUpDetail";
 import SignupComplete from "./pages/SignUpComplete";
 import Home from "./pages/Home";
 import Notification from "./pages/Notification";
@@ -33,7 +32,6 @@ import Schedule from "./pages/Schedule";
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
-  { path: "/signupdetail", element: <SignUpDetail /> },
   { path: "/signup/complete", element: <SignupComplete /> },
   {
     element: <ProtectedRoute />,
