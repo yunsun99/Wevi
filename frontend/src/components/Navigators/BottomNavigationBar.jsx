@@ -35,7 +35,7 @@ function BottomNavigationBar() {
       </Link>
 
       {/* 일정 */}
-      <Link to="/calendar" className="flex flex-1 flex-col items-center gap-1">
+      <Link to="/schedule" className="flex flex-1 flex-col items-center gap-1">
         <img
           src={icon_calendar}
           alt="Calendar Icon"
