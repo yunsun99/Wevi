@@ -99,9 +99,9 @@ public class ScheduleController {
     @GetMapping()
     public ApiResponseDto<?> getAllSchedule() {
         // 로그인한 유저 ID 가져오기
-        String customerId = SecurityUtils.getAuthenticatedUserId();
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
 
-        List<ScheduleResponseDto> scheduleList =  scheduleService.getAllSchedules(Integer.valueOf(customerId));
+        List<ScheduleResponseDto> scheduleList =  scheduleService.getAllSchedules(userId);
 
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
@@ -131,8 +131,8 @@ public class ScheduleController {
     @GetMapping("/consultations")
     public ApiResponseDto<?> getAllConsultation() {
         // 로그인한 유저 ID 가져오기
-        String userId = SecurityUtils.getAuthenticatedUserId();
-        List<ConsultationResponseDto> consultationResponseList =  scheduleService.findAllConsultation(Integer.valueOf(userId));
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+        List<ConsultationResponseDto> consultationResponseList =  scheduleService.findAllConsultation(userId);
 
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
@@ -144,9 +144,9 @@ public class ScheduleController {
     // 계약 내역 조회
     @GetMapping("/contracts")
     public ApiResponseDto<?> getAllContract() {
-        // 로그인한 유저 ID 가져오기
-        String userId = SecurityUtils.getAuthenticatedUserId();
-        List<ContractResponseDto> consultationResponseList =  scheduleService.findAllContract(Integer.valueOf(userId));
+// 로그인한 유저 ID 가져오기
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+        List<ContractResponseDto> consultationResponseList =  scheduleService.findAllContract(userId);
 
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),

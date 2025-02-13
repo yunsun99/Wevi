@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ContractResponseDto {
     // 일정 공통
+    private Integer loginUserId;
     private int scheduleId;
 //    private LocalDateTime startTime;
 //    private LocalDateTime endTime;

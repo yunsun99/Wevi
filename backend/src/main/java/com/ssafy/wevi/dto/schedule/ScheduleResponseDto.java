@@ -11,6 +11,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ScheduleResponseDto {
     // 일정 공통
+    private Integer loginUserId;
+    private Integer customerId;
+    private Integer vendorId;
+    private String customerName;
     private Integer scheduleId;
 //    private LocalDateTime startTime;
 //    private LocalDateTime endTime;

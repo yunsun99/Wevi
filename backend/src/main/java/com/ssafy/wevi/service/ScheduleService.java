@@ -56,7 +56,7 @@ public class ScheduleService {
 
         scheduleRepository.save(consultation);
 
-        return toConsultationResponseDto(consultation);
+        return toConsultationResponseDto(consultation, customerId);
     }
     @Transactional
     public ContractResponseDto addContract(ContractCreateDto contractCreateDto, Integer vendorId) {
@@ -130,7 +130,7 @@ public class ScheduleService {
             scheduleRepository.save(middleProcess);
         }
 
-        return toContractResponseDto(contract);
+        return toContractResponseDto(contract, vendorId);
     }
 
     //==========조회=========//
@@ -147,7 +147,7 @@ public class ScheduleService {
         // 본인 일정인지 확인
         if (isUserSchedule(user, schedule)) {
             if (schedule instanceof Consultation) {
-                return toConsultationResponseDto((Consultation) schedule);
+                return toConsultationResponseDto((Consultation) schedule, userId);
             } else {
                 throw new IllegalArgumentException("해당 일정은 상담 일정이 아닙니다.");
             }
@@ -197,7 +197,7 @@ public class ScheduleService {
         // 본인 일정인지 확인
         if (isUserSchedule(user, schedule)) {
             if (schedule instanceof Contract) {
-                return toContractResponseDto((Contract) schedule);
+                return toContractResponseDto((Contract) schedule, userId);
             } else {
                 throw new IllegalArgumentException("해당 ID는 계약 일정이 아닙니다.");
             }
@@ -250,7 +250,7 @@ public class ScheduleService {
         }
         // 반환타입으로 변환하여 반환
         if (scheduleList.size() > 0) {
-            return toCommonScheduleList(scheduleList);
+            return toScheduleResponseDtoList(scheduleList, userId);
         } else {
             throw new IllegalArgumentException("해당하는 일정이 없습니다.");
         }
@@ -305,7 +305,7 @@ public class ScheduleService {
         }
         // 반환타입으로 변환하여 반환
         if (scheduleList.size() > 0) {
-            return toConsultationList(scheduleList);
+            return toConsultationList(scheduleList, userId);
         } else {
             throw new IllegalArgumentException("해당하는 일정이 없습니다.");
         }
@@ -332,7 +332,7 @@ public class ScheduleService {
         }
         // 반환타입으로 변환하여 반환
         if (scheduleList.size() > 0) {
-            return toContractList(scheduleList);
+            return toContractList(scheduleList, userId);
         } else {
             throw new IllegalArgumentException("해당하는 일정이 없습니다.");
         }
@@ -450,19 +450,19 @@ public class ScheduleService {
 
 
     // ==================== 기타 로직 ==================== //
-    private List<ContractResponseDto> toContractList(List<Schedule> scheduleList) {
+    private List<ContractResponseDto> toContractList(List<Schedule> scheduleList, Integer loginUserId) {
         List<ContractResponseDto> contractResponseList = new ArrayList<>();
         for (int i=0; i<scheduleList.size(); i++) {
-            contractResponseList.add(toContractResponseDto((Contract) scheduleList.get(i)));
+            contractResponseList.add(toContractResponseDto((Contract) scheduleList.get(i), loginUserId));
         }
         return contractResponseList;
     }
 
-    private List<ConsultationResponseDto> toConsultationList(List<Schedule> scheduleList) {
+    private List<ConsultationResponseDto> toConsultationList(List<Schedule> scheduleList, Integer loginUserId) {
         List<ConsultationResponseDto> consultationResponseList = new ArrayList<>();
 
         for (int i=0; i<scheduleList.size(); i++) {
-            consultationResponseList.add(toConsultationResponseDto((Consultation) scheduleList.get(i)));
+            consultationResponseList.add(toConsultationResponseDto((Consultation) scheduleList.get(i), loginUserId));
         }
 
         return consultationResponseList;
@@ -546,7 +546,7 @@ public class ScheduleService {
         // 배열로 반환
         return new String[]{dateStr, timeStr};
     }
-    private List<ScheduleResponseDto> toCommonScheduleList(List<Schedule> scheduleList) {
+    private List<ScheduleResponseDto> toScheduleResponseDtoList(List<Schedule> scheduleList, Integer loginUserId) {
         List<ScheduleResponseDto> commonSchedulelist = new ArrayList<>();
 
         for (int i=0; i<scheduleList.size(); i++) {
@@ -555,14 +555,16 @@ public class ScheduleService {
                     !((MiddleProcess) scheduleList.get(i)).getMiddleProcessStep().isVisit())
                 continue;
 
-            commonSchedulelist.add(toScheduleResponseDto(scheduleList.get(i)));
+            commonSchedulelist.add(toScheduleResponseDto(scheduleList.get(i), loginUserId));
         }
 
         return commonSchedulelist;
     }
 
-    private ScheduleResponseDto toScheduleResponseDto(Schedule schedule) {
+    private ScheduleResponseDto toScheduleResponseDto(Schedule schedule, Integer loginUserId) {
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto();
+        User user = userRepository.findById(loginUserId).orElseThrow();
+
 
         // 날짜 형식 변환
         String[] startDateTime = dateTimeToString(schedule.getStartDateTime());
@@ -572,6 +574,7 @@ public class ScheduleService {
         scheduleResponseDto.setEndDate(endDateTime[0]);
         scheduleResponseDto.setEndTime(endDateTime[1]);
 
+        scheduleResponseDto.setLoginUserId(loginUserId);
         scheduleResponseDto.setScheduleId(schedule.getScheduleId());
         scheduleResponseDto.setTitle(schedule.getTitle());
         scheduleResponseDto.setCreatedAt(schedule.getCreatedAt());
@@ -583,7 +586,19 @@ public class ScheduleService {
         // 수기 등록 일정이 아니면 업체명 추가
         if (!(schedule instanceof OtherSchedule)) {
             scheduleResponseDto.setVendorName(schedule.getVendor().getName());
+            scheduleResponseDto.setVendorId(schedule.getVendor().getUserId());
+            scheduleResponseDto.setCustomerName(schedule.getCustomer().getName());
+            scheduleResponseDto.setCustomerId(schedule.getCustomer().getUserId());
+        } else {
+            if (user instanceof Vendor) {
+                scheduleResponseDto.setVendorName(schedule.getVendor().getName());
+                scheduleResponseDto.setVendorId(schedule.getVendor().getUserId());
+            } else {
+                scheduleResponseDto.setCustomerName(schedule.getCustomer().getName());
+                scheduleResponseDto.setCustomerId(schedule.getCustomer().getUserId());
+            }
         }
+
         // 중간과정 일정이면 방문일정(isVisit=true)인 일정만 추가 & 계약ID 추가
         if (schedule instanceof MiddleProcess) {
             scheduleResponseDto.setContractId(((MiddleProcess) schedule).getContract().getScheduleId());
@@ -621,7 +636,7 @@ public class ScheduleService {
     }
 
 
-    private ContractResponseDto toContractResponseDto(Contract schedule) {
+    private ContractResponseDto toContractResponseDto(Contract schedule, Integer loginUserId) {
         ContractResponseDto contractDto = new ContractResponseDto();
 
         // 날짜 형식 변환
@@ -632,6 +647,7 @@ public class ScheduleService {
         contractDto.setEndDate(endDateTime[0]);
         contractDto.setEndTime(endDateTime[1]);
 
+        contractDto.setLoginUserId(loginUserId);
         contractDto.setScheduleId(schedule.getScheduleId());
 //        contractDto.setStartTime(schedule.getStartDateTime());
 //        contractDto.setEndTime(schedule.getEndDateTime());
@@ -654,7 +670,7 @@ public class ScheduleService {
         return contractDto;
     }
 
-    private ConsultationResponseDto toConsultationResponseDto(Consultation consultation) {
+    private ConsultationResponseDto toConsultationResponseDto(Consultation consultation, Integer loginUserId) {
         ConsultationResponseDto consultationDto = new ConsultationResponseDto();
 
         // 날짜 형식 변환
@@ -665,6 +681,7 @@ public class ScheduleService {
         consultationDto.setEndDate(endDateTime[0]);
         consultationDto.setEndTime(endDateTime[1]);
 
+        consultationDto.setLoginUserId(loginUserId);
         consultationDto.setScheduleId(consultation.getScheduleId());
         consultationDto.setTitle(consultation.getTitle());
         consultationDto.setCreatedAt(consultation.getCreatedAt());

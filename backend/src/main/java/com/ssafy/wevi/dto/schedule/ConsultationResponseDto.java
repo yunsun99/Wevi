@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class ConsultationResponseDto {
+    private Integer loginUserId;
     // 일정 공통
     private int scheduleId;
 //    private LocalDateTime startTime;
