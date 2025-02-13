@@ -178,8 +178,8 @@ public class VendorService {
     private VendorResponseDto convertToDto(Vendor vendor) {
         VendorResponseDto dto = new VendorResponseDto();
         dto.setId(vendor.getUserId());
-        dto.setName(vendor.getName());
-        dto.setCategory(vendor.getCategory().getId());
+        dto.setVendorName(vendor.getName());
+        dto.setCategoryId(vendor.getCategory().getId());
         dto.setDoId(vendor.getSigunguCode().getDoId());
         dto.setDoName(vendor.getSigunguCode().getDoEntity().getDoName());
         dto.setSigunguId(vendor.getSigunguCode().getSigunguId());
@@ -203,15 +203,15 @@ public class VendorService {
         VendorDetailResponseDto vendorDetailResponseDto = new VendorDetailResponseDto();
         vendorDetailResponseDto.setOwnerName(vendor.getOwnerName());
         vendorDetailResponseDto.setOwnerPhone(vendor.getOwnerPhone());
-        vendorDetailResponseDto.setName(vendor.getName());
+        vendorDetailResponseDto.setVendorName(vendor.getName());
         vendorDetailResponseDto.setZonecode(vendor.getZonecode());
         vendorDetailResponseDto.setDoCode(vendor.getSigunguCode() != null ? vendor.getSigunguCode().getDoId() : null);
         vendorDetailResponseDto.setSigunguCode(vendor.getSigunguCode() != null ? vendor.getSigunguCode().getSigunguId() : null);
         vendorDetailResponseDto.setAutoRoadAddress(vendor.getAutoRoadAddress());
         vendorDetailResponseDto.setAddressDetail(vendor.getAddressDetail());
-        vendorDetailResponseDto.setPhone(vendor.getPhone());
+        vendorDetailResponseDto.setVendorPhone(vendor.getPhone());
         vendorDetailResponseDto.setRegistrationNumber(vendor.getRegistrationNumber());
-        vendorDetailResponseDto.setCategory(vendor.getCategory() != null ? vendor.getCategory().getId() : null);
+        vendorDetailResponseDto.setCategoryId(vendor.getCategory() != null ? vendor.getCategory().getId() : null);
         vendorDetailResponseDto.setBusinessHour(vendor.getBusinessHour());
         vendorDetailResponseDto.setHomepage(vendor.getHomepage());
         vendorDetailResponseDto.setPrice(vendor.getPrice());
