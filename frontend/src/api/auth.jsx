@@ -1,4 +1,6 @@
 import axios from "axios";
+import { setRecoil } from "recoil-nexus";
+import { isAuthenticatedState } from "../atoms/userState";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASEURL,
@@ -60,6 +62,20 @@ export async function handleSignUp(formData) {
   }
 }
 
+export async function handleLogout() {
+  try {
+    const response = await api.post(`/api/auth/logout`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.status; // 성공 시 응답 코드 반환 (예: 200)
+  } catch (error) {
+    console.log(error);
+    return error.response ? error.response.status : 500;
+  }
+}
+
 export async function sendFCMToken(token) {
   try {
     const response = await api.post(`/api/users/fcm-token`, token, {
@@ -74,19 +90,16 @@ export async function sendFCMToken(token) {
   }
 }
 
-// 인증 상태를 업데이트하는 함수
-export const setupInterceptors = (setIsAuthenticated) => {
-  api.interceptors.response.use(
-    (response) => {
-      console.log(response.status);
-      return response;
-    }, // 정상 응답 그대로 반환
-    (error) => {
-      if (error.response.status === 401 || error.response.status === 403) {
-        console.log(error.response.status);
-        setIsAuthenticated(false); // 로그아웃 처리
-      }
-      return Promise.reject(error);
+// 인터셉터 설정
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
+      setRecoil(isAuthenticatedState, false); // 로그아웃 처리
     }
-  );
-};
+    return Promise.reject(error);
+  }
+);

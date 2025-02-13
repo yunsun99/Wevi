@@ -3,6 +3,7 @@ import BottomNavigationBar from "../components/Navigators/BottomNavigationBar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../api/user";
+import { handleLogout } from "../api/auth";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -32,6 +33,17 @@ export default function MyPage() {
     };
     axiosUserInfo();
   }, []);
+
+  const onLogoutSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await handleLogout();
+      navigate("/login");
+    } catch (err) {
+      setError(err.message); // ✅ 서버에서 받은 오류 메시지 표시
+    }
+  };
 
   return (
     <>
@@ -68,7 +80,10 @@ export default function MyPage() {
 
       {/* 로그아웃 버튼 */}
       <div className="px-6 pb-24 flex flex-col items-start mt-5">
-        <button className="text-red-500 text-center py-3 text-sm font-semibold">
+        <button
+          className="text-red-500 text-center py-3 text-sm font-semibold"
+          onClick={onLogoutSubmit}
+        >
           로그아웃
         </button>
         <p className="text-gray-400 text-xs text-center mt-1">회원탈퇴</p>

@@ -1,11 +1,5 @@
 import axios from "axios";
-// import logo from "@/assets/logo.png";
-
-const api = axios.create({
-  baseURL: "http://localhost:8080",
-  "Content-Type": "application/json",
-  withCredentials: true,
-});
+import { api } from "./auth";
 
 // 일정 정보 불러오기기
 export async function getSchedules() {
@@ -19,8 +13,7 @@ export async function getSchedules() {
       return;
     }
   } catch (error) {
-    console.log(error);
-    return error.response ? error.response.status : 500;
+    return Promise.reject(error);
   }
 }
 

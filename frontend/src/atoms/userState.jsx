@@ -8,6 +8,11 @@ export const userState = atom({
   },
 });
 
+export const isAuthenticatedState = atom({
+  key: "isAuthenticatedState",
+  default: true, // 기본값: 로그인 상태로 가정
+});
+
 export const signupState = atom({
   key: "signupState",
   default: {
