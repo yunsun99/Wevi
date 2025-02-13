@@ -12,15 +12,15 @@ import java.util.List;
 public class VendorDetailResponseDto {
     private String ownerName;
     private String ownerPhone;
-    private String name;
+    private String vendorName;
     private String zonecode;
     private Integer doCode;
     private Integer sigunguCode;
     private String autoRoadAddress;
     private String addressDetail;
-    private String phone;
+    private String vendorPhone;
     private String registrationNumber;
-    private Integer category;
+    private Integer categoryId;
     private String businessHour;
     private String homepage;
     private String price;
