@@ -110,6 +110,17 @@ pipeline {
                             ls -la
                         '''
 
+                        // 시크릿 파일 설정 부분 (필요시 주석 해제)
+                        withCredentials([
+                            file(credentialsId: 'react-env', variable: 'envFile')
+                        ]) {
+                        sh '''
+                            cp "$envFile" .env
+                            chmod 644 .env
+                        '''
+                        }
+
+
                         sh '''
                             echo "===== Starting Build Process ====="
                             rm -rf node_modules
