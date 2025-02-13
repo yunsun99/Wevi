@@ -2,17 +2,16 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyAy3EbUT1eN3wThLG8Yv2JXYv-wpSonvek",
-  authDomain: "wevi-9131d.firebaseapp.com",
-  projectId: "wevi-9131d",
-  storageBucket: "wevi-9131d.firebasestorage.app",
-  messagingSenderId: "857264428936",
-  appId: "1:857264428936:web:caf47a27fc0fe532ca8c3d",
-  measurementId: "G-456SWCDR59",
+  apiKey: import.meta.env.VITE_APIKEY,
+  authDomain: import.meta.env.VITE_AUTHDOMAIN,
+  projectId: import.meta.env.VITE_PROJECTID,
+  storageBucket: import.meta.env.VITE_STORAGEBUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
+  appId: import.meta.env.VITE_APPID,
+  measurementId: import.meta.env.VITE_MEASUREMENTID,
 };
 
-export const vapidKey =
-  "BJ0a9VYPiJM0jbJ05HSlzy-OruFo2jZ58OnUUWe3YjVm22mgtonBpOkSCaZ59RIKQ_IIC0rHKBLmDVuDxNJ2jSY";
+export const vapidKey = import.meta.env.VITE_VAPIDKEY;
 
 const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
@@ -23,8 +22,7 @@ export const requestFCMToken = async () => {
     const permission = await Notification.requestPermission();
     if (permission === "granted") {
       const token = await getToken(messaging, {
-        vapidKey:
-          "BJ0a9VYPiJM0jbJ05HSlzy-OruFo2jZ58OnUUWe3YjVm22mgtonBpOkSCaZ59RIKQ_IIC0rHKBLmDVuDxNJ2jSY",
+        vapidKey: vapidKey,
       });
       console.log("FCM Token:", token);
       console.log("가가");

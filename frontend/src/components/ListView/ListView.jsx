@@ -1,5 +1,4 @@
 export default function ListView({ data, CardComponent }) {
-  console.log(data);
   return (
     <div className="flex flex-col gap-2 px-4 py-2">
       {Array.isArray(data) && data.length > 0 ? (
