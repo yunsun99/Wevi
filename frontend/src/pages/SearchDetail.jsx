@@ -29,10 +29,15 @@ export default function SearchDetail() {
       }
     };
     axiosVendorInfo();
+
     const axiosVendorReviews = async () => {
       try {
         const reviews = await getVendorReviews(id);
-        setReviewData(reviews);
+        setReviewData((prev) => ({
+          ...prev,
+          vendorId: id,
+          reviews: reviews,
+        }));
       } catch (err) {
         console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
       }
