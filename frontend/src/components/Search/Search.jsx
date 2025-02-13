@@ -7,11 +7,15 @@ export default function Search() {
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const [localSearchText, setLocalSearchText] = useState(searchText);
   useEffect(() => {
-    setLocalSearchText(searchText);
-  }, [searchText]);
+    const debounce = setTimeout(() => {
+      setSearchText(localSearchText);
+    }, 300);
+
+    return () => clearTimeout(debounce); // cleanup으로 기존 타이머 제거
+  }, [localSearchText, setSearchText]);
+
   const handleInputChange = (e) => {
     setLocalSearchText(e.target.value);
-    setSearchText(e.target.value);
   };
 
   return (

@@ -15,6 +15,9 @@ export async function getSearchData(data) {
     //   return;
     // }
     // console.log(data);
+    if (data.searchText === "아") {
+      return [services[data.category][0]];
+    }
     return services[data.category];
   } catch (error) {
     console.log(error);

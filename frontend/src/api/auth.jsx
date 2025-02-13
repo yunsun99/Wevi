@@ -1,7 +1,9 @@
 import axios from "axios";
+import { setRecoil } from "recoil-nexus";
+import { isAuthenticatedState } from "../atoms/userState";
 
 export const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: import.meta.env.VITE_BASE_URL,
   withCredentials: true,
 });
 
@@ -74,15 +76,16 @@ export async function sendFCMToken(token) {
   }
 }
 
-// 인증 상태를 업데이트하는 함수
-export const setupInterceptors = (setIsAuthenticated) => {
-  api.interceptors.response.use(
-    (response) => response, // 정상 응답 그대로 반환
-    (error) => {
-      if (error.response.status === 401 || error.response.status === 403) {
-        setIsAuthenticated(false); // 로그아웃 처리
-      }
-      return Promise.reject(error);
+// 인터셉터 설정
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
+      setRecoil(isAuthenticatedState, false); // 로그아웃 처리
     }
-  );
-};
+    return Promise.reject(error);
+  }
+);

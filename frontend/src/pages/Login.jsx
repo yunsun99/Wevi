@@ -15,6 +15,8 @@ import Button1 from "@/components/Buttons/Button1";
 import { Link } from "react-router-dom";
 import { requestFCMToken } from "../api/firebase";
 import { sendFCMToken } from "../api/auth";
+import { setRecoil } from "recoil-nexus";
+import { isAuthenticatedState } from "../atoms/userState";
 
 export default function Login() {
   const [error, setError] = useState(null); // 로그인 실패 메시지
@@ -60,6 +62,7 @@ export default function Login() {
       const currentToken = await requestFCMToken();
       await sendFCMToken(currentToken);
       if (userCode === 200) {
+        setRecoil(isAuthenticatedState, true);
         navigate("/");
       }
     } catch (err) {

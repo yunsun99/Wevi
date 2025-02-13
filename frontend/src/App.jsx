@@ -27,6 +27,7 @@ import Reservation from "./pages/Reservation";
 import ConsultationList from "./pages/ConsultationList";
 import ConsultationDetail from "./pages/ConsultationDetail";
 import ContractDetail from "./pages/ContractDetail";
+import RecoilNexus from "recoil-nexus";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -43,26 +44,30 @@ const router = createBrowserRouter([
       { path: "/mypage", element: <MyPage /> },
       { path: "/progress", element: <Progress /> },
       { path: "/aiplanner", element: <AiPlanner /> },
+      { path: "/test", element: <Test /> },
+      {
+        path: "/search",
+        element: <Navigate replace to="/search/weddinghall" />,
+      },
+      { path: "/search/:category", element: <Search /> },
+      { path: "/searchDetail", element: <SearchDetail /> },
+      {
+        path: "/consultationReservation",
+        element: <ConsultationReservation />,
+      },
+      { path: "/couplelink", element: <CoupleLink /> },
+      { path: "/reservation", element: <Reservation /> },
+      { path: "/consultationList", element: <ConsultationList /> },
+      { path: "/consultationDetail/:id", element: <ConsultationDetail /> },
+      { path: "/contractDetail/:id", element: <ContractDetail /> },
     ],
   },
-  { path: "/test", element: <Test /> },
-  {
-    path: "/search",
-    element: <Navigate replace to="/search/weddinghall" />,
-  },
-  { path: "/search/:category", element: <Search /> },
-  { path: "/searchDetail", element: <SearchDetail /> },
-  { path: "/consultationReservation", element: <ConsultationReservation /> },
-  { path: "/couplelink", element: <CoupleLink /> },
-  { path: "/reservation", element: <Reservation /> },
-  { path: "/consultationList", element: <ConsultationList /> },
-  { path: "/consultationDetail/:id", element: <ConsultationDetail /> },
-  { path: "/contractDetail/:id", element: <ContractDetail /> },
 ]);
 
 function App() {
   return (
     <RecoilRoot>
+      <RecoilNexus />
       <RouterProvider router={router} />
     </RecoilRoot>
   );
