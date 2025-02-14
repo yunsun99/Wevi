@@ -37,7 +37,7 @@ export default function ProgressCard({ data }) {
   }, {});
 
   return (
-    <div className="flex flex-col h-[calc(100vh-5rem-5rem)]">
+    <div className="flex flex-col h-[86vh]">
       <div className="flex-grow bg-gray-100 overflow-auto">
         <div className="w-full h-full flex items-center justify-center p-4">
           <div className="w-[100%] max-w-[1200px] h-full overflow-hidden">

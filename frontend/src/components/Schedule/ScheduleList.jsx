@@ -35,7 +35,7 @@ const ScheduleList = ({ selectedDate, sortedScheduleData }) => {
 
   return (
     <>
-      <div ref={listRef} className="w-screen h-[86vh]">
+      <div ref={listRef} className="w-screen">
         {Object.entries(groupedScheduleData).map(([date, schedules]) => {
           const formattedDate = dayjs(date).format("M월 D일");
 

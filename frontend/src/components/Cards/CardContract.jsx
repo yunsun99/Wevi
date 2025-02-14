@@ -49,7 +49,7 @@ export default function CardContract({ data }) {
   }
   return (
     <div
-      className="relative bg-gray-800 shadow-md h-[10rem] overflow-hidden cursor-pointer"
+      className="relative bg-gray-800 shadow-md h-[21.5vh] overflow-hidden cursor-pointer"
       style={{
         backgroundImage: `url(${backgroundImageURL})`,
         backgroundSize: "cover",

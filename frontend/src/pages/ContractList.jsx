@@ -27,9 +27,11 @@ export default function ContractList() {
   return (
     <>
       <TopNavigationBar2 title="계약 내역" />
-      {contractList ? (
-        <CardListView data={contractList} CardComponent={CardContract} />
-      ) : null}
+      <div className="h-[86vh]">
+        {contractList ? (
+          <CardListView data={contractList} CardComponent={CardContract} />
+        ) : null}
+      </div>
       <BottomNavigationBar />
     </>
   );
