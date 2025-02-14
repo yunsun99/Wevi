@@ -3,9 +3,12 @@ package com.ssafy.wevi.domain;
 import com.ssafy.wevi.domain.user.Customer;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "couple_requests")
+@SQLRestriction("status <> 'REJECTED' AND status <> 'TERMINATED'")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,11 +19,11 @@ public class CoupleRequest extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer coupleRequestId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
     private Customer sender;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private Customer receiver;
 

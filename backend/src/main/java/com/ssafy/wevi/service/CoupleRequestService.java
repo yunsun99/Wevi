@@ -10,6 +10,8 @@ import com.ssafy.wevi.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -54,19 +56,26 @@ public class CoupleRequestService {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("해당 ID의 사용자를 찾을 수 없습니다: " + customerId));
 
-        CoupleRequest coupleRequest = customer.getReceivedRequest();
-        if (coupleRequest == null) {
+        List<CoupleRequest> coupleRequests = customer.getReceivedRequests();
+        if (coupleRequests == null || coupleRequests.isEmpty()) {
             throw new IllegalStateException("해당 사용자는 커플 요청을 받은 적이 없습니다.");
         }
+        CoupleRequest coupleRequest = coupleRequests.get(0);
 
         Customer spouse = coupleRequest.getSender();
 
         // 상태가 "REJECTED"인 경우, 요청 삭제 후 void 반환
         if (CoupleRequestStatus.REJECTED.name().equals(status)) {
+            coupleRequest.setStatus(CoupleRequestStatus.REJECTED.name());
+            coupleRequestRepository.save(coupleRequest);
+
             String message = customer.getName() + "님이 커플 연동 신청을 거절하였습니다.";
             notificationService.createCoupleRequestSentNotification(spouse, "❤ 커플 연동 답장", message, coupleRequest);
-            coupleRequestRepository.delete(coupleRequest); // 요청 삭제
-            return null; // 거절된 경우 반환값 없음
+
+            // coupleRequestRepository.delete(coupleRequest); // 요청 삭제
+            // return null; // 거절된 경우 반환값 없음
+
+            return toCoupleRequestResponseDto(coupleRequest);
         }
 
         // 상태가 "ACCEPTED"인 경우, 상태 업데이트
