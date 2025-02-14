@@ -26,7 +26,7 @@ export default function CalendarComponent({
 
   return (
     <>
-      <div className="flex bg-white justify-center items-center rounded-lg shadow-md p-4 mb-4 h-auto">
+      <div className="flex bg-[#f4f9f5] justify-center items-center rounded-lg shadow-md mb-4 h-auto">
         <Calendar
           locale="en-US" // 일요일 시작
           onChange={handleDateClick}

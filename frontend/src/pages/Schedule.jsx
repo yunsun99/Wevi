@@ -48,7 +48,7 @@ export default function Schedule() {
   return (
     <>
       <TopNavigationBar />
-      <div className="h-[86vh]">
+      <div className="h-[86vh] bg-[f4f9f5]">
         <CalendarComponent
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
