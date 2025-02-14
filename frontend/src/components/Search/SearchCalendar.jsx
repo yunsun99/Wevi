@@ -13,7 +13,10 @@ export default function SearchCalendar() {
     (e) => {
       const newDate = e.target.value;
       if (newDate !== searchDate) {
-        setSearchDate(newDate); // ✅ searchDate를 문자열로 저장
+        setSearchDate((prev) => ({
+          ...prev,
+          date: newDate,
+        })); // ✅ searchDate를 문자열로 저장
       }
       setIsCalendarVisible(false);
     },
@@ -52,7 +55,7 @@ export default function SearchCalendar() {
           <img src={icon_calendar} alt="Calendar Icon" className="h-5 w-5" />
         </div>
         <span className="flex-1 bg-transparent px-4 text-sm text-gray-700">
-          {searchDate || "날짜 선택"} {/* ✅ 문자열 렌더링 가능 */}
+          {searchDate.date || "날짜 선택"} {/* ✅ 문자열 렌더링 가능 */}
         </span>
       </div>
 

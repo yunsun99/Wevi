@@ -12,7 +12,10 @@ export const searchTextState = atom({
 
 export const searchDateState = atom({
   key: "searchDateState",
-  default: "",
+  default: {
+    date: "",
+    time: "",
+  },
 });
 
 export const searchFilterState = atom({
@@ -43,4 +46,9 @@ export const searchDetailState = atom({
     vendorVisitInformation: "",
     vendorBusinessInformation: "",
   },
+});
+
+export const searchDetailDateState = atom({
+  key: "searchDetailDateState",
+  default: {},
 });

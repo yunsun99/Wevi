@@ -8,10 +8,16 @@ import "../Calendar.css"; // 커스터마이징 CSS
 import { useRecoilState } from "recoil";
 import CalendarComponent from "../components/Calendar/CalendarComponent";
 import CalendarTimeSelect from "../components/Calendar/CalendarTimeSelect";
-import { searchFilterState } from "../atoms/searchState";
+import { searchDateState } from "../atoms/searchState";
+import { useLocation } from "react-router-dom";
 //
 export default function ConsultationReservation() {
-  const [selectedDate, setSelectedDate] = useRecoilState(searchFilterState); // 초기값을 현재 날짜로 설정
+  const [selectedDate, setSelectedDate] = useRecoilState(searchDateState); // 초기값을 현재 날짜로 설정
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const vendorId = searchParams.get("id"); // 쿼리 파라미터에서 id 값 가져오기
+
   const handleDateClick = (date) => {
     setSelectedDate((prevState) => ({
       ...prevState,
@@ -22,7 +28,7 @@ export default function ConsultationReservation() {
   return (
     <>
       <TopNavigationBar2 title={"예약하기"} />
-      <VendorImage />
+      {/* <VendorImage /> */}
       <div className="bg-white rounded-lg shadow-md mt-4 p-4">
         <h3 className="text-xl font-bold">상담가능 날짜</h3>
         <CalendarComponent

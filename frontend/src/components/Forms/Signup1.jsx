@@ -34,7 +34,7 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
     handleInputBlur: handlePasswordBlur,
     hasError: passwordHasError,
   } = useInput(formData, setFormData, "password", (value) =>
-    hasMinLength(value, 6)
+    hasMinLength(value, 3)
   );
 
   // 비밀번호 입력 확인

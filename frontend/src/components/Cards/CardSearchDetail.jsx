@@ -10,7 +10,7 @@ import VendorReview from "../Vendors/VendorReview";
 import VendorSimpleInformation from "../Vendors/VendorSimpleInformation";
 import VendorVisitInformation from "../Vendors/VendorVisitInformation";
 import { searchDetailState } from "../../atoms/searchState";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import React from "react";
 
 // GPT왈 memo가 더 최적화이다?
@@ -18,8 +18,11 @@ const CardSearchDetail = React.memo(({ data }) => {
   const [selectedButton, setSelectedButton] = useRecoilState(searchDetailState);
   const navigate = useNavigate();
 
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const vendorId = searchParams.get("id"); // 쿼리 파라미터에서 id 값 가져오기
   function handleConsultationReservation() {
-    navigate("/consultationReservation");
+    navigate(`/consultationReservation?id=${vendorId}`);
   }
 
   console.log("CardSearchDetail Rendered");
