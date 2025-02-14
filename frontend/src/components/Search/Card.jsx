@@ -1,9 +1,11 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Card({ data }) {
   const navigate = useNavigate();
+  const { category } = useParams(); // /search/:category 경로에서 category를 추출
+
   function handleCardClick(id) {
-    navigate(`/searchDetail?id=${id}`);
+    navigate(`/searchDetail/${category}?id=${id}`);
   }
 
   return (

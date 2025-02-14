@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import TopNavigationBar from "../components/Navigators/TopNavigationBar2";
 import BottomNavigationBar from "../components/Navigators/BottomNavigationBar";
 import CardSearchDetail from "../components/Cards/CardSearchDetail";
@@ -9,12 +9,14 @@ import { useRecoilState } from "recoil";
 
 // 성일
 export default function SearchDetail() {
+  let { category } = useParams(); // 예: "dress"가 들어옴
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id"); // 쿼리 파라미터에서 id 값 가져오기
+
   const [vendorData, setVendorData] = useState();
   const [reviewData, setReviewData] = useRecoilState(vendorState);
-  const [title, setTitle] = useState("gd"); // ⬅️ title을 상태로 선언
+  const [title, setTitle] = useState(""); // ⬅️ title을 상태로 선언
 
   useEffect(() => {
     if (!id) {
@@ -45,30 +47,18 @@ export default function SearchDetail() {
     axiosVendorReviews();
   }, [id]);
 
-  useEffect(() => {
-    if (!vendorData) {
-      return;
-    }
-    let newTitle;
-    if (vendorData.categoryId === 1) {
-      newTitle = "웨딩홀";
-    } else if (vendorData.categoryId === 2) {
-      newTitle = "스튜디오";
-    } else if (vendorData.categoryId === 3) {
-      newTitle = "드레스";
-    } else if (vendorData.categoryId === 4) {
-      newTitle = "헤어/메이크업";
-    } else {
-      newTitle = "기타";
-    }
-    setTitle(newTitle); // ⬅️ title을 상태로 업데이트
-    console.log(newTitle);
-    console.log(reviewData);
-  }, [vendorData]);
-
+  if (category === "weddinghall") {
+    category = "웨딩홀";
+  } else if (category === "studio") {
+    category = "스튜디오";
+  } else if (category === "dress") {
+    category = "드레스";
+  } else if (category === "makeup") {
+    category = "헤어/메이크업";
+  }
   return (
     <>
-      <TopNavigationBar title={title} />
+      <TopNavigationBar title={category} />
       {vendorData ? <CardSearchDetail data={vendorData} /> : null}
       <BottomNavigationBar />
     </>
