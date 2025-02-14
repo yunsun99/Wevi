@@ -10,6 +10,7 @@ import java.util.List;
 @Getter @Setter
 public class ReviewDto {
     private Integer reviewId;           // 리뷰 ID
+    private String userNickname;        // 작성자 닉네임
     private String content;             // 내용
     private LocalDateTime createdAt;    // 생성 시간
     private LocalDateTime updatedAt;    // 수정 시간

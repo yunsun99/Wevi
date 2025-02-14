@@ -234,6 +234,7 @@ public class VendorService {
     private ReviewDto convertToReviewDto(Review review) {
         ReviewDto reviewDto = new ReviewDto();
         reviewDto.setReviewId(review.getReviewId());
+        reviewDto.setUserNickname(review.getCustomer().getNickname());
         reviewDto.setContent(review.getContent());
         reviewDto.setCreatedAt(review.getCreatedAt());
         reviewDto.setUpdatedAt(review.getUpdatedAt());
