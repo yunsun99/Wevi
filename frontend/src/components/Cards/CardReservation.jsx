@@ -11,7 +11,7 @@ export default function CardReservation({ data, category }) {
     console.log("캔슬완");
   }
   return (
-    <>
+    <div className="h-[86vh]">
       <div className="bg-white rounded-lg shadow-md p-4">
         {/* 이미지 및 타이틀 */}
         <div className="items-center mb-4">
@@ -88,6 +88,6 @@ export default function CardReservation({ data, category }) {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

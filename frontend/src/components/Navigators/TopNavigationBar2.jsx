@@ -11,7 +11,7 @@ function TopNavigationBar2({ title }) {
 
   return (
     <>
-      <header className="flex items-center w-full sticky top-0 left-0 right-0 justify-between px-4 py-3 bg-[#FFFDFA] shadow-md z-10">
+      <header className="h-[6vh] flex items-center w-full sticky top-0 left-0 right-0 justify-between px-4 py-3 bg-[#FFFDFA] shadow-md z-10">
         {/* 🔙 뒤로 가기 버튼 */}
         <button onClick={() => navigate(-1)} className="flex items-center">
           <img

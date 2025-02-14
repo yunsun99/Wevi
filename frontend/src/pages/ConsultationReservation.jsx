@@ -29,7 +29,7 @@ export default function ConsultationReservation() {
     <>
       <TopNavigationBar2 title={"예약하기"} />
       {/* <VendorImage /> */}
-      <div className="bg-white rounded-lg shadow-md mt-4 p-4">
+      <div className="h-[94vh] bg-white rounded-lg shadow-md p-4">
         <h3 className="text-xl font-bold">상담가능 날짜</h3>
         <CalendarComponent
           selectedDate={selectedDate}

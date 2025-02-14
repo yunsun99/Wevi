@@ -52,53 +52,55 @@ export default function Home() {
   return (
     <>
       <TopNavigationBar />
-      <div className="h-20 flex justify-end items-center px-4">
-        <div className="text-2xl font-bold">1 일째</div>
-      </div>
-      <main className="flex flex-col w-screen items-center justify-center overflow-hidden h-[calc(100vh-144px)]">
-        <div className="relative w-full flex items-center justify-center">
-          {/* 기본 캐릭터 배경 (항상 표시) */}
-          <img
-            src={character_background}
-            alt="Character Background"
-            className="absolute object-contain"
-          />
-
-          {/* 기본 캐릭터 (항상 표시) */}
-          <img
-            src={character_original}
-            alt="Character Original"
-            className="absolute object-contain"
-          />
-
-          {/* 드레스 계약이 있으면 드레스 이미지 추가 */}
-          {categoryExists.dress && (
-            <img
-              src={character_dress}
-              alt="Character Dress"
-              className="absolute object-contain"
-            />
-          )}
-
-          {/* 헤어(메이크업) 계약이 있으면 헤어 이미지 추가 */}
-          {categoryExists.makeup && (
-            <img
-              src={character_hair}
-              alt="Character Hair"
-              className="absolute object-contain"
-            />
-          )}
-
-          {/* 스튜디오 계약이 있으면 카메라 이미지 추가 */}
-          {categoryExists.studio && (
-            <img
-              src={character_camera}
-              alt="Character Camera"
-              className="absolute object-contain"
-            />
-          )}
+      <div className="h-[86vh]">
+        <div className="h-20 flex justify-end items-center px-4">
+          <div className="text-2xl font-bold">1 일째</div>
         </div>
-      </main>
+        <main className="flex flex-col w-screen items-center justify-center overflow-hidden h-[calc(100vh-144px)]">
+          <div className="relative w-full flex items-center justify-center">
+            {/* 기본 캐릭터 배경 (항상 표시) */}
+            <img
+              src={character_background}
+              alt="Character Background"
+              className="absolute object-contain"
+            />
+
+            {/* 기본 캐릭터 (항상 표시) */}
+            <img
+              src={character_original}
+              alt="Character Original"
+              className="absolute object-contain"
+            />
+
+            {/* 드레스 계약이 있으면 드레스 이미지 추가 */}
+            {categoryExists.dress && (
+              <img
+                src={character_dress}
+                alt="Character Dress"
+                className="absolute object-contain"
+              />
+            )}
+
+            {/* 헤어(메이크업) 계약이 있으면 헤어 이미지 추가 */}
+            {categoryExists.makeup && (
+              <img
+                src={character_hair}
+                alt="Character Hair"
+                className="absolute object-contain"
+              />
+            )}
+
+            {/* 스튜디오 계약이 있으면 카메라 이미지 추가 */}
+            {categoryExists.studio && (
+              <img
+                src={character_camera}
+                alt="Character Camera"
+                className="absolute object-contain"
+              />
+            )}
+          </div>
+        </main>
+      </div>
       <BottomNavigationBar />
     </>
   );

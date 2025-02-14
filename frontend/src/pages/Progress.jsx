@@ -23,8 +23,7 @@ export default function Progress() {
   }, [progressList]);
   return (
     <>
-      <TopNavigationBar />
-      {progressList && progressList.lenth > 0 ? (
+      {progressList && progressList.length > 0 ? (
         <ProgressCard data={progressList} />
       ) : (
         <div className="flex flex-col h-[calc(100vh-0rem)]">
