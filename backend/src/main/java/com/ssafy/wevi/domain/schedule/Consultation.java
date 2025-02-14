@@ -17,8 +17,8 @@ import lombok.Setter;
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Consultation extends Schedule{
 //    private int id; // 스케줄ID
-//    private LocalDateTime startTime;
-//    private LocalDateTime endTime;
+//    private LocalDateTime startDateTime;
+//    private LocalDateTime endDateTime;
 //    private String title;
 //    private Customer customer;
 //    private Vendor vendor;
