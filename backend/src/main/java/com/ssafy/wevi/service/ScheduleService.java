@@ -38,8 +38,8 @@ public class ScheduleService {
         // 이미 같은 시간에 예약되어 있는지 조회
         LocalDateTime startDateTime = stringToLocalDateTime(consultationCreateDto.getStartDate(),consultationCreateDto.getStartTime());
 
-        if (!scheduleRepository.findConflictSchedule(startDateTime, startDateTime.plusHours(1), consultationCreateDto.getVendorId()).isEmpty()) {
-            System.out.println("===========있음==========="+scheduleRepository.findConflictSchedule(startDateTime, startDateTime.plusHours(1), consultationCreateDto.getVendorId()).get(0).getScheduleId());
+        if (!scheduleRepository.findConflictConsultation(startDateTime, startDateTime.plusHours(1), consultationCreateDto.getVendorId()).isEmpty()) {
+            System.out.println("===========있음==========="+scheduleRepository.findConflictConsultation(startDateTime, startDateTime.plusHours(1), consultationCreateDto.getVendorId()).get(0).getScheduleId());
             throw new IllegalArgumentException("해당 업체에 이미 예약된 상담이 존재합니다.");
         }
 
@@ -133,6 +133,38 @@ public class ScheduleService {
         return toContractResponseDto(contract, vendorId);
     }
 
+    public OtherScheduleResponseDto addOtherSchedule(OtherScheduleCreateDto otherScheduleCreateDto, Integer userId) {
+        OtherSchedule otherSchedule = new OtherSchedule();
+
+        // 이미 같은 시간에 예약되어 있는지 조회
+        LocalDateTime startDateTime = stringToLocalDateTime(otherScheduleCreateDto.getStartDate(),otherScheduleCreateDto.getStartTime());
+        LocalDateTime endDateTime = stringToLocalDateTime(otherScheduleCreateDto.getEndDate(),otherScheduleCreateDto.getEndTime());
+
+        if (!scheduleRepository.findConflictSchedule(startDateTime, endDateTime, userId).isEmpty()) {
+            throw new IllegalArgumentException("이미 겹치는 일정이 존재합니다.");
+        }
+
+        otherSchedule.setStartDateTime(startDateTime);
+        otherSchedule.setEndDateTime(endDateTime);
+        otherSchedule.setTitle(otherScheduleCreateDto.getTitle());
+        otherSchedule.setDetail(otherScheduleCreateDto.getDetail());
+        otherSchedule.setDtype("other_schedule");
+        otherSchedule.setCategory(categoryRepository.findById(5).orElseThrow());
+
+        User user = userRepository.findById(userId).orElseThrow();
+        
+        // 일정 등록자가 소비자인지 업체인지 구분하여 저장
+        if (user instanceof Customer) {
+            otherSchedule.setCustomer((Customer) user);
+        } else {
+            otherSchedule.setVendor((Vendor) user);
+        }
+
+        scheduleRepository.save(otherSchedule);
+
+        return toOtherScheduleResponseDto(otherSchedule, userId);
+    }
+
     //==========조회=========//
 
     // 상담 단건 조회
@@ -209,7 +241,7 @@ public class ScheduleService {
 
     // 수기등록 일정 단건 조회
     @Transactional(readOnly = true)
-    public OtherScheduleDto findOtherScheduleById(Integer scheduleId, Integer userId) {
+    public OtherScheduleResponseDto findOtherScheduleById(Integer scheduleId, Integer userId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow();
 
@@ -218,7 +250,7 @@ public class ScheduleService {
         // 본인 일정인지 확인
         if (isUserSchedule(user, schedule)) {
             if (schedule instanceof OtherSchedule) {
-                return toOtherScheduleDto((OtherSchedule) schedule);
+                return toOtherScheduleResponseDto((OtherSchedule) schedule, userId);
             } else {
                 throw new IllegalArgumentException("해당 ID는 수기등록 일정이 아닙니다.");
             }
@@ -607,32 +639,39 @@ public class ScheduleService {
         return scheduleResponseDto;
     }
 
-    private OtherScheduleDto toOtherScheduleDto(OtherSchedule schedule) {
-        OtherScheduleDto otherScheduleDto = new OtherScheduleDto();
+    private OtherScheduleResponseDto toOtherScheduleResponseDto(OtherSchedule schedule, Integer loginUserId) {
+        OtherScheduleResponseDto otherScheduleResponseDto = new OtherScheduleResponseDto();
 
         // 날짜 형식 변환
         String[] startDateTime = dateTimeToString(schedule.getStartDateTime());
         String[] endDateTime = dateTimeToString(schedule.getEndDateTime());
-        otherScheduleDto.setStartDate(startDateTime[0]);
-        otherScheduleDto.setStartTime(startDateTime[1]);
-        otherScheduleDto.setEndDate(endDateTime[0]);
-        otherScheduleDto.setEndTime(endDateTime[1]);
+        otherScheduleResponseDto.setStartDate(startDateTime[0]);
+        otherScheduleResponseDto.setStartTime(startDateTime[1]);
+        otherScheduleResponseDto.setEndDate(endDateTime[0]);
+        otherScheduleResponseDto.setEndTime(endDateTime[1]);
 
-        otherScheduleDto.setOtherScheduleId(schedule.getScheduleId());
+        otherScheduleResponseDto.setLoginUserId(loginUserId);
+        otherScheduleResponseDto.setOtherScheduleId(schedule.getScheduleId());
 //        otherScheduleDto.setStartTime(schedule.getStartDateTime());
 //        otherScheduleDto.setEndTime(schedule.getEndDateTime());
-        otherScheduleDto.setTitle(schedule.getTitle());
-        otherScheduleDto.setCreatedAt(schedule.getCreatedAt());
-        otherScheduleDto.setUpdatedAt(schedule.getUpdatedAt());
-        otherScheduleDto.setCustomerName(schedule.getCustomer().getName());
-        otherScheduleDto.setCustomerId(schedule.getCustomer().getUserId());
-        otherScheduleDto.setDetail(schedule.getDetail());
-        otherScheduleDto.setCategoryId(schedule.getCategory().getId());
-        otherScheduleDto.setCategoryName(schedule.getCategory().getName());
-        otherScheduleDto.setVendorId(schedule.getVendor().getUserId());
-        otherScheduleDto.setVendorName(schedule.getVendor().getName());
+        otherScheduleResponseDto.setTitle(schedule.getTitle());
+        otherScheduleResponseDto.setCreatedAt(schedule.getCreatedAt());
+        otherScheduleResponseDto.setUpdatedAt(schedule.getUpdatedAt());
+        otherScheduleResponseDto.setDetail(schedule.getDetail());
+        otherScheduleResponseDto.setCategoryId(schedule.getCategory().getId());
+        otherScheduleResponseDto.setCategoryName(schedule.getCategory().getName());
+        otherScheduleResponseDto.setDtype(schedule.getDtype());
 
-        return otherScheduleDto;
+        if (schedule.getCustomer() != null) {
+            otherScheduleResponseDto.setCustomerName(schedule.getCustomer().getName());
+            otherScheduleResponseDto.setCustomerId(schedule.getCustomer().getUserId());
+        }
+        else {
+            otherScheduleResponseDto.setVendorId(schedule.getVendor().getUserId());
+            otherScheduleResponseDto.setVendorName(schedule.getVendor().getName());
+        }
+
+        return otherScheduleResponseDto;
     }
 
 

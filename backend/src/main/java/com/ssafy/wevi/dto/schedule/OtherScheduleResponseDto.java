@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OtherScheduleDto{
+public class OtherScheduleResponseDto {
     // 일정 공통
+    private int loginUserId;
     private int otherScheduleId;
 //    private LocalDateTime startTime;
 //    private LocalDateTime endTime;
@@ -23,6 +24,7 @@ public class OtherScheduleDto{
     private LocalDateTime updatedAt;
     private Integer categoryId;
     private String categoryName;
+    private String dtype;
 
     // 수기일정 별도 컬럼
     private String detail;  // 세부내용

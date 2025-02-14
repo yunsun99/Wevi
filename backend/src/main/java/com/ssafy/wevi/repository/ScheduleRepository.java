@@ -51,5 +51,10 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     List<Schedule> findAllContractWithSpouse(@Param("customerId") Integer customerId,@Param("spouseId") Integer spouseId);
 
     @Query("SELECT c FROM Consultation c WHERE c.vendor.userId = :vendorId AND c.startDateTime < :endDateTime AND c.endDateTime > :startDateTime")
-    List<Consultation> findConflictSchedule(@Param("startDateTime")LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("vendorId") Integer vendorId);
+    List<Consultation> findConflictConsultation(@Param("startDateTime")LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("vendorId") Integer vendorId);
+
+    @Query("SELECT c FROM Consultation c WHERE c.vendor.userId = :userId AND c.startDateTime < :endDateTime AND c.endDateTime > :startDateTime")
+    List<Consultation> findConflictSchedule(@Param("startDateTime")LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("userId") Integer userId);
+
+
 }
