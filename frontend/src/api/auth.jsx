@@ -50,7 +50,7 @@ export async function handleSignUp(formData) {
     const jsonData = JSON.stringify(formData);
     console.log(formData);
 
-    const response = await api.post(`/api/user/signup`, jsonData, {
+    const response = await api.post(`/api/customers/signup`, jsonData, {
       headers: {
         "Content-Type": "application/json",
       },

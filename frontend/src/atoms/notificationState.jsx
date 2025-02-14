@@ -6,3 +6,8 @@ export const notificationState = atom({
     selectedCategory: "웨딩홀",
   },
 });
+
+export const isNotificationState = atom({
+  key: "isNotiicationState",
+  default: false,
+});

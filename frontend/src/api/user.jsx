@@ -6,51 +6,55 @@ import { api } from "./auth";
 // 마이페이지 정보 불러오기기
 export async function getUserInfo() {
   try {
-    // const response = await api.get(`/api/customers`);
-    // if (response.status === 200) {
-    //   response.data.profileImage = logo;
-    //   const data = response.data;
-    //   return data;
-    // } else {
-    //   return;
-    // }
-
-    return mypageData;
+    const response = await api.get(`/api/customers`);
+    if (response.status === 200) {
+      response.data.profileImage = logo;
+      const data = response.data.data;
+      return data;
+    } else {
+      return {};
+    }
   } catch (error) {
     console.log(error);
-    return error.response ? error.response.status : 500;
+    return Promise.reject(error);
   }
 }
 
 // 커플연동 상태 불러오기
 export async function getCoupleLinkState() {
   try {
-    // const response = await api.get(`/api/customers`);
-    // if (response.status === 200) {
-    //   response.data.profileImage = logo;
-    //   const data = response.data;
-    //   return data;
-    // } else {
-    //   return;
-    // }
-    const linkData = getLinkType(mypageData);
-    return linkData;
+    const response = await api.get(`/api/customers`);
+    if (response.status === 200) {
+      response.data.profileImage = logo;
+      const data = response.data.data;
+      console.log(data);
+      return getLinkType(data);
+    } else {
+      return {};
+    }
   } catch (error) {
     console.log(error);
-    return error.response ? error.response.status : 500;
+    return Promise.reject(error);
   }
 }
 
 function getLinkType(data) {
+  console.log(data);
   if (!data) return { type: -1 }; // 데이터가 없을 경우 예외 처리
 
-  if (data.sentRequest !== undefined) {
-    return { ...data, type: 1 }; // 기다리는 중
-  } else if (data.receivedRequest !== undefined) {
-    return { ...data, type: 2 }; // 수신자가 수락 또는 거절 가능
-  } else {
-    return { ...data, type: 0 }; // 커플 입력 창
+  // if (data.sentRequest !== undefined) {
+  //   return { ...data, type: 1 }; // 기다리는 중
+  // } else if (data.receivedRequest !== undefined) {
+  //   return { ...data, type: 2 }; // 수신자가 수락 또는 거절 가능
+  // } else {
+  //   return { ...data, type: 0 }; // 커플 입력 창
+  // }
+  if (data.userId == 19) {
+    return { ...data, type: 0 };
+  } else if (data.userId === 12) {
+    return { ...data, type: 2 };
   }
+  return { ...data, type: 1 };
 }
 
 const mypageData = {
