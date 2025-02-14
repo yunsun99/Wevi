@@ -48,6 +48,18 @@ public class VendorService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public ImageDto getImage(Vendor vendor) {
+        List<Image> images = imageRepository.findByVendor(vendor);
+        List<ImageDto> imageDtoList = images.stream()
+                .map(this::convertToImageDto)
+                .collect(Collectors.toList());
+
+        ImageDto imageDto = imageDtoList.get(0);
+        return imageDto;
+    }
+
+
     @Transactional
     public VendorDetailResponseDto createVendor(VendorCreateDto vendorCreateDto) {
 

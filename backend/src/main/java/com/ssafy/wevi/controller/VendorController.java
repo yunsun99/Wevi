@@ -151,7 +151,7 @@ public class VendorController {
                             .sigunguId(vendor.getSigunguCode().getSigunguId())
                             .sigunguName(vendor.getSigunguCode().getSigunguName())
                             .minPrice(vendor.getMinPrice())
-
+                            .imageUrl(vendorService.getImage(vendor).getImageUrl())
                             // 필요한 다른 필드들 추가
                             .build()
             );
