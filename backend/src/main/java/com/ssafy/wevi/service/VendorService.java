@@ -50,12 +50,20 @@ public class VendorService {
 
     @Transactional(readOnly = true)
     public ImageDto getImage(Vendor vendor) {
+
         List<Image> images = imageRepository.findByVendor(vendor);
+        ImageDto imageDto = new ImageDto();
+
+        if (images == null || images.isEmpty()) {
+            imageDto.setImageUrl("기본 이미지 입니다.");
+            return imageDto;
+        }
+
         List<ImageDto> imageDtoList = images.stream()
                 .map(this::convertToImageDto)
                 .collect(Collectors.toList());
 
-        ImageDto imageDto = imageDtoList.get(0);
+        imageDto = imageDtoList.get(0);
         return imageDto;
     }
 
