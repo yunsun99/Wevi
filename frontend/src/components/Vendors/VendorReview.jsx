@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ReviewModal from "../Modals/ReviewModal";
 import { useRecoilState } from "recoil";
 import { vendorState } from "../../atoms/vendorState";
+import profileImage from "../../assets/DongWoonKing.png";
 
 export default function VendorReview() {
   const [reviewData] = useRecoilState(vendorState);
@@ -37,11 +38,11 @@ export default function VendorReview() {
               {/* 프로필 섹션 */}
               <div className="flex items-center mb-4">
                 <img
-                  src={review.profileImage}
+                  src={profileImage}
                   alt="프로필 이미지"
                   className="w-10 h-10 rounded-full mr-3"
                 />
-                <p className="text-sm font-bold">{review.customerId}</p>
+                <p className="text-sm font-bold">{review.userNickname}</p>
               </div>
 
               {/* 이미지 섹션 */}
@@ -49,7 +50,7 @@ export default function VendorReview() {
                 {review.images.map((image, index) => (
                   <img
                     key={index}
-                    src={image}
+                    src={image.imageUrl}
                     alt={`리뷰 이미지 ${index + 1}`}
                     className="w-24 h-24 object-cover rounded-lg"
                   />

@@ -74,6 +74,14 @@ export default function CardSchedule({ data }) {
         <div className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white">
           <span>{">"}</span>
         </div>
+        {/* 화살표 아이콘 */}
+        <div className="absolute top-1/5 right-4 transform -translate-y-1/2 text-white">
+          <span className="text-sm text-gray-300">
+            {data.customerId === data.loginUserId
+              ? `${data.customerName}님 예약`
+              : "상대방 예약"}
+          </span>
+        </div>
       </div>
     </>
   );
