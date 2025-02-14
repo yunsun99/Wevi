@@ -6,9 +6,13 @@ import icon_menu from "@/assets/icons/icon_menu.png";
 import logo from "@/assets/logo.png";
 import close_icon from "@/assets/icons/icon_close.png";
 import Hamburger from "../Hamburger/Hamburger";
+import { useRecoilValue } from "recoil";
+import { isNotificationState } from "../../atoms/notificationState";
 
 function TopNavigationBar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const notification = useRecoilValue(isNotificationState);
+  console.log(notification);
 
   return (
     <>
@@ -27,7 +31,13 @@ function TopNavigationBar() {
           </Link>
 
           <Link to="/notification" aria-label="Notifications">
-            <img src={icon_alarm} alt="Alarm Icon" className="h-8 w-8" />
+            <img
+              src={icon_alarm}
+              alt="Alarm Icon"
+              className={`h-8 w-8 ${
+                notification ? "border-2 border-amber-700 rounded-full" : ""
+              }`}
+            />
           </Link>
 
           {/* 메뉴 아이콘 (햄버거 버튼) */}

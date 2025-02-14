@@ -17,7 +17,7 @@ import Search from "./pages/Search";
 import AiPlanner from "./pages/AIPlanner";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Test from "./pages/testpage";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilState } from "recoil";
 import ConsultationReservation from "./pages/ConsultationReservation";
 import SearchDetail from "./pages/SearchDetail";
 import CoupleLink from "./pages/CoupleLink";
@@ -28,6 +28,9 @@ import ContractDetail from "./pages/ContractDetail";
 import RecoilNexus from "recoil-nexus";
 import ContractList from "./pages/ContractList";
 import Schedule from "./pages/Schedule";
+import { isNotificationState } from "./atoms/notificationState";
+import { useEffect } from "react";
+import { onForegroundMessage, registerServiceWorker } from "./api/firebase";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -64,10 +67,31 @@ const router = createBrowserRouter([
   },
 ]);
 
+function NotificationHandler() {
+  const [isNotification, setIsNotification] =
+    useRecoilState(isNotificationState);
+
+  useEffect(() => {
+    // ✅ 1. 서비스 워커 등록 (상태 변경 없음)
+    registerServiceWorker().catch(() => {
+      console.error("서비스 워커 등록 실패");
+    });
+
+    // ✅ 2. 포그라운드 메시지 수신 시에만 상태 업데이트
+    onForegroundMessage(() => {
+      setIsNotification(true);
+      alert("🔔 새로운 알림이 도착했습니다!");
+    });
+  }, [setIsNotification]);
+
+  return null; // UI 없음
+}
+
 function App() {
   return (
     <RecoilRoot>
       <RecoilNexus />
+      <NotificationHandler /> {/* RecoilRoot 내부에서 Recoil 사용 */}
       <RouterProvider router={router} />
     </RecoilRoot>
   );

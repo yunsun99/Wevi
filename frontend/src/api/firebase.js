@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { useRecoilState } from "recoil";
+import { isNotificationState } from "../atoms/notificationState";
 
 export const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -37,27 +39,28 @@ export const requestFCMToken = async () => {
   }
 };
 
-// // 포그라운드에서 메시지 수신
-// onMessage(messaging, (payload) => {
-//   console.log("Message received: ", payload);
-// });
-
-// 포그라운드 메시지 수신
+// ✅ 포그라운드 메시지 수신
 export const onForegroundMessage = (callback) => {
   onMessage(messaging, (payload) => {
-    console.log("Message received: ", payload);
+    console.log("포그라운드 메시지 수신:", payload);
     if (callback) callback(payload);
   });
 };
 
-// 서비스 워커 등록 (백그라운드 메시지 수신용)
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("/firebase-messaging-sw.js")
-    .then((registration) => {
-      console.log("Service Worker registered: ", registration);
-    })
-    .catch((error) => {
-      console.error("Service Worker registration failed: ", error);
-    });
-}
+// ✅ 서비스 워커 등록 (Recoil 상태 업데이트는 컴포넌트에서 처리)
+export const registerServiceWorker = async () => {
+  if ("serviceWorker" in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register(
+        "/firebase-messaging-sw.js"
+      );
+      console.log("Service Worker 등록 성공:", registration);
+      return registration;
+    } catch (error) {
+      console.error("Service Worker 등록 실패:", error);
+      throw error;
+    }
+  } else {
+    console.error("Service Worker가 브라우저에서 지원되지 않습니다.");
+  }
+};

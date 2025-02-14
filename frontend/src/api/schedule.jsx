@@ -98,6 +98,6 @@ export async function getProgressList() {
     }
   } catch (error) {
     console.log(error);
-    return error.response ? error.response.status : 500;
+    return Promise.reject(error);
   }
 }
