@@ -1,11 +1,15 @@
 package com.ssafy.wevi.controller;
 
 import com.ssafy.wevi.config.SecurityUtils;
+import com.ssafy.wevi.domain.user.Vendor;
 import com.ssafy.wevi.dto.ApiResponseDto;
 import com.ssafy.wevi.dto.vendor.*;
 import com.ssafy.wevi.service.VendorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,27 +88,95 @@ public class VendorController {
         }
     }
 
-    @GetMapping("/vendorlist/{doId}/{sigunguId}/{category}")
-    public ApiResponseDto<List<VendorResponseDto>> getVendorList(
-            @PathVariable Integer doId,
-            @PathVariable Integer sigunguId,
-            @PathVariable Integer category) {
+//    @GetMapping("/vendorlist/{doId}/{sigunguId}/{category}")
+//    public ApiResponseDto<List<VendorResponseDto>> getVendorList(
+//            @PathVariable Integer doId,
+//            @PathVariable Integer sigunguId,
+//            @PathVariable Integer category) {
+//
+//        List<VendorResponseDto> vendors = vendorService.findVendorsByLocationAndCategory(
+//                doId, sigunguId, category);
+//
+//        if (vendors != null && !vendors.isEmpty()) {
+//            return new ApiResponseDto<>(
+//                    HttpStatus.OK.value(),
+//                    true,
+//                    "업체 목록 조회 성공",
+//                    vendors
+//            );
+//        } else {
+//            return new ApiResponseDto<>(
+//                    HttpStatus.NO_CONTENT.value(),
+//                    true,
+//                    "업체 목록이 비어있습니다",
+//                    null
+//            );
+//        }
+//    }
+    @GetMapping("/search")
+    public ApiResponseDto<Page<VendorResponseDto>> searchVendors(
+            @RequestParam(required = false) Integer doId,
+            @RequestParam(required = false) Integer sigunguId,
+            @RequestParam(required = false) Integer categoryId,
+            @RequestParam(required = false) String vendorName,
+            @RequestParam(required = false) Boolean isIndoor,
+            @RequestParam(defaultValue = "ASC") String sortDirection,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+            // 검색 조건 설정
+            VendorSearchCondition condition = new VendorSearchCondition();
+            condition.setDoId(doId);
+            condition.setSigunguId(sigunguId);
+            condition.setCategoryId(categoryId);
+            condition.setVendorName(vendorName);
+            condition.setIsIndoor(isIndoor);
+            condition.setSortDirection(sortDirection);
 
-        List<VendorResponseDto> vendors = vendorService.findVendorsByLocationAndCategory(
-                doId, sigunguId, category);
+            // 페이징 정보 설정
+            Pageable pageable = PageRequest.of(page, size);
 
-        if (vendors != null && !vendors.isEmpty()) {
+            // 검색 실행
+            Page<Vendor> vendorPage = vendorService.searchVendors(condition, pageable);
+
+            // Entity -> DTO 변환
+            Page<VendorResponseDto> responseDto = vendorPage.map(vendor ->
+                    VendorResponseDto.builder()
+                            .id(vendor.getUserId())
+                            .vendorName(vendor.getName())
+                            .categoryId(vendor.getCategory().getId())
+                            .doId(vendor.getSigunguCode().getDoId())
+                            .doName(vendor.getSigunguCode().getDoEntity().getDoName())
+                            .sigunguId(vendor.getSigunguCode().getSigunguId())
+                            .sigunguName(vendor.getSigunguCode().getSigunguName())
+                            .minPrice(vendor.getMinPrice())
+
+                            // 필요한 다른 필드들 추가
+                            .build()
+            );
+
+            if (responseDto.isEmpty()) {
+                return new ApiResponseDto<>(
+                        HttpStatus.NO_CONTENT.value(),
+                        true,
+                        "업체 목록이 비어있습니다",
+                        null
+                );
+            }
+
             return new ApiResponseDto<>(
                     HttpStatus.OK.value(),
                     true,
                     "업체 목록 조회 성공",
-                    vendors
+                    responseDto
             );
-        } else {
+
+        } catch (Exception e) {
             return new ApiResponseDto<>(
-                    HttpStatus.NO_CONTENT.value(),
-                    true,
-                    "업체 목록이 비어있습니다",
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    false,
+                    "업체 목록 조회 중 오류가 발생했습니다: " + e.getMessage(),
                     null
             );
         }

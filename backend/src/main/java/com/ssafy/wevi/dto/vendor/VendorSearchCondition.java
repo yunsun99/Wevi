@@ -7,8 +7,8 @@ import lombok.Setter;
 public class VendorSearchCondition {
     private Integer doId;
     private Integer sigunguId;
-    private String category;
-    private String name;
-    private String location; // 실내/실외 (웨딩홀 전용)
+    private Integer categoryId;
+    private String vendorName;
+    private Boolean isIndoor; // 실내/실외 (웨딩홀 전용)
     private String sortDirection; // ASC, DESC
 }
