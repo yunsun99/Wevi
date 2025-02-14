@@ -23,13 +23,14 @@ export default function Progress() {
   }, [progressList]);
   return (
     <>
-      {progressList && progressList.length > 0 ? (
-        <ProgressCard data={progressList} />
-      ) : (
-        <div className="flex flex-col h-[calc(100vh-0rem)]">
+      <TopNavigationBar />
+      <div className="h-[86vh]">
+        {progressList && progressList.length > 0 ? (
+          <ProgressCard data={progressList} />
+        ) : (
           <p className="text-gray-500 text-center">계약한 내역이 없습니다.</p>
-        </div>
-      )}
+        )}
+      </div>
       <BottomNavigationBar />
     </>
   );

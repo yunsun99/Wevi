@@ -26,12 +26,12 @@ export default function CalendarComponent({
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+      <div className="flex bg-white justify-center items-center rounded-lg shadow-md p-4 mb-4 h-auto">
         <Calendar
           locale="en-US" // 일요일 시작
           onChange={handleDateClick}
           value={selectedDate.date || new Date()} // 선택된 날짜를 캘린더에 반영
-          className="custom-calendar"
+          className="custom-calendar flex-1 w-full"
           formatShortWeekday={(locale, date) =>
             ["일", "월", "화", "수", "목", "금", "토"][dayjs(date).day()]
           } // 요일 표시

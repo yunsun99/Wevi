@@ -48,7 +48,7 @@ export default function MyPage() {
   return (
     <>
       <TopNavigationBar />
-      <div className="h-[calc(100vh-9rem)]">
+      <div className="h-[86vh]">
         <div className="flex items-center justify-between w-full bg-white p-4 py-6">
           {/* 프로필 정보 */}
           <div className="flex items-center gap-3">

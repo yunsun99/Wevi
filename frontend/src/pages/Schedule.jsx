@@ -48,20 +48,22 @@ export default function Schedule() {
   return (
     <>
       <TopNavigationBar />
-      <CalendarComponent
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-        handleDateClick={handleDateClick}
-      />
-      <div className="flex w-screen flex-col h-[calc(50vh-0rem)] overflow-y-auto bg-white rounded-lg shadow-md">
-        {scheduleData && scheduleData.length > 0 ? (
-          <ScheduleList
-            selectedDate={selectedDate}
-            sortedScheduleData={sortedScheduleData}
-          />
-        ) : (
-          <p className="text-gray-500 text-center">일정이 없습니다.</p>
-        )}
+      <div className="h-[86vh]">
+        <CalendarComponent
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          handleDateClick={handleDateClick}
+        />
+        <div className="flex w-screen flex-col h-[calc(50vh-0rem)] overflow-y-auto bg-white rounded-lg shadow-md">
+          {scheduleData && scheduleData.length > 0 ? (
+            <ScheduleList
+              selectedDate={selectedDate}
+              sortedScheduleData={sortedScheduleData}
+            />
+          ) : (
+            <p className="text-gray-500 text-center">일정이 없습니다.</p>
+          )}
+        </div>
       </div>
       <BottomNavigationBar />
     </>
