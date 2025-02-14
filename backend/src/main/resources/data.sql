@@ -456,7 +456,6 @@ INSERT INTO `reviews` (review_id, customer_id, vendor_id, created_at, updated_at
     (23,7,16,'2025-02-10 06:46:54.005500',NULL,'지방하객이 있고 경기권에 거주하고 있어 찾던 중 KTX광명과 가까운 테이크호텔에 방문했습니다. 전체적으로 여유로운 공간이 좋았고, 단독홀이라 그 점도 마음에 들었습니다. 홀은 꽃장식이 매우 인상깊었고 신부대기실의 꽃도 마음에 들었습니다. 상담사분이 말씀해주신 것처럼 150-250명 정도가 딱 웨딩하기 좋아 보였습니다. 다만 버진로드가 조금 더 길면 좋겠다는 생각은 했습니다. 음식은 호텔에 있는 레스토랑을 이용하는거라 음식 퀄리티가 좋았습니다. 레스토랑 천고도 높고 통창인 점도 장점인거같습니다. 주차는 지하8층까지 3000대 주차가 가능하다고 하니 주차 걱정은 안해도 될거같더라구요. 호텔 대비 금액대가 괜찮은데.. 음주류가 별도라 그 점은 좀 아쉽습니다.'),
     (25,6,16,'2025-02-10 06:46:54.005500',NULL,'주차와 밥에 대한 장점이 큰 웨딩홀입니다. (주차 약 3000대 이상 단독홀, 뷔페 퀄리티) 로비도 넉넉하고 깔끔해서 북적거리지 않아서 좋아요. 150명 보증인원 가능하고 23년 24년 견적이 많이 달라서 꼭 비교해보세요~ 신부입장은 실크커튼을 열고 나와서 당황했네요. 버진로드에서부터 시작할 수도 있다고하지만 단점이네요. (사진상 꽃은 꽃포장 나간 뒤 상태라고하네요)');
 
-
 -- Review Image
 INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
 VALUES (1, 1, 1, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'REVIEW'),
@@ -465,7 +464,7 @@ VALUES (1, 1, 1, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazona
 
 -- Vendor Image
 INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
-VALUES (4, 1, null, 2, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'VENDOR'),
-       (5, 2, null, 2, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'PANORAMA'),
-       (6, 3, null, 2, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'PANORAMA');
->>>>>>> backend/src/main/resources/data.sql
+VALUES (4, 1, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'VENDOR'),
+       (5, 2, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'PANORAMA'),
+       (6, 3, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'PANORAMA');
+
