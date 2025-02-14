@@ -72,20 +72,19 @@ export default function Home() {
               className="absolute object-contain"
             />
 
-            {/* 드레스 계약이 있으면 드레스 이미지 추가 */}
-            {categoryExists.dress && (
-              <img
-                src={character_dress}
-                alt="Character Dress"
-                className="absolute object-contain"
-              />
-            )}
-
             {/* 헤어(메이크업) 계약이 있으면 헤어 이미지 추가 */}
             {categoryExists.makeup && (
               <img
                 src={character_hair}
                 alt="Character Hair"
+                className="absolute object-contain"
+              />
+            )}
+            {/* 드레스 계약이 있으면 드레스 이미지 추가 */}
+            {categoryExists.dress && (
+              <img
+                src={character_dress}
+                alt="Character Dress"
                 className="absolute object-contain"
               />
             )}
