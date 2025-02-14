@@ -49,7 +49,7 @@ const router = createBrowserRouter([
         element: <Navigate replace to="/search/weddinghall" />,
       },
       { path: "/search/:category", element: <Search /> },
-      { path: "/searchDetail", element: <SearchDetail /> },
+      { path: "/searchDetail/:category", element: <SearchDetail /> },
       {
         path: "/consultationReservation",
         element: <ConsultationReservation />,
