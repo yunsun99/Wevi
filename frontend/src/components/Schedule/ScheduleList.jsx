@@ -35,7 +35,7 @@ const ScheduleList = ({ selectedDate, sortedScheduleData }) => {
 
   return (
     <>
-      <div ref={listRef} className="w-screen">
+      <div ref={listRef} className="w-screen h-[86vh]">
         {Object.entries(groupedScheduleData).map(([date, schedules]) => {
           const formattedDate = dayjs(date).format("M월 D일");
 
@@ -43,9 +43,9 @@ const ScheduleList = ({ selectedDate, sortedScheduleData }) => {
             <div
               key={date}
               ref={(el) => (itemRefs.current[date] = el)} // 각 날짜별 요소 저장
-              className="mb-3 w-screen"
+              className="w-screen"
             >
-              <h1 className="ml-4 mt-4 text-lg font-bold">{formattedDate}</h1>
+              <h1 className="ml-4 pt-4 text-lg font-bold">{formattedDate}</h1>
               <CardListView data={schedules} CardComponent={CardSchedule} />
             </div>
           );

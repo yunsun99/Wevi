@@ -13,7 +13,7 @@ function TopNavigationBar() {
   return (
     <>
       {/* 상단 네비게이션 바 */}
-      <header className="z-10 flex items-center w-screen sticky top-0 justify-between px-4 py-3 bg-[#FFFDFA]">
+      <header className="h-[6vh] z-10 flex items-center w-screen sticky top-0 justify-between px-4 py-3 bg-[#FFFDFA]">
         {/* 로고 */}
         <Link to="/" className="flex items-center">
           <img src={logo} alt="Logo" className="h-10 w-10 object-contain" />

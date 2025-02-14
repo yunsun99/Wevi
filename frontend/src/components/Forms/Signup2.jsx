@@ -146,6 +146,7 @@ const Signup2 = ({ formData, setFormData, onPrevious }) => {
             />
           </div>
           <div className="mb-4">
+            {/**전화번호 입력 형식 맞추기 010-0000-0000 */}
             <Input
               label="휴대전화"
               id="phone"

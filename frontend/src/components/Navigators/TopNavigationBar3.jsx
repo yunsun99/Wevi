@@ -3,7 +3,7 @@ import icon_arrow from "@/assets/icons/icon_arrow_left.png";
 
 function TopNavigationBar3({ title, onBack }) {
   return (
-    <header className="flex items-center w-full px-4 py-10 z-10">
+    <header className="h-[6vh] flex items-center w-full px-4 py-10 z-10">
       {/* 뒤로가기로 수정하기기 */}
       <button onClick={onBack} className="absolute left-4">
         <img

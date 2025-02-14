@@ -1,6 +1,6 @@
 import TopNavigationBar from "../components/Navigators/TopNavigationBar";
 import BottomNavigationBar from "../components/Navigators/BottomNavigationBar";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../api/user";
 import { handleLogout } from "../api/auth";
@@ -48,45 +48,47 @@ export default function MyPage() {
   return (
     <>
       <TopNavigationBar />
-      <div className="flex items-center justify-between w-full bg-white p-4 py-6">
-        {/* 프로필 정보 */}
-        <div className="flex items-center gap-3">
-          <img
-            src={user.profileImage || "https://via.placeholder.com/60"}
-            alt="프로필 이미지"
-            className="w-12 h-12 rounded-full"
-          />
-          <div className="text-left">
-            <p className="text-lg font-semibold">{user.name}</p>
-            <p className="text-gray-500 text-sm">{user.email}</p>
+      <div className="h-[calc(100vh-9rem)]">
+        <div className="flex items-center justify-between w-full bg-white p-4 py-6">
+          {/* 프로필 정보 */}
+          <div className="flex items-center gap-3">
+            <img
+              src={user.profileImage || "https://via.placeholder.com/60"}
+              alt="프로필 이미지"
+              className="w-12 h-12 rounded-full"
+            />
+            <div className="text-left">
+              <p className="text-lg font-semibold">{user.name}</p>
+              <p className="text-gray-500 text-sm">{user.email}</p>
+            </div>
           </div>
+
+          {/* 커플 연동 버튼 */}
+          <button
+            className="px-4 py-1 text-sm border rounded-lg text-gray-700"
+            onClick={handleButtonClick}
+          >
+            {user.spouseId ? user.spouseId : "커플 연동"}
+          </button>
         </div>
 
-        {/* 커플 연동 버튼 */}
-        <button
-          className="px-4 py-1 text-sm border rounded-lg text-gray-700"
-          onClick={handleButtonClick}
-        >
-          {user.spouseId ? user.spouseId : "커플 연동"}
-        </button>
-      </div>
+        {/* 메뉴 리스트 */}
+        <div className="flex-1 mt-4">
+          {menuItems.map((item, index) => (
+            <MenuItem key={index} label={item.label} path={item.path} />
+          ))}
+        </div>
 
-      {/* 메뉴 리스트 */}
-      <div className="flex-1 mt-4">
-        {menuItems.map((item, index) => (
-          <MenuItem key={index} label={item.label} path={item.path} />
-        ))}
-      </div>
-
-      {/* 로그아웃 버튼 */}
-      <div className="px-6 pb-24 flex flex-col items-start mt-5">
-        <button
-          className="text-red-500 text-center py-3 text-sm font-semibold"
-          onClick={onLogoutSubmit}
-        >
-          로그아웃
-        </button>
-        <p className="text-gray-400 text-xs text-center mt-1">회원탈퇴</p>
+        {/* 로그아웃 버튼 */}
+        <div className="px-6 pb-24 flex flex-col items-start mt-5">
+          <button
+            className="text-red-500 text-center py-3 text-sm font-semibold"
+            onClick={onLogoutSubmit}
+          >
+            로그아웃
+          </button>
+          <p className="text-gray-400 text-xs text-center mt-1">회원탈퇴</p>
+        </div>
       </div>
       <BottomNavigationBar />
     </>
