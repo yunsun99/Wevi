@@ -1,11 +1,14 @@
 package com.ssafy.wevi.service;
 
+import com.ssafy.wevi.domain.CoupleRequest;
 import com.ssafy.wevi.domain.user.Customer;
 import com.ssafy.wevi.dto.Customer.CustomerCreateDto;
 import com.ssafy.wevi.dto.Customer.CustomerResponseDto;
 import com.ssafy.wevi.dto.Customer.CustomerSpouseResponseDto;
 import com.ssafy.wevi.dto.Customer.CustomerUpdateDto;
+import com.ssafy.wevi.enums.CoupleRequestStatus;
 import com.ssafy.wevi.enums.UserStatus;
+import com.ssafy.wevi.repository.CoupleRequestRepository;
 import com.ssafy.wevi.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +27,7 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CoupleRequestRepository coupleRequestRepository;
 
     @Transactional
     public CustomerResponseDto createCustomer(CustomerCreateDto customerCreateDto) {
@@ -87,6 +91,18 @@ public class CustomerService {
     @Transactional
     public void deactivateCustomer(Integer customerId, HttpServletRequest request, HttpServletResponse response) {
         customerRepository.findById(customerId).ifPresentOrElse(customer -> {
+            // 배우자의 커플 연동 취소
+            Customer spouse = customer.getSpouse();
+            if (spouse != null) {
+                spouse.setSpouse(null);
+                customerRepository.save(spouse);
+
+                // 해당 유저가 포함된 coupleRequest 삭제 - notifications 외래키때문에 안지ㅜ어져ㅕ져져져져져져!!!!!!!!!!!
+                CoupleRequest coupleRequest = coupleRequestRepository.findBySenderUserIdOrReceiverUserId(customerId, customerId).orElseThrow();
+                coupleRequest.setStatus(CoupleRequestStatus.TERMINATED.name());
+                coupleRequestRepository.save(coupleRequest);
+            }
+
             customer.setStatus(UserStatus.TERMINATED.name());
             customerRepository.save(customer);
 

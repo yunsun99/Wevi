@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Entity
 @Table(name = "customers")
 @Getter
@@ -46,9 +48,9 @@ public class Customer extends User {
     @JoinColumn(name = "spouse_id")   // 사실 이거 안써도 똑같음
     private Customer spouse;
 
-    @OneToOne(mappedBy = "sender", fetch = FetchType.LAZY)
-    private CoupleRequest sentRequest;  // Customer 엔티티에서 보낸 요청을 쉽게 조회하기 위해 양방향 매핑 사용
+//    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
+//    private List<CoupleRequest> sentRequests;  // Customer 엔티티에서 보낸 요청을 쉽게 조회하기 위해 양방향 매핑 사용
 
-    @OneToOne(mappedBy = "receiver", fetch = FetchType.LAZY)
-    private CoupleRequest receivedRequest;  // Customer 엔티티에서 받은 요청을 쉽게 조회하기 위해 양방향 매핑 사용
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
+    private List<CoupleRequest> receivedRequests;  // Customer 엔티티에서 받은 요청을 쉽게 조회하기 위해 양방향 매핑 사용
 }
