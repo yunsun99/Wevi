@@ -10,9 +10,9 @@ export default function VendorImage({ data }) {
     <>
       {/* 상단 이미지 vendor image */}
       <img
-        src={data.images}
+        src={data.images[0].imageUrl}
         alt="웨딩홀 이미지"
-        className="w-full h-72 object-cover"
+        className="w-full h-full object-cover"
       />
     </>
   );

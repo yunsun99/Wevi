@@ -60,6 +60,7 @@ export default function SearchDetail() {
     <>
       <TopNavigationBar title={category} />
       {vendorData ? <CardSearchDetail data={vendorData} /> : null}
+      <div className="h-[2vh]"></div>
       <BottomNavigationBar />
     </>
   );

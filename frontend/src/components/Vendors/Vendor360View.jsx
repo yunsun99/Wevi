@@ -9,7 +9,7 @@ export default function Vendor360View({ data }) {
       <div className="bg-white rounded-lg shadow-md mt-4 p-4">
         <h3 className="text-xl font-bold">360도 뷰</h3>
         <img
-          src={data.images}
+          src={data.images[1].imageUrl}
           alt="360도 뷰"
           className="w-full h-full object-cover rounded-lg mt-2"
         />
