@@ -22,6 +22,9 @@ export default function Home() {
     const axiosContractList = async () => {
       try {
         const contractData = await getContractList();
+        if (!contractData) {
+          return;
+        }
         setContractList(contractData);
 
         // 🔥 각 카테고리가 존재하는지 확인

@@ -24,9 +24,13 @@ export default function ConsultationList() {
   return (
     <>
       <TopNavigationBar2 title="상담 내역" />
-      {consultationList ? (
+      {consultationList && consultationList.length > 0 ? (
         <ScheduleList selectedDate={0} sortedScheduleData={consultationList} />
-      ) : null}
+      ) : (
+        <p className="text-gray-500 text-center h-[80vh]">
+          상담 내역이 없습니다.
+        </p>
+      )}
       <BottomNavigationBar />
     </>
   );
