@@ -78,7 +78,7 @@ public class ScheduleController {
     public ApiResponseDto<?> getOneOtherSchedule(@PathVariable Integer scheduleId) {// 로그인한 유저 ID 가져오기
         Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
 
-        OtherScheduleDto otherScheduleDto = scheduleService.findOtherScheduleById(scheduleId, userId);
+        OtherScheduleResponseDto otherScheduleDto = scheduleService.findOtherScheduleById(scheduleId, userId);
         if (otherScheduleDto == null) {
             return new ApiResponseDto<>(
                     HttpStatus.NOT_FOUND.value(),
@@ -194,7 +194,7 @@ public class ScheduleController {
     // 각 카테고리별 계약을 등록
     @PostMapping("/contract/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponseDto<?> registContract(@RequestBody ContractCreateDto contractCreateDto) {
+    public ApiResponseDto<?> addContract(@RequestBody ContractCreateDto contractCreateDto) {
         // 로그인한 유저 ID 가져오기
         Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
         User user = userRepository.findById(userId).orElseThrow();
@@ -213,10 +213,28 @@ public class ScheduleController {
                 contractResponseDto
         );
     }
+    // 수기일정 등록
+    @PostMapping("/other-schedule/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponseDto<?> addOtherSchedule(@RequestBody OtherScheduleCreateDto otherScheduleCreateDto) {
+        // 로그인한 유저 ID 가져오기
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+
+        // 상담 등록
+        OtherScheduleResponseDto otherScheduleResponseDto = scheduleService.addOtherSchedule(otherScheduleCreateDto, userId);
+
+        return new ApiResponseDto<>(
+                HttpStatus.CREATED.value(),
+                true,
+                "OtherSchedule created successfully.",
+                otherScheduleResponseDto
+        );
+    }
 
     // ===== 삭제 (DELETE) ===== //
     @DeleteMapping("/{scheduleId}")
     private ApiResponseDto<?> removeSchedule (@PathVariable Integer scheduleId) {
+        System.out.println("====================================진입");
         // 로그인한 유저 ID 가져오기
         Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
 
