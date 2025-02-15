@@ -19,7 +19,10 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -113,6 +116,14 @@ public class CustomerService {
         });
     }
 
+    public String dateTimeToString (LocalDateTime dateTime) {
+        // 변환 포맷 지정
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // LocalDateTime → String 변환
+        return dateTime.toLocalDate().format(dateFormatter);
+    }
+
     // 내가 원하는 값만 내보내기 위해서
     // 예를 들어, 유저 정보를 조회할 때 굳이 계약까지 불러올 필요는 없음
     // 유저 -> 계약 -> 유저 무한루프 발생을 막음
@@ -128,7 +139,32 @@ public class CustomerService {
                 .zonecode(customer.getZonecode())
                 .autoRoadAddress(customer.getAutoRoadAddress())
                 .addressDetail(customer.getAddressDetail())
-                .spouseId(customer.getSpouse() != null ? customer.getSpouse().getUserId() : null)
+                .spouseId(Optional.ofNullable(customer.getSpouse())
+                        .map(Customer::getUserId)
+//                      .map(c -> c.getUserId())
+                        .orElse(null))
+                .spouseName(Optional.ofNullable(customer.getSpouse())
+                        .map(Customer::getName)
+                        .orElse(null))
+                .spouseNickname(Optional.ofNullable(customer.getSpouse())
+                        .map(Customer::getNickname)
+                        .orElse(null))
+//                .coupleUpdatedAt(customer.getSpouse() != null
+//                        ? (customer.getSentRequests().get(0).getCoupleRequestId() != null
+//                        ? customer.getSentRequests().get(0).getUpdatedAt()
+//                        : customer.getReceivedRequests().get(0).getUpdatedAt())
+//                        : null)
+                .coupleUpdatedAt(Optional.ofNullable(customer.getSpouse())
+                        .map(spouse -> {
+                            CoupleRequest sentRequest = customer.getSentRequests().isEmpty() ? null : customer.getSentRequests().get(0);
+                            CoupleRequest receivedRequest = customer.getReceivedRequests().isEmpty() ? null : customer.getReceivedRequests().get(0);
+
+                            return sentRequest != null
+                                    ? dateTimeToString(sentRequest.getUpdatedAt())
+                                    : (receivedRequest != null ? dateTimeToString(receivedRequest.getUpdatedAt()) : null);
+                        }).orElse(null))
+                .sentRequestId(customer.getSentRequests().isEmpty() ? null : customer.getSentRequests().get(0).getCoupleRequestId())
+                .receivedRequestId(customer.getReceivedRequests().isEmpty() ? null : customer.getReceivedRequests().get(0).getCoupleRequestId())
                 .build();
     }
 }
