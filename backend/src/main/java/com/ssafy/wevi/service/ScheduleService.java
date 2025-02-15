@@ -112,9 +112,6 @@ public class ScheduleService {
                 middleProcess.setEndDateTime(stringToLocalDateTime(contractCreateDto.getStartDate(),contractCreateDto.getStartTime()));
             }
 
-            notificationService.createScheduleNotification(customer, "\uD83C\uDF40 " + vendor.getName(), "업체와의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
-            notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 " + vendor.getName(), "배우자와 업체 간의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
-
             scheduleRepository.save(middleProcess);
         }
 
@@ -137,6 +134,9 @@ public class ScheduleService {
 
             scheduleRepository.save(middleProcess);
         }
+
+        notificationService.createScheduleNotification(customer, "\uD83C\uDF40 " + vendor.getName(), "업체와의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
+        notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 " + vendor.getName(), "배우자와 업체 간의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
 
         return toContractResponseDto(contract, vendorId);
     }
