@@ -1,6 +1,7 @@
 package com.ssafy.wevi.repository;
 
 import com.ssafy.wevi.domain.schedule.Consultation;
+import com.ssafy.wevi.domain.schedule.MiddleProcess;
 import com.ssafy.wevi.domain.schedule.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,6 +32,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query("SELECT m FROM MiddleProcess m WHERE m.customer.userId = :customerId OR m.customer.spouse.userId = :spouseId")
     List<Schedule> findAllMiddleProcessWithSpouse(@Param("customerId") Integer customerId,@Param("spouseId") Integer spouseId);
 
+    @Query("SELECT m FROM MiddleProcess m WHERE m.customer.userId = :userId AND m.vendor.userId = :loginUserId")
+    List<Schedule> findMiddleProcessByUserIdAndVendorId(@Param("userId") Integer userId,@Param("loginUserId") Integer loginUserId);
+
     // 전체 상담 조회
     @Query("SELECT c FROM Consultation c WHERE c.customer.userId = :customerId")
     List<Schedule> findAllConsultationByCustomerId(@Param("customerId") Integer customerId);
@@ -55,6 +59,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
     @Query("SELECT c FROM Consultation c WHERE c.vendor.userId = :userId AND c.startDateTime < :endDateTime AND c.endDateTime > :startDateTime")
     List<Consultation> findConflictSchedule(@Param("startDateTime")LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("userId") Integer userId);
+    @Query("SELECT m FROM MiddleProcess m WHERE m.contract.scheduleId = :contractId")
+    List<MiddleProcess> findAllMiddleProcessByContractId(@Param("contractId")Integer contractId);
 
 
 }
