@@ -69,7 +69,7 @@ export default function MyPage() {
             className="px-4 py-1 text-sm border rounded-lg text-gray-700"
             onClick={handleButtonClick}
           >
-            {user.spouseId ? user.spouseId : "커플 연동"}
+            {user.spouseId ? "❤️ " + user.spouseNickname : "커플 연동"}
           </button>
         </div>
 

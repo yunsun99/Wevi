@@ -14,6 +14,10 @@ export default function CardReservation({ data, category }) {
   const isPastReservation =
     now.toDateString() > reservationDateTime.toDateString();
 
+  function goSearchDetail(category, id) {
+    navigate(`/searchDetail/${category}?id=${id}`);
+  }
+
   async function handleCancel() {
     if (!data.scheduleId) {
       alert("예약 ID가 없습니다.");
@@ -47,11 +51,15 @@ export default function CardReservation({ data, category }) {
   useEffect(() => {
     console.log(vendorData);
   }, [vendorData]);
+
   return (
     <div className="h-[86vh]">
       <div className="bg-white rounded-lg p-4">
         {/* 이미지 및 타이틀 */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4">
+        <div
+          className="bg-white rounded-lg shadow-md overflow-hidden mb-4"
+          onClick={() => goSearchDetail(data.categoryName, data.vendorId)}
+        >
           {/* 업체 이미지 */}
           <div className="relative">
             {vendorData && vendorData.images.length > 0 ? (
