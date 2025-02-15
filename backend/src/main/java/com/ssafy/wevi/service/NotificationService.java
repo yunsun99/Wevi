@@ -39,7 +39,7 @@ public class NotificationService {
         }
     }
 
-    // NotificationType: CONSULTATION_REGISTERED, CONTRACT_REGISTERED, SCHEDULE_REMINDER
+    // NotificationType: CONSULTATION_REGISTERED, CONTRACT_REGISTERED, SCHEDULE_REGISTERED, SCHEDULE_REMINDER
     @Transactional
     public void createScheduleNotification(User receiver, String title, String message, Schedule schedule, String type) {
         Notification notification = Notification.builder()

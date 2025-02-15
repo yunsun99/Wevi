@@ -114,8 +114,16 @@ public class ScheduleService {
             
             // 방문 일정은 startDate, Time 받기
             if (middleProcessCreateDto.getStartDate() != null) {
-                middleProcess.setStartDateTime(stringToLocalDateTime(contractCreateDto.getStartDate(),contractCreateDto.getStartTime()));
-                middleProcess.setEndDateTime(stringToLocalDateTime(contractCreateDto.getStartDate(),contractCreateDto.getStartTime()));
+                middleProcess.setStartDateTime(stringToLocalDateTime(middleProcessCreateDto.getStartDate(),middleProcessCreateDto.getStartTime()));
+                middleProcess.setEndDateTime(stringToLocalDateTime(middleProcessCreateDto.getStartDate(),middleProcessCreateDto.getStartTime()));
+
+                String date = dateTimeToString(middleProcess.getStartDateTime())[0];
+                String time = dateTimeToString(middleProcess.getStartDateTime())[1];
+                String stepName = middleProcessStep.getName();
+
+                notificationService.createScheduleNotification(customer, "\uD83C\uDF40 일정 등록 - " + vendor.getName(), date + " " + time + " " + stepName, contract, NotificationType.SCHEDULE_REGISTERED.name());
+                notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 일정 등록 - " + vendor.getName(), date + " " + time + " " + stepName, contract, NotificationType.SCHEDULE_REGISTERED.name());
+
             }
 
             scheduleRepository.save(middleProcess);
@@ -142,7 +150,7 @@ public class ScheduleService {
         }
 
         notificationService.createScheduleNotification(customer, "\uD83C\uDF40 " + vendor.getName(), "업체와의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
-        notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 " + vendor.getName(), "배우자와 업체 간의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
+        notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 " + vendor.getName(), "연인과 업체 간의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
 
         return toContractResponseDto(contract, vendorId);
     }
