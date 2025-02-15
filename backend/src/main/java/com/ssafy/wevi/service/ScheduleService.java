@@ -7,6 +7,7 @@ import com.ssafy.wevi.domain.user.User;
 import com.ssafy.wevi.domain.user.Vendor;
 import com.ssafy.wevi.dto.schedule.*;
 import com.ssafy.wevi.enums.MiddleProcessStatus;
+import com.ssafy.wevi.enums.NotificationType;
 import com.ssafy.wevi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class ScheduleService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final MiddleProcessStepRepository middleProcessStepRepository;
+    private final NotificationService notificationService;
     private final VendorService vendorService;
 
     // ========= 등록 ========//
@@ -48,18 +50,24 @@ public class ScheduleService {
             throw new IllegalArgumentException("해당 업체에 이미 예약된 상담이 존재합니다.");
         }
 
+        Customer customer = customerRepository.findById(customerId).orElseThrow();
+        Vendor vendor = vendorRepository.findById(consultationCreateDto.getVendorId()).orElseThrow();
+
         consultation.setStartDateTime(startDateTime);
         consultation.setEndDateTime(startDateTime.plusHours(1));   // 1시간 추가!
         consultation.setTitle(consultationCreateDto.getTitle());
         consultation.setRequest(consultationCreateDto.getRequest());
         consultation.setDtype("consultation");
 //        consultation.setCreatedAt(LocalDateTime.now());
-        consultation.setCustomer(customerRepository.findById(customerId).orElseThrow());
-        consultation.setVendor(vendorRepository.findById(consultationCreateDto.getVendorId()).orElseThrow());
+        consultation.setCustomer(customer);
+        consultation.setVendor(vendor);
         consultation.setCategory(consultation.getVendor().getCategory());
 
 
         scheduleRepository.save(consultation);
+
+        notificationService.createScheduleNotification(vendor, "\uD83C\uDF40 새로운 상담이 예약되었습니다.", dateTimeToString(startDateTime)[0] + " " + dateTimeToString(startDateTime)[1] + " " + customer.getName() + " 고객님", consultation, NotificationType.CONSULTATION_REGISTERED.name());
+        notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 연인이 일정을 추가하였습니다.", dateTimeToString(startDateTime)[0] + " " + dateTimeToString(startDateTime)[1] + " " + vendor.getName(), consultation, NotificationType.CONTRACT_REGISTERED.name());
 
         return toConsultationResponseDto(consultation, customerId);
     }
@@ -111,6 +119,14 @@ public class ScheduleService {
             if (middleProcessCreateDto.getStartDate() != null) {
                 middleProcess.setStartDateTime(stringToLocalDateTime(middleProcessCreateDto.getStartDate(),middleProcessCreateDto.getStartTime()));
                 middleProcess.setEndDateTime(stringToLocalDateTime(middleProcessCreateDto.getStartDate(),middleProcessCreateDto.getStartTime()));
+
+                String date = dateTimeToString(middleProcess.getStartDateTime())[0];
+                String time = dateTimeToString(middleProcess.getStartDateTime())[1];
+                String stepName = middleProcessStep.getName();
+
+                notificationService.createScheduleNotification(customer, "\uD83C\uDF40 일정 등록 - " + vendor.getName(), date + " " + time + " " + stepName, contract, NotificationType.SCHEDULE_REGISTERED.name());
+                notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 일정 등록 - " + vendor.getName(), date + " " + time + " " + stepName, contract, NotificationType.SCHEDULE_REGISTERED.name());
+
             }
 
             scheduleRepository.save(middleProcess);
@@ -135,6 +151,9 @@ public class ScheduleService {
 
             scheduleRepository.save(middleProcess);
         }
+
+        notificationService.createScheduleNotification(customer, "\uD83C\uDF40 " + vendor.getName(), "업체와의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
+        notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 " + vendor.getName(), "연인과 업체 간의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
 
         return toContractResponseDto(contract, vendorId);
     }

@@ -4,6 +4,7 @@ import com.ssafy.wevi.domain.CoupleRequest;
 import com.ssafy.wevi.domain.user.Customer;
 import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestResponseDto;
 import com.ssafy.wevi.enums.CoupleRequestStatus;
+import com.ssafy.wevi.enums.NotificationType;
 import com.ssafy.wevi.repository.CoupleRequestRepository;
 import com.ssafy.wevi.repository.CustomerRepository;
 import com.ssafy.wevi.repository.NotificationRepository;
@@ -42,7 +43,7 @@ public class CoupleRequestService {
 
         // 알림을 생성하고 푸시 알림 전송
         String message = customer.getName() + "님이 커플 연동 신청을 보냈습니다.";
-        notificationService.createCoupleRequestSentNotification(spouse, "❤ 커플 연동 신청", message, coupleRequest);
+        notificationService.createCoupleRequestNotification(spouse, "❤ 커플 연동 신청", message, coupleRequest, NotificationType.COUPLE_REQUEST_SENT.name());
 
         return toCoupleRequestResponseDto(coupleRequest);
     }
@@ -70,7 +71,7 @@ public class CoupleRequestService {
             coupleRequestRepository.save(coupleRequest);
 
             String message = customer.getName() + "님이 커플 연동 신청을 거절하였습니다.";
-            notificationService.createCoupleRequestSentNotification(spouse, "❤ 커플 연동 답장", message, coupleRequest);
+            notificationService.createCoupleRequestNotification(spouse, "❤ 커플 연동 답장", message, coupleRequest, NotificationType.COUPLE_REQUEST_RESPONSE.name());
 
             // coupleRequestRepository.delete(coupleRequest); // 요청 삭제
             // return null; // 거절된 경우 반환값 없음
@@ -94,7 +95,7 @@ public class CoupleRequestService {
 
         // 알림 메시지 설정 및 전송
         String message = customer.getName() + "님이 커플 연동 신청을 수락하였습니다.";
-        notificationService.createCoupleRequestSentNotification(spouse, "❤ 커플 연동 답장", message, coupleRequest);
+        notificationService.createCoupleRequestNotification(spouse, "❤ 커플 연동 답장", message, coupleRequest, NotificationType.COUPLE_REQUEST_RESPONSE.name());
 
         // 수락된 경우 업데이트된 객체 반환
         return toCoupleRequestResponseDto(coupleRequest);
