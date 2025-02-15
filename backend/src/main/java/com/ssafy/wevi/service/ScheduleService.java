@@ -29,6 +29,7 @@ public class ScheduleService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final MiddleProcessStepRepository middleProcessStepRepository;
+    private final VendorService vendorService;
 
     // ========= 등록 ========//
 
@@ -702,6 +703,7 @@ public class ScheduleService {
         contractDto.setDetail(schedule.getDetail());
         contractDto.setCategoryId(schedule.getCategory().getId());
         contractDto.setCategoryName(schedule.getCategory().getName());
+        contractDto.setVendorImageUrl(vendorService.getImage(schedule.getVendor()).getImageUrl());
 
         return contractDto;
     }
@@ -732,6 +734,7 @@ public class ScheduleService {
         consultationDto.setRequest(consultation.getRequest());
         consultationDto.setCategoryId(consultation.getCategory().getId());
         consultationDto.setCategoryName(consultation.getCategory().getName());
+        consultationDto.setVendorImageUrl(vendorService.getImage(consultation.getVendor()).getImageUrl());
 
         return consultationDto;
     }

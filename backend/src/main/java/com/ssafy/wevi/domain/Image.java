@@ -1,5 +1,6 @@
 package com.ssafy.wevi.domain;
 
+import com.ssafy.wevi.domain.user.Customer;
 import com.ssafy.wevi.domain.user.Vendor;
 import com.ssafy.wevi.enums.ImageType;
 import jakarta.persistence.*;
@@ -31,6 +32,10 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "review_id")
