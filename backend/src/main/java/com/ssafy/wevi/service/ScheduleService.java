@@ -47,18 +47,24 @@ public class ScheduleService {
             throw new IllegalArgumentException("해당 업체에 이미 예약된 상담이 존재합니다.");
         }
 
+        Customer customer = customerRepository.findById(customerId).orElseThrow();
+        Vendor vendor = vendorRepository.findById(consultationCreateDto.getVendorId()).orElseThrow();
+
         consultation.setStartDateTime(startDateTime);
         consultation.setEndDateTime(startDateTime.plusHours(1));   // 1시간 추가!
         consultation.setTitle(consultationCreateDto.getTitle());
         consultation.setRequest(consultationCreateDto.getRequest());
         consultation.setDtype("consultation");
 //        consultation.setCreatedAt(LocalDateTime.now());
-        consultation.setCustomer(customerRepository.findById(customerId).orElseThrow());
-        consultation.setVendor(vendorRepository.findById(consultationCreateDto.getVendorId()).orElseThrow());
+        consultation.setCustomer(customer);
+        consultation.setVendor(vendor);
         consultation.setCategory(consultation.getVendor().getCategory());
 
 
         scheduleRepository.save(consultation);
+
+        notificationService.createScheduleNotification(vendor, "\uD83C\uDF40 새로운 상담이 예약되었습니다.", dateTimeToString(startDateTime)[0] + " " + dateTimeToString(startDateTime)[1] + " " + customer.getName() + " 고객님", consultation, NotificationType.CONSULTATION_REGISTERED.name());
+        notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 연인이 일정을 추가하였습니다.", dateTimeToString(startDateTime)[0] + " " + dateTimeToString(startDateTime)[1] + " " + vendor.getName(), consultation, NotificationType.CONTRACT_REGISTERED.name());
 
         return toConsultationResponseDto(consultation, customerId);
     }
