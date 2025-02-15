@@ -29,7 +29,9 @@ public class ScheduleService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final MiddleProcessStepRepository middleProcessStepRepository;
+
     // ========= 등록 ========//
+
     // 상담 등록
     @Transactional
     public ConsultationResponseDto addConsultation(ConsultationCreateDto consultationCreateDto, Integer customerId) {
@@ -58,6 +60,7 @@ public class ScheduleService {
 
         return toConsultationResponseDto(consultation, customerId);
     }
+
     @Transactional
     public ContractResponseDto addContract(ContractCreateDto contractCreateDto, Integer vendorId) {
         Contract contract = new Contract();
@@ -259,6 +262,7 @@ public class ScheduleService {
             throw new IllegalArgumentException("본인과 관련한 일정이 아닙니다.");
         }
     }
+
     // 일정 전체 조회
     @Transactional(readOnly = true)
     public List<ScheduleResponseDto> getAllSchedules(Integer userId) {
@@ -287,6 +291,7 @@ public class ScheduleService {
             throw new IllegalArgumentException("해당하는 일정이 없습니다.");
         }
     }
+
     // 중간 과정(진행도) 조회
     @Transactional(readOnly = true)
     public List<MiddleProcessResponseDto> findAllMiddleProcesses(Integer userId) {
@@ -315,6 +320,7 @@ public class ScheduleService {
             throw new IllegalArgumentException("해당하는 일정이 없습니다.");
         }
     }
+
     // 예약 내역 조회
     @Transactional(readOnly = true)
     public List<ConsultationResponseDto> findAllConsultation(Integer userId) {
@@ -342,6 +348,7 @@ public class ScheduleService {
             throw new IllegalArgumentException("해당하는 일정이 없습니다.");
         }
     }
+
     // 계약 내역 조회
     @Transactional(readOnly = true)
     public List<ContractResponseDto> findAllContract(Integer userId) {
@@ -476,11 +483,6 @@ public class ScheduleService {
 
 
 
-
-
-
-
-
     // ==================== 기타 로직 ==================== //
     private List<ContractResponseDto> toContractList(List<Schedule> scheduleList, Integer loginUserId) {
         List<ContractResponseDto> contractResponseList = new ArrayList<>();
@@ -543,6 +545,7 @@ public class ScheduleService {
 
         return middleProcessResponseDto;
     }
+
     public LocalDateTime stringToLocalDateTime(String date, String time) {
 
         // 날짜 및 시간 패턴 지정 (Date: "YYYY-MM-DD", Time: "HH:mm")
@@ -560,13 +563,8 @@ public class ScheduleService {
 
         return resultDateTime;
     }
+
     public String[] dateTimeToString (LocalDateTime dateTime) {
-        // 변환할 타임존 설정 (한국 시간)
-        ZoneId zoneId = ZoneId.of("Asia/Seoul");
-
-        // UTC 기준 시간을 한국 시간으로 변환
-        ZonedDateTime koreaDateTime = dateTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId);
-
         // 변환 포맷 지정
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -578,6 +576,7 @@ public class ScheduleService {
         // 배열로 반환
         return new String[]{dateStr, timeStr};
     }
+
     private List<ScheduleResponseDto> toScheduleResponseDtoList(List<Schedule> scheduleList, Integer loginUserId) {
         List<ScheduleResponseDto> commonSchedulelist = new ArrayList<>();
 
@@ -596,7 +595,6 @@ public class ScheduleService {
     private ScheduleResponseDto toScheduleResponseDto(Schedule schedule, Integer loginUserId) {
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto();
         User user = userRepository.findById(loginUserId).orElseThrow();
-
 
         // 날짜 형식 변환
         String[] startDateTime = dateTimeToString(schedule.getStartDateTime());
@@ -673,7 +671,6 @@ public class ScheduleService {
 
         return otherScheduleResponseDto;
     }
-
 
     private ContractResponseDto toContractResponseDto(Contract schedule, Integer loginUserId) {
         ContractResponseDto contractDto = new ContractResponseDto();
