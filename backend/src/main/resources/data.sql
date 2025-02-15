@@ -565,15 +565,126 @@ INSERT INTO `reviews` (review_id, customer_id, vendor_id, created_at, updated_at
     (86,85,20,'2025-02-04 06:46:54.005500',NULL,'인기가 많은 곳이다보니 살짝 정신없으나 그래도 헤어, 메이크업 실력은 우수한 곳 같습니다 ㅎㅎ 본식 메이크업도 잘 진행되길 소망합니다❤️'),
     (87,86,20,'2025-02-12 06:46:54.005500',NULL,' 메이크업 헤어 모두 너무 만족스럽고 마무리까지 꼼꼼하게 신경써주셔서 7시간 내내 무너짐이 없었습니다. 메이크업 진령실장님도 너무 예쁘게 만들어주셨고 헤어는 혜지실장님께서 머리도해주시고 출장도 신청했는데 꼼꼼하고 빠르게 예쁜 머리로 바꿔주십니다. 금손 실장님들이 계신 곳입니다. 너무너무 추천합니다.');
 
--- Review Image
+-- Vendor Wedding hall Main Image
 INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
-VALUES (1, 1, 1, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'REVIEW'),
-       (2, 2, 1, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'REVIEW'),
-       (3, 1, 2, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'REVIEW');
+VALUES (1, 1, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/1.jpg', 'VENDOR'),
+       (2, 1, null, 24, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/2.jpg', 'VENDOR'),
+       (3, 1, null, 32, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/3.jpg', 'VENDOR'),
+       (4, 1, null, 17, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/4.jpg', 'VENDOR'),
+       (5, 1, null, 27, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/5.jpg', 'VENDOR'),
+       (6, 1, null, 26, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/6.jpg', 'VENDOR');
 
--- Vendor Image
+-- Vendor Studio Main Image
 INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
-VALUES (4, 1, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'VENDOR'),
-       (5, 2, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'PANORAMA'),
-       (6, 3, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/IMG_1171.png', 'PANORAMA');
+VALUES (7, 1, null, 18, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/1.jpg', 'VENDOR'),
+       (8, 1, null, 36, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/13.png', 'VENDOR'),
+       (9, 1, null, 38, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/18.png', 'VENDOR'),
+       (10, 1, null, 37, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/17.jpg', 'VENDOR'),
+       (11, 1, null, 44, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/16.jpg', 'VENDOR'),
+       (12, 1, null, 39, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/12.png', 'VENDOR');
 
+-- Vendor Dress Main Image
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (13, 1, null, 51, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/d/1.webp', 'VENDOR'),
+       (14, 1, null, 53, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/d/6.jpg', 'VENDOR'),
+       (15, 1, null, 52, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/d/14.jpg', 'VENDOR');
+
+-- Vendor Makeup Main Image
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (16, 1, null, 66, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/2.webp', 'VENDOR'),
+       (17, 1, null, 70, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/3.webp', 'VENDOR'),
+       (18, 1, null, 73, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/4.webp', 'VENDOR'),
+       (19, 1, null, 67, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/5.webp', 'VENDOR'),
+       (20, 1, null, 71, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/6.webp', 'VENDOR'),
+       (21, 1, null, 72, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/7.webp', 'VENDOR'),
+       (22, 1, null, 69, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/8.webp', 'VENDOR'),
+       (23, 1, null, 68, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/9.webp', 'VENDOR'),
+       (24, 1, null, 73, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/10.webp', 'VENDOR');
+
+-- Vendor Wedding hall Detail Image
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (25, 1, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/7.jpg', 'PANORAMA'),
+       (26, 1, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/8.jpg', 'MAGAZINE'),
+       (27, 2, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/9.jpg', 'MAGAZINE'),
+       (28, 3, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/10.jpg', 'MAGAZINE'),
+       (29, 4, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/11.jpg', 'MAGAZINE'),
+       (30, 5, null, 16, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/w/12.jpg', 'MAGAZINE');
+
+-- Vendor Studio Detail Image
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (31, 1, null, 18, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/7.jpg', 'MAGAZINE'),
+       (32, 2, null, 18, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/8.png', 'MAGAZINE'),
+       (33, 3, null, 18, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/9.png', 'MAGAZINE'),
+       (34, 4, null, 18, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/10.png', 'MAGAZINE'),
+       (35, 5, null, 18, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/11.png', 'MAGAZINE'),
+       (36, 6, null, 18, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/s/12.png', 'MAGAZINE');
+
+
+-- Vendor Dress Detail Image
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (37, 1, null, 51, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/d/7.jpg', 'MAGAZINE'),
+       (38, 2, null, 51, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/d/8.jpg', 'MAGAZINE'),
+       (39, 3, null, 51, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/d/9.jpg', 'MAGAZINE'),
+       (40, 4, null, 51, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/d/10.png', 'MAGAZINE'),
+       (41, 5, null, 51, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/d/11.png', 'MAGAZINE'),
+       (42, 6, null, 51, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/d/12.png', 'MAGAZINE');
+
+
+-- Vendor Makeup Detail Image
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (43, 1, null, 66, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/11.webp', 'MAGAZINE'),
+       (44, 2, null, 66, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/12.webp', 'MAGAZINE'),
+       (45, 3, null, 66, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/13.webp', 'MAGAZINE'),
+       (46, 4, null, 66, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/14.webp', 'MAGAZINE'),
+       (47, 5, null, 66, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/15.webp', 'MAGAZINE'),
+       (48, 6, null, 66, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/vendor/m/16.webp', 'MAGAZINE');
+
+
+-- Review Wedding hall Image
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (49, 1, 1, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w1.jpg', 'REVIEW'),
+       (50, 2, 1, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w2.jpg', 'REVIEW'),
+       (51, 3, 1, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w3.jpg', 'REVIEW'),
+       (52, 1, 2, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w4.jpg', 'REVIEW'),
+       (53, 2, 2, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w5.jpg', 'REVIEW'),
+       (54, 1, 3, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w6.jpg', 'REVIEW'),
+       (55, 1, 4, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w7.jpg', 'REVIEW'),
+       (56, 1, 5, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w8.jpg', 'REVIEW'),
+       (57, 1, 6, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w9.jpg', 'REVIEW'),
+       (58, 1, 7, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w10.jpg', 'REVIEW'),
+       (59, 1, 8, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/w11.jpg', 'REVIEW');
+
+-- Review Studio Image
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (60, 1, 25, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/s1.jpg', 'REVIEW'),
+       (61, 2, 25, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/s2.jpg', 'REVIEW'),
+       (62, 3, 25, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/s3.jpg', 'REVIEW'),
+       (63, 1, 26, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/s4.jpg', 'REVIEW'),
+       (64, 2, 26, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/s5.jpg', 'REVIEW'),
+       (65, 1, 27, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/s6.jpg', 'REVIEW'),
+       (66, 1, 28, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/s7.jpg', 'REVIEW'),
+       (67, 1, 29, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/s8.jpg', 'REVIEW'),
+       (68, 1, 30, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/s9.jpg', 'REVIEW'),
+       (69, 1, 31, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/s10.jpg', 'REVIEW');
+
+-- Review Dress Image
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (70, 1, 90, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d1.jpg', 'REVIEW'),
+       (71, 2, 90, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d2.jpg', 'REVIEW'),
+       (72, 3, 90, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d3.jpg', 'REVIEW'),
+       (73, 1, 51, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d4.jpg', 'REVIEW'),
+       (74, 2, 51, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d5.jpg', 'REVIEW'),
+       (75, 1, 52, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d6.jpg', 'REVIEW'),
+       (76, 1, 53, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d7.jpg', 'REVIEW'),
+       (77, 1, 54, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d8.jpg', 'REVIEW'),
+       (78, 1, 55, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d9.jpg', 'REVIEW'),
+       (79, 1, 56, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d10.jpg', 'REVIEW'),
+       (80, 1, 57, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/d11.jpg', 'REVIEW');
+
+-- Review Makeup Image
+INSERT INTO `images` (image_id, order_index, review_id, vendor_id, created_at, image_url, image_type)
+VALUES (81, 1, 68, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/m1.webp', 'REVIEW'),
+       (82, 2, 68, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/m2.webp', 'REVIEW'),
+       (83, 3, 68, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/m3.jpg', 'REVIEW'),
+       (84, 1, 67, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/m4.jpg', 'REVIEW'),
+       (85, 2, 67, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/review/m5.jpg', 'REVIEW');
