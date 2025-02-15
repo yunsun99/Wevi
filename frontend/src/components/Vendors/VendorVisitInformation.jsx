@@ -52,18 +52,30 @@ export default function VendorVisitInformation({ data }) {
     <div className="bg-white shadow-md mt-4 p-4">
       <h3 className="text-xl font-bold">방문 안내</h3>
       <div ref={mapContainer} className="w-full h-64 rounded-lg mt-2"></div>
+
       <div className="mt-4 grid grid-cols-3 gap-y-2 text-sm text-gray-600">
+        {/* 📌 주소 예외 처리 */}
         <p className="font-bold">주소</p>
-        <p className="col-span-2">{data.autoRoadAddress}</p>
+        <p className="col-span-2">
+          {data.autoRoadAddress ? data.autoRoadAddress : "주소 정보 없음"}
+        </p>
 
+        {/* 📌 지하철 정보 예외 처리 */}
         <p className="font-bold">지하철</p>
-        <p className="col-span-2">{data.subway}</p>
+        <p className="col-span-2">
+          {data.subway ? data.subway : "지하철 정보 없음"}
+        </p>
 
+        {/* 📌 주차 정보 예외 처리 */}
         <p className="font-bold">주차</p>
         <div className="col-span-2">
-          {data.parkinglot?.split(/, |\n/).map((info, index) => (
-            <p key={index}>{info}</p>
-          ))}
+          {data.parkinglot ? (
+            data.parkinglot
+              .split(/, |\n/)
+              .map((info, index) => <p key={index}>{info}</p>)
+          ) : (
+            <p className="text-gray-400">주차 정보 없음</p>
+          )}
         </div>
       </div>
     </div>

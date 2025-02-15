@@ -2,7 +2,7 @@ import React from "react";
 
 export default function VendorOptionPrice({ data }) {
   // 1. 가격 정보 문자열을 숫자가 처음 나오는 부분을 기준으로 분리
-  const priceList = data.price.split(", ").map((item) => {
+  const priceList = data.price.split("|").map((item) => {
     const match = item.match(/^(.+?)(\d[\d,]*원)$/); // 숫자가 처음 나오는 부분을 기준으로 분리
     if (match) {
       return { name: match[1].trim(), price: match[2].trim() };
