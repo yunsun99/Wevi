@@ -26,6 +26,7 @@ const CardSearchDetail = React.memo(({ data }) => {
   }
 
   console.log("CardSearchDetail Rendered");
+  console.log(data);
 
   return (
     <div>

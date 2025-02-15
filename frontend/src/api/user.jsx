@@ -42,19 +42,13 @@ function getLinkType(data) {
   console.log(data);
   if (!data) return { type: -1 }; // 데이터가 없을 경우 예외 처리
 
-  // if (data.sentRequest !== undefined) {
-  //   return { ...data, type: 1 }; // 기다리는 중
-  // } else if (data.receivedRequest !== undefined) {
-  //   return { ...data, type: 2 }; // 수신자가 수락 또는 거절 가능
-  // } else {
-  //   return { ...data, type: 0 }; // 커플 입력 창
-  // }
-  if (data.userId == 19) {
-    return { ...data, type: 0 };
-  } else if (data.userId === 12) {
-    return { ...data, type: 2 };
+  if (data.sentRequest !== undefined) {
+    return { ...data, type: 1 }; // 기다리는 중
+  } else if (data.receivedRequest !== undefined) {
+    return { ...data, type: 2 }; // 수신자가 수락 또는 거절 가능
+  } else {
+    return { ...data, type: 0 }; // 커플 입력 창
   }
-  return { ...data, type: 1 };
 }
 
 const mypageData = {

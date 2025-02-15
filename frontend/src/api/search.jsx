@@ -3,6 +3,8 @@ import { api } from "./auth";
 
 export async function getSearchData(data) {
   const reqData = filterData(data);
+  console.log(data);
+  console.log(reqData);
   try {
     const response = await api.get(
       `/api/vendors/search`,
@@ -39,12 +41,19 @@ function filterData(data) {
     return { categoryId: categoryMap[data.categoryDefault] };
   }
   const transformedData = {
-    doId: data.searchFilter.sido, // sido → doId
-    sigunguId: data.searchFilter.sigungu, // sigungu → sigunguId
     categoryId: categoryMap[data.category] || null, // category → categoryId (매핑된 숫자)
     // searchDate: data.searchDate, // 날짜 및 시간 그대로 유지
     vendorName: data.searchText, // 검색어 그대로 유지
   };
+
+  if (data.searchFilter.sido !== 0) {
+    transformedData.doId = data.searchFilter.sido;
+  }
+
+  // ✅ sigunguId가 0이 아닐 경우에만 추가
+  if (data.searchFilter.sigungu !== 0) {
+    transformedData.sigunguId = data.searchFilter.sigungu;
+  }
 
   if (data.searchFilter.inoutside === "inside") {
     transformedData.isIndoor = true;
