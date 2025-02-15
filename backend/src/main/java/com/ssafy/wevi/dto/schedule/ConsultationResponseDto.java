@@ -44,5 +44,6 @@ public class ConsultationResponseDto {
     private String vendorName;
     private String vendorAutoRoadAddress;
     private String vendorPhone;
+    private String vendorImageUrl;
 
 }

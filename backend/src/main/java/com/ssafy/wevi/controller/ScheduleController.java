@@ -156,7 +156,7 @@ public class ScheduleController {
         );
     }
 
-    // 계약 내역 조회
+    // 중간과정 모두 조회
     @GetMapping("/middle-process-steps")
     public ApiResponseDto<?> getMiddleProcessSteps() {
         // 로그인한 유저 ID 가져오기
@@ -170,6 +170,21 @@ public class ScheduleController {
                 true,
                 "MiddleProcessSteps found successfully.",
                 middleProcessStepResponseDtoList
+        );
+    }
+    
+    // 지정된 소비자의 중간과정을 조회
+    @GetMapping("/middle-process/progress/{userId}")
+    public ApiResponseDto<?> getMiddleProcessProgress(@PathVariable Integer userId) {
+        // 로그인한 유저 ID 가져오기
+        String loginUserId = SecurityUtils.getAuthenticatedUserId();
+        List<MiddleProcessResponseDto> middleProcessList =  scheduleService.getMiddleProcessProgress(userId, Integer.valueOf(loginUserId));
+
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "MiddleProcessProgress found successfully.",
+                middleProcessList
         );
     }
 
@@ -231,10 +246,24 @@ public class ScheduleController {
         );
     }
 
+    // ===== 수정 (PATCH) ===== //
+    @PatchMapping("/middle-process/complete/{scheduleId}")
+    public ApiResponseDto<?> completeMiddleProcess(@PathVariable Integer scheduleId) {
+        // 로그인한 유저 ID 가져오기
+        Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "MiddleProcess modified success.",
+                scheduleService.completeMiddleProcess(scheduleId, userId)
+        );
+    }
+
+
     // ===== 삭제 (DELETE) ===== //
     @DeleteMapping("/{scheduleId}")
     private ApiResponseDto<?> removeSchedule (@PathVariable Integer scheduleId) {
-        System.out.println("====================================진입");
         // 로그인한 유저 ID 가져오기
         Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
 

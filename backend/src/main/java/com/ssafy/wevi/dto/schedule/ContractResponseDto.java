@@ -45,4 +45,5 @@ public class ContractResponseDto {
     private String vendorName;
     private String vendorAutoRoadAddress;
     private String vendorPhone;
+    private String vendorImageUrl;
 }
