@@ -29,8 +29,9 @@ import RecoilNexus from "recoil-nexus";
 import ContractList from "./pages/ContractList";
 import Schedule from "./pages/Schedule";
 import { isNotificationState } from "./atoms/notificationState";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { onForegroundMessage, registerServiceWorker } from "./api/firebase";
+import splashVideo from "./assets/splashMP4.mp4";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -67,6 +68,23 @@ const router = createBrowserRouter([
   },
 ]);
 
+function SplashScreen() {
+  return (
+    <div className="flex items-center justify-center h-screen bg-black">
+      <video
+        autoPlay
+        muted
+        playsInline
+        onEnded={() => setLoading(false)}
+        className="w-full h-full object-cover"
+      >
+        <source src={splashVideo} type="video/mp4" />
+        브라우저가 동영상을 지원하지 않습니다.
+      </video>
+    </div>
+  );
+}
+
 function NotificationHandler() {
   const [isNotification, setIsNotification] =
     useRecoilState(isNotificationState);
@@ -88,6 +106,22 @@ function NotificationHandler() {
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const hasVisited = sessionStorage.getItem("visited");
+    if (!hasVisited) {
+      setTimeout(() => {
+        setLoading(false);
+        sessionStorage.setItem("visited", "true");
+      }, 500);
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) return <SplashScreen />;
+
   return (
     <RecoilRoot>
       <RecoilNexus />

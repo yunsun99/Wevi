@@ -2,79 +2,89 @@ import axios from "axios";
 import { api } from "./auth";
 
 export async function getSearchData(data) {
+  const reqData = filterData(data);
   try {
-    // // 경로 수정 필요
-    // const response = await api.post(`/api/auth/login`, data, {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    // });
-    // if (response.status === 200) {
-    //   return response.data;
-    // } else {
-    //   return;
-    // }
-    // console.log(data);
-    if (data.searchText === "아") {
-      return [services[data.category][0]];
+    const response = await api.get(
+      `/api/vendors/search`,
+      {
+        params: reqData,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.status === 200) {
+      console.log(response.data.data.content);
+      return response.data.data.content;
+    } else {
+      return;
     }
-    return services[data.category];
   } catch (error) {
     console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
 
-import example_weddinghall from "@/assets/example_weddinghall.png";
-import example_dress from "@/assets/backgroundImages/dress.png";
-
-const services = {
-  weddinghall: [
-    {
-      id: 1,
-      name: "웨스턴 베니비스 영등포",
-      region: "서울시 강남구 선릉로 757",
-      priceRange: "12,441,000원 ~ 37,128,000원",
-      image: example_weddinghall,
-    },
-    {
-      id: 2,
-      name: "압구정 스튜디오",
-      region: "서울시 강남구 선릉로 757",
-      priceRange: "12,441,000원 ~ 37,128,000원",
-      image: example_weddinghall,
-    },
-  ],
-  dress: [
-    {
-      id: 1,
-      name: "웨스턴 베니비스 영등포",
-      region: "서울시 강남구 선릉로 757",
-      priceRange: "12,441,000원 ~ 37,128,000원",
-      image: example_dress,
-    },
-    {
-      id: 2,
-      name: "압구정 스튜디오",
-      region: "서울시 강남구 선릉로 757",
-      priceRange: "12,441,000원 ~ 37,128,000원",
-      image: example_dress,
-    },
-  ],
-  makeup: [
-    {
-      id: 1,
-      name: "웨스턴 베니비스 영등포",
-      region: "서울시 강남구 선릉로 757",
-      priceRange: "12,441,000원 ~ 37,128,000원",
-      image: example_dress,
-    },
-    {
-      id: 2,
-      name: "압구정 스튜디오",
-      region: "서울시 강남구 선릉로 757",
-      priceRange: "12,441,000원 ~ 37,128,000원",
-      image: example_dress,
-    },
-  ],
+const categoryMap = {
+  weddinghall: 1,
+  dress: 3,
+  studio: 2,
+  makeup: 4,
 };
+
+function filterData(data) {
+  if (data.categoryDefault) {
+    return { categoryId: categoryMap[data.categoryDefault] };
+  }
+  const transformedData = {
+    doId: data.searchFilter.sido, // sido → doId
+    sigunguId: data.searchFilter.sigungu, // sigungu → sigunguId
+    categoryId: categoryMap[data.category] || null, // category → categoryId (매핑된 숫자)
+    // searchDate: data.searchDate, // 날짜 및 시간 그대로 유지
+    vendorName: data.searchText, // 검색어 그대로 유지
+  };
+
+  if (data.searchFilter.inoutside === "inside") {
+    transformedData.isIndoor = true;
+  } else if (data.searchFilter.inoutside === "outside") {
+    transformedData.isIndoor = false;
+  }
+
+  // if (data.searchFilter.price === "ASC") {
+  //   transformedData.isIndoor = true;
+  // } else if (data.searchFilter.inoutside === "outside") {
+  //   transformedData.isIndoor = false;
+  // }
+
+  return transformedData;
+}
+
+// 시도 데이터 수집
+export async function axiosSidoData() {
+  try {
+    const response = await api.get("http://localhost:8080/api/vendors/dolist");
+    if (response.data.success) {
+      return response.data.data;
+    }
+  } catch (error) {
+    console.error("시도 목록 불러오기 실패:", error);
+    return [];
+  }
+}
+
+// 시군구 데이터 수집
+export async function axiosSigunguData(selectedDoId) {
+  try {
+    const response = await api.get(
+      `http://localhost:8080/api/vendors/sigungulist/${selectedDoId}`
+    );
+    if (response.data.success) {
+      return response.data.data;
+    }
+  } catch (error) {
+    console.error("시군구 목록 불러오기 실패:", error);
+    setSigunguList([]);
+  }
+}

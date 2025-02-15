@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function Card({ data }) {
   const navigate = useNavigate();
   const { category } = useParams(); // /search/:category 경로에서 category를 추출
-
   function handleCardClick(id) {
     navigate(`/searchDetail/${category}?id=${id}`);
   }
@@ -15,18 +14,16 @@ export default function Card({ data }) {
       onClick={() => handleCardClick(data.id)}
     >
       <img
-        src={data.image}
-        alt={data.name}
+        src={data.imageUrl}
+        alt={data.vendorName}
         className="w-full h-fit object-cover overflow-x-auto"
       />
       <div className="pt-4 pl-4 pr-4 pb-2">
-        <h3 className="font-bold">{data.name}</h3>
-        <p className="text-sm text-gray-500">{data.region}</p>
+        <h3 className="font-bold">{data.vendorName}</h3>
+        <p className="text-sm text-gray-500">{data.doName}</p>
       </div>
       <div className="p-4">
-        <h3 className="font-bold text-right">
-          {data.priceRange.split("~")[0].trim() + " ~"}
-        </h3>
+        <h3 className="font-bold text-right">{data.minPrice}</h3>
       </div>
     </div>
   );
