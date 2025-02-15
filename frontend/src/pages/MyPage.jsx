@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../api/user";
 import { handleLogout } from "../api/auth";
+import profile_default from "../assets/profile_default.png";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -53,9 +54,9 @@ export default function MyPage() {
           {/* 프로필 정보 */}
           <div className="flex items-center gap-3">
             <img
-              src={user.profileImage || "https://via.placeholder.com/60"}
+              src={user.profileImage || profile_default}
               alt="프로필 이미지"
-              className="w-12 h-12 rounded-full"
+              className="w-12 h-12 rounded-full bg-gray-400"
             />
             <div className="text-left">
               <p className="text-lg font-semibold">{user.name}</p>
