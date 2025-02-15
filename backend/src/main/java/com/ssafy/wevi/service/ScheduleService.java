@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,8 +109,8 @@ public class ScheduleService {
             
             // 방문 일정은 startDate, Time 받기
             if (middleProcessCreateDto.getStartDate() != null) {
-                middleProcess.setStartDateTime(stringToLocalDateTime(contractCreateDto.getStartDate(),contractCreateDto.getStartTime()));
-                middleProcess.setEndDateTime(stringToLocalDateTime(contractCreateDto.getStartDate(),contractCreateDto.getStartTime()));
+                middleProcess.setStartDateTime(stringToLocalDateTime(middleProcessCreateDto.getStartDate(),middleProcessCreateDto.getStartTime()));
+                middleProcess.setEndDateTime(stringToLocalDateTime(middleProcessCreateDto.getStartDate(),middleProcessCreateDto.getStartTime()));
             }
 
             scheduleRepository.save(middleProcess);
@@ -293,7 +295,7 @@ public class ScheduleService {
         }
     }
 
-    // 중간 과정(진행도) 조회
+    // 나의 모든 중간 과정(진행도) 조회
     @Transactional(readOnly = true)
     public List<MiddleProcessResponseDto> findAllMiddleProcesses(Integer userId) {
         // 업체인지 소비자인지 확인하기 위해 유저 조회
@@ -314,6 +316,30 @@ public class ScheduleService {
                 scheduleList = scheduleRepository.findAllMiddleProcessWithSpouse(userId, spouse.getUserId());
             }
         }
+        // 반환타입으로 변환하여 반환
+        if (scheduleList.size() > 0) {
+            return toMiddleProcessList(scheduleList);
+        } else {
+            throw new IllegalArgumentException("해당하는 일정이 없습니다.");
+        }
+    }
+
+    // 업체가 소비자 1명의 중간 과정(진행도) 조회
+    @Transactional(readOnly = true)
+    public List<MiddleProcessResponseDto> getMiddleProcessProgress(Integer userId, Integer loginUserId) {
+        // 업체인지 소비자인지 확인하기 위해 유저 조회
+        User user = userRepository.findById(loginUserId).orElseThrow();
+
+        List<Schedule> scheduleList = new ArrayList<>();
+
+        // 업체일 때:
+        if (user instanceof Vendor) {
+            scheduleList = scheduleRepository.findMiddleProcessByUserIdAndVendorId(userId, loginUserId);
+            // 소비자일 때
+        } else {
+            throw new IllegalArgumentException("업체만 할 수 있는 요청입니다.");
+        }
+
         // 반환타입으로 변환하여 반환
         if (scheduleList.size() > 0) {
             return toMiddleProcessList(scheduleList);
@@ -412,6 +438,37 @@ public class ScheduleService {
 
         return middleProcessStepResponseDto;
     }
+
+    // ====== 수정 ====== //
+    // 업체 중간과정 완료처리
+    @Transactional
+    public MiddleProcessResponseDto completeMiddleProcess(Integer scheduleId,Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();
+
+        // 업체인지 체크
+        if (!(user instanceof Vendor)) throw new IllegalArgumentException("업체만 중간과정 완료 처리를 할 수 있습니다.");
+        // 중간과정 맞는지 체크
+        if (!(schedule instanceof MiddleProcess)) throw new IllegalArgumentException("해당 일정은 중간과정이 아닙니다.");
+        // 해당 업체의 일정인지 체크
+        if (schedule.getVendor() != (Vendor) user) throw new IllegalArgumentException("요청하신 업체의 일정이 아닙니다.");
+        // 이전 단계 완료 여부 확인
+        List<MiddleProcess> stepList = scheduleRepository.findAllMiddleProcessByContractId(((MiddleProcess) schedule).getContract().getScheduleId());
+        for (MiddleProcess m : stepList) {
+            if (m.getMiddleProcessStep().getMiddleProcessStepId() == ((MiddleProcess) schedule).getMiddleProcessStep().getMiddleProcessStepId()-1) {
+                if (!m.getStatus().equals(MiddleProcessStatus.COMPLETED)) throw new IllegalArgumentException("이전 단계가 아직 완료 처리되지 않았습니다.");
+                break;
+            }
+        }
+
+        // 완료처리
+        ((MiddleProcess) schedule).setStatus(MiddleProcessStatus.COMPLETED);
+        ((MiddleProcess) schedule).setCompleteDateTime(LocalDateTime.now());    // 완료 처리 요청 시점으로 설정
+
+        return toMiddleProcessResponseDto((MiddleProcess) schedule);
+    }
+
+
 
     // ====== 삭제 ====== //
     @Transactional
