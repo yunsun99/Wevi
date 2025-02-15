@@ -7,6 +7,7 @@ import com.ssafy.wevi.domain.user.User;
 import com.ssafy.wevi.domain.user.Vendor;
 import com.ssafy.wevi.dto.schedule.*;
 import com.ssafy.wevi.enums.MiddleProcessStatus;
+import com.ssafy.wevi.enums.NotificationType;
 import com.ssafy.wevi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class ScheduleService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final MiddleProcessStepRepository middleProcessStepRepository;
+    private final NotificationService notificationService;
 
     // ========= 등록 ========//
 
@@ -109,6 +111,9 @@ public class ScheduleService {
                 middleProcess.setStartDateTime(stringToLocalDateTime(contractCreateDto.getStartDate(),contractCreateDto.getStartTime()));
                 middleProcess.setEndDateTime(stringToLocalDateTime(contractCreateDto.getStartDate(),contractCreateDto.getStartTime()));
             }
+
+            notificationService.createScheduleNotification(customer, "\uD83C\uDF40 " + vendor.getName(), "업체와의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
+            notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 " + vendor.getName(), "배우자와 업체 간의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
 
             scheduleRepository.save(middleProcess);
         }
