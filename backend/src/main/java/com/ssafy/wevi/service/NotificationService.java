@@ -20,14 +20,14 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final FirebaseCloudMessagingService firebaseCloudMessagingService;
 
-    // NotificationType: COUPLE_REQUEST_SENT
+    // NotificationType: COUPLE_REQUEST_SENT, COUPLE_REQUEST_RESPONSE
     @Transactional
-    public void createCoupleRequestSentNotification(User receiver, String title, String message, CoupleRequest coupleRequest) {
+    public void createCoupleRequestNotification(User receiver, String title, String message, CoupleRequest coupleRequest, String type) {
         Notification notification = Notification.builder()
                 .receiver(receiver)
                 .title(title)
                 .message(message)
-                .type(NotificationType.COUPLE_REQUEST_SENT.name())
+                .type(type)
                 .coupleRequest(coupleRequest)  // 커플 요청 연결
                 .isRead(false)
                 .build();
@@ -39,33 +39,14 @@ public class NotificationService {
         }
     }
 
-    // NotificationType: COUPLE_REQUEST_RESPONSE
+    // NotificationType: CONSULTATION_REGISTERED, CONTRACT_REGISTERED, SCHEDULE_REMINDER
     @Transactional
-    public void createCoupleRequestResponseNotification(User receiver, String title, String message, CoupleRequest coupleRequest) {
+    public void createScheduleNotification(User receiver, String title, String message, Schedule schedule, String type) {
         Notification notification = Notification.builder()
                 .receiver(receiver)
                 .title(title)
                 .message(message)
-                .type(NotificationType.COUPLE_REQUEST_RESPONSE.name())
-                .coupleRequest(coupleRequest)  // 커플 요청 연결
-                .isRead(false)
-                .build();
-
-        notificationRepository.save(notification);
-
-        if (receiver.getFcmToken() != null) {
-            firebaseCloudMessagingService.sendPushNotification(receiver.getFcmToken(), title, message);
-        }
-    }
-
-    // CONSULTATION_REGISTERED, CONTRACT_REGISTERED, SCHEDULE_REMINDER
-    @Transactional
-    public void createScheduleNotification(User receiver, String title, String message, Schedule schedule) {
-        Notification notification = Notification.builder()
-                .receiver(receiver)
-                .title(title)
-                .message(message)
-                .type("SCHEDULE_REMINDER")
+                .type(type)
                 .schedule(schedule)
                 .isRead(false)
                 .build();
