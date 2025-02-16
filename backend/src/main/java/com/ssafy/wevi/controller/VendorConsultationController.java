@@ -43,7 +43,7 @@ public class VendorConsultationController {
     }
 
     @GetMapping("/available-times")
-    public ApiResponseDto<VendorConsultationTimeResponseDto> getVendorConsultationDates(
+    public ApiResponseDto<VendorConsultationTimeResponseDto> getVendorConsultationTimes(
             @RequestParam Integer vendorId,
             @RequestParam int year,
             @RequestParam int month,

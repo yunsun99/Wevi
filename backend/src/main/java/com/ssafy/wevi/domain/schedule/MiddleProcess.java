@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -21,6 +23,9 @@ public class MiddleProcess extends Schedule{
 
     private String detail;
 
+    // 단계 완료 날짜
+    private LocalDateTime completeDateTime;
+
 //    @Column(name = "is_visit", nullable = false)
 //    private boolean isVisit;
 
@@ -33,4 +38,8 @@ public class MiddleProcess extends Schedule{
     @JoinColumn(name = "contract_id", referencedColumnName = "schedule_id", nullable = false)
     private Contract contract;
 
+    public void setContract(Contract contract) {
+        this.contract = contract;
+        contract.getMiddleProcessList().add(this);
+    }
 }

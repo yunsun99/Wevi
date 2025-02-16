@@ -386,7 +386,7 @@ public class ScheduleService {
         contractDto.setVendorAutoRoadAddress(schedule.getVendor().getAutoRoadAddress());
         contractDto.setVendorPhone(schedule.getVendor().getPhone());
         contractDto.setPrice(schedule.getPrice());
-        contractDto.setContractDate(schedule.getContractDate());
+//        contractDto.setContractDate(schedule.getContractDate());
         contractDto.setDetail(schedule.getDetail());
         contractDto.setCategoryId(schedule.getCategory().getId());
 
