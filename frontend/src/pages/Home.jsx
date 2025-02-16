@@ -8,9 +8,23 @@ import character_camera from "../assets/characters/character_camera2.png";
 
 import { useEffect, useState } from "react";
 import { getContractList } from "../api/schedule";
+import { getUserInfo } from "../api/user";
+import dayjs from "dayjs"; // ✅ dayjs 라이브러리 사용
+
+// D-day날짜계산기
+function getDaysDifference(updatedDate) {
+  const today = dayjs().startOf("day"); // 🔹 오늘 날짜 (시간 제외)
+  const updated = dayjs(updatedDate).startOf("day"); // 🔹 coupleUpdatedAt (시간 제외)
+
+  const diff = today.diff(updated, "day"); // 🔹 날짜 차이 계산
+  return diff >= 0 ? `D+${diff}일` : `D-${diff}일`;
+}
 
 export default function Home() {
   const [contractList, setContractList] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
+  const [dateDiff, setDateDiff] = useState("");
+
   const [categoryExists, setCategoryExists] = useState({
     weddinghall: false,
     dress: false,
@@ -43,20 +57,63 @@ export default function Home() {
       }
     };
 
+    const axiosUserInfo = async () => {
+      console.log("userinfo 실행");
+      try {
+        const userData = await getUserInfo();
+        if (!userData) {
+          return;
+        }
+        setUserInfo(userData);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     axiosContractList();
+    axiosUserInfo(); // ✅ 이제 정상적으로 실행됨
   }, []);
+
   useEffect(() => {
-    console.log(categoryExists);
-  }, [categoryExists]);
+    if (userInfo.coupleUpdatedAt) {
+      console.log("으악");
+      setDateDiff(getDaysDifference(userInfo.coupleUpdatedAt));
+    } else {
+      return;
+    }
+  }, [userInfo]);
+
+  // useEffect(() => {
+  //   console.log(categoryExists);
+  // }, [categoryExists]);
+  useEffect(() => {
+    console.log(userInfo);
+  }, [userInfo]);
+
+  let comment =
+    "예식장/스튜디오/드레스/메이크업 샵을 | 계약하면 홈 화면이 바뀌어요!";
 
   return (
     <>
       <TopNavigationBar />
       <div className="h-[86vh]">
         <div className="h-20 flex justify-end items-center px-4">
-          <div className="text-2xl font-bold">1 일째</div>
+          {userInfo ? (
+            <div className="text-2xl font-bold">{dateDiff}</div>
+          ) : null}
         </div>
-        <main className="flex flex-col w-screen items-center justify-center overflow-hidden h-[calc(100vh-144px)]">
+        <div className="flex items-center justify-center">
+          <div className="w-[30vh] text-md text-center">
+            {comment.split("|").map((line, index) => (
+              <span key={index} className="whitespace-nowrap">
+                {line}
+                {index !== comment.split("|").length - 1 && <br />}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <main className="flex flex-col w-screen items-center justify-center overflow-hidden h-[75vh]">
           <div className="relative w-full flex items-center justify-center">
             {/* 기본 캐릭터 배경 (항상 표시) */}
             <img

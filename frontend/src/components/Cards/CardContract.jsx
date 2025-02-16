@@ -18,6 +18,10 @@ export default function CardContract({ data }) {
     categoryBackgroundMap[data.categoryName] || "default_schedule";
   const navigate = useNavigate();
 
+  function goSearchDetail(category, id) {
+    navigate(`/searchDetail/${category}?id=${id}`);
+  }
+
   function handleClick() {
     if (!data.dtype) {
       if (data.price) {
@@ -49,7 +53,7 @@ export default function CardContract({ data }) {
   }
   return (
     <div
-      className="relative bg-gray-800 shadow-md h-[21.5vh] overflow-hidden cursor-pointer"
+      className="relative bg-gray-800 shadow-md h-[20vh] overflow-hidden cursor-pointer"
       style={{
         backgroundImage: `url(${backgroundImageURL})`,
         backgroundSize: "cover",
@@ -61,18 +65,24 @@ export default function CardContract({ data }) {
       <div className="absolute inset-0 bg-black opacity-50"></div>
 
       {/* 업체 상세보기 버튼 */}
-      <button className="absolute top-4 right-4 bg-gray-900 bg-opacity-70 text-white px-3 py-1 text-xs rounded-full">
+      <button
+        className="z-1 absolute top-4 right-4 bg-gray-900 bg-opacity-70 text-white px-3 py-1 text-xs rounded-full"
+        onClick={(e) => {
+          e.stopPropagation(); // ✅ 부모 div의 클릭 이벤트 방지
+          goSearchDetail(data.categoryName, data.vendorId);
+        }}
+      >
         업체 상세보기
       </button>
-      <button className="absolute top-12 right-4 bg-gray-900 bg-opacity-70 text-white px-3 py-1 text-xs rounded-full">
+      {/* <button className="absolute top-12 right-4 bg-gray-900 bg-opacity-70 text-white px-3 py-1 text-xs rounded-full">
         업체 예약하기
-      </button>
+      </button> */}
 
       {/* 카드 내용 */}
       <div className="relative p-4 text-white">
         <h2 className="text-lg font-bold">{formattedName}</h2>
         <p className="text-sm opacity-80">{data.vendorName}</p>
-        <p className="text-sm mt-1">지역: {data.vendorAutoRoadAddress}</p>
+        <p className="text-sm mt-8">지역: {data.vendorAutoRoadAddress}</p>
         <p className="text-sm">
           금액: {data.price ? `${data.price.toLocaleString()}원` : "상담 문의"}
         </p>

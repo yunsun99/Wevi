@@ -101,3 +101,22 @@ export async function getProgressList() {
     return Promise.reject(error);
   }
 }
+
+// 예약 취소하기
+export async function cancelReservation(scheduleId) {
+  try {
+    const response = await api.delete(
+      `/api/schedules/consultation/${scheduleId}`
+    );
+    if (response.status === 200) {
+      console.log("예약 취소 성공", response.data);
+      return true; // 성공 시 true 반환
+    } else {
+      console.log("예약 취소 실패");
+      return false;
+    }
+  } catch (error) {
+    console.error("예약 취소 요청 실패", error);
+    return error.response ? error.response.status : 500;
+  }
+}
