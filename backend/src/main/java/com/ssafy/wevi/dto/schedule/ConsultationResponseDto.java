@@ -10,8 +10,9 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class ConsultationResponseDto {
+    private Integer loginUserId;
     // 일정 공통
-    private int id;
+    private int scheduleId;
 //    private LocalDateTime startTime;
 //    private LocalDateTime endTime;
 
@@ -23,6 +24,7 @@ public class ConsultationResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Integer categoryId;
+    private String categoryName;
 
     // 상담 별도
     private String request;
@@ -42,5 +44,6 @@ public class ConsultationResponseDto {
     private String vendorName;
     private String vendorAutoRoadAddress;
     private String vendorPhone;
+    private String vendorImageUrl;
 
 }

@@ -1,13 +1,18 @@
 package com.ssafy.wevi.service;
 
 import com.ssafy.wevi.domain.*;
-import com.ssafy.wevi.domain.user.Vendor;
+import com.ssafy.wevi.domain.Specification.VendorSpecification;
 import com.ssafy.wevi.domain.user.Customer;
+import com.ssafy.wevi.domain.user.Vendor;
+import com.ssafy.wevi.dto.ImageDto;
 import com.ssafy.wevi.dto.vendor.*;
 import com.ssafy.wevi.enums.UserStatus;
 import com.ssafy.wevi.repository.*;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +23,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class VendorService {
 
     private final VendorRepository vendorRepository;
@@ -28,18 +32,41 @@ public class VendorService {
     private final CategoryRepository categoryRepository;
     private final ReviewRepository reviewRepository;
     private final CustomerRepository customerRepository;
+    private final ImageRepository imageRepository;
 
+    @Transactional(readOnly = true)
     public List<DoDto> getDoList() {
         return doRepository.findAll().stream()
                 .map(this::convertToDoDto)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<SigunguDto> getSigunguList(int doId) {
         return sigunguRepository.findByDoId(doId).stream()
                 .map(this::convertToSigunguDto)
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public ImageDto getImage(Vendor vendor) {
+
+        List<Image> images = imageRepository.findByVendor(vendor);
+        ImageDto imageDto = new ImageDto();
+
+        if (images == null || images.isEmpty()) {
+            imageDto.setImageUrl("기본 이미지 입니다.");
+            return imageDto;
+        }
+
+        List<ImageDto> imageDtoList = images.stream()
+                .map(this::convertToImageDto)
+                .collect(Collectors.toList());
+
+        imageDto = imageDtoList.get(0);
+        return imageDto;
+    }
+
 
     @Transactional
     public VendorDetailResponseDto createVendor(VendorCreateDto vendorCreateDto) {
@@ -88,24 +115,44 @@ public class VendorService {
         return toVendorDetailResponseDto(vendor);
     }
 
+//    @Transactional(readOnly = true)
+//    public List<VendorResponseDto> findVendorsByLocationAndCategory(
+//            Integer doId, Integer sigunguId, Integer categoryId) {
+//
+//        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new EntityNotFoundException("Category not found"));
+//
+//        List<Vendor> vendors = vendorRepository.findByLocationAndCategory(
+//                doId, sigunguId, category);
+//
+//        return vendors.stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
+//    }
+
     @Transactional(readOnly = true)
-    public List<VendorResponseDto> findVendorsByLocationAndCategory(
-            Integer doId, Integer sigunguId, Integer categoryId) {
+    public Page<Vendor> searchVendors(VendorSearchCondition condition, Pageable pageable) {
+        Sort sort = Sort.by(
+                condition.getSortDirection().equals("ASC") ?
+                        Sort.Direction.ASC : Sort.Direction.DESC,
+                "price"
+        );
 
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        Pageable pageableWithSort = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                sort
+        );
 
-        List<Vendor> vendors = vendorRepository.findByLocationAndCategory(
-                doId, sigunguId, category);
-
-        return vendors.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+            return vendorRepository.findAll(
+                    VendorSpecification.searchVendor(condition),
+                    pageableWithSort
+            );
     }
 
     @Transactional(readOnly = true)
     public VendorDetailResponseDto findVendorById(Integer vendorId) {
 
-        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow(() -> new IllegalArgumentException("해당 업체가 존재하지 않습니다."));;
+        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow(() -> new IllegalArgumentException("해당 업체가 존재하지 않습니다."));
 
         return toVendorDetailResponseDto(vendor);
     }
@@ -172,18 +219,27 @@ public class VendorService {
         return dto;
     }
 
-    private VendorResponseDto convertToDto(Vendor vendor) {
-        VendorResponseDto dto = new VendorResponseDto();
-        dto.setId(vendor.getUserId());
-        dto.setName(vendor.getName());
-        dto.setCategory(vendor.getCategory().getId());
-        dto.setDoId(vendor.getSigunguCode().getDoId());
-        dto.setDoName(vendor.getSigunguCode().getDoEntity().getDoName());
-        dto.setSigunguId(vendor.getSigunguCode().getSigunguId());
-        dto.setSigunguName(vendor.getSigunguCode().getSigunguName());
-        dto.setMinPrice(vendor.getMinPrice());
-        return dto;
-    }
+//    private VendorResponseDto convertToDto(Vendor vendor) {
+//        VendorResponseDto dto = new VendorResponseDto();
+//        dto.setId(vendor.getUserId());
+//        dto.setVendorName(vendor.getName());
+//        dto.setCategoryId(vendor.getCategory().getId());
+//        dto.setDoId(vendor.getSigunguCode().getDoId());
+//        dto.setDoName(vendor.getSigunguCode().getDoEntity().getDoName());
+//        dto.setSigunguId(vendor.getSigunguCode().getSigunguId());
+//        dto.setSigunguName(vendor.getSigunguCode().getSigunguName());
+//        dto.setMinPrice(vendor.getMinPrice());
+//
+//        List<Image> images = imageRepository.findByVendor(vendor);
+//        List<ImageDto> imageDtoList = images.stream()
+//                .map(this::convertToImageDto)
+//                .collect(Collectors.toList());
+//
+//        ImageDto imageDto = imageDtoList.get(0);
+//
+//        dto.setImageUrl(imageDto.getImageUrl());
+//        return dto;
+//    }
 
     private VendorDetailResponseDto toVendorDetailResponseDto(Vendor vendor) {
         if (vendor == null) return null;
@@ -191,15 +247,15 @@ public class VendorService {
         VendorDetailResponseDto vendorDetailResponseDto = new VendorDetailResponseDto();
         vendorDetailResponseDto.setOwnerName(vendor.getOwnerName());
         vendorDetailResponseDto.setOwnerPhone(vendor.getOwnerPhone());
-        vendorDetailResponseDto.setName(vendor.getName());
+        vendorDetailResponseDto.setVendorName(vendor.getName());
         vendorDetailResponseDto.setZonecode(vendor.getZonecode());
         vendorDetailResponseDto.setDoCode(vendor.getSigunguCode() != null ? vendor.getSigunguCode().getDoId() : null);
         vendorDetailResponseDto.setSigunguCode(vendor.getSigunguCode() != null ? vendor.getSigunguCode().getSigunguId() : null);
         vendorDetailResponseDto.setAutoRoadAddress(vendor.getAutoRoadAddress());
         vendorDetailResponseDto.setAddressDetail(vendor.getAddressDetail());
-        vendorDetailResponseDto.setPhone(vendor.getPhone());
+        vendorDetailResponseDto.setVendorPhone(vendor.getPhone());
         vendorDetailResponseDto.setRegistrationNumber(vendor.getRegistrationNumber());
-        vendorDetailResponseDto.setCategory(vendor.getCategory() != null ? vendor.getCategory().getId() : null);
+        vendorDetailResponseDto.setCategoryId(vendor.getCategory() != null ? vendor.getCategory().getId() : null);
         vendorDetailResponseDto.setBusinessHour(vendor.getBusinessHour());
         vendorDetailResponseDto.setHomepage(vendor.getHomepage());
         vendorDetailResponseDto.setPrice(vendor.getPrice());
@@ -210,17 +266,40 @@ public class VendorService {
         vendorDetailResponseDto.setParkinglot(vendor.getParkinglot());
         vendorDetailResponseDto.setCreatedAt(vendor.getCreatedAt());
 
+        List<Image> images = imageRepository.findByVendor(vendor);
+        List<ImageDto> imageDtoList = images.stream()
+                .map(this::convertToImageDto)
+                .collect(Collectors.toList());
+        vendorDetailResponseDto.setImages(imageDtoList);
+
         return vendorDetailResponseDto;
     }
 
     private ReviewDto convertToReviewDto(Review review) {
         ReviewDto reviewDto = new ReviewDto();
         reviewDto.setReviewId(review.getReviewId());
+        reviewDto.setUserNickname(review.getCustomer().getNickname());
         reviewDto.setContent(review.getContent());
         reviewDto.setCreatedAt(review.getCreatedAt());
         reviewDto.setUpdatedAt(review.getUpdatedAt());
         reviewDto.setCustomerId(review.getCustomer().getUserId());
         reviewDto.setVendorId(review.getVendor().getUserId());
+
+        List<Image> images = imageRepository.findByReview(review);
+        List<ImageDto> imageDtoList = images.stream()
+                .map(this::convertToImageDto)
+                .collect(Collectors.toList());
+        reviewDto.setImages(imageDtoList);
+
         return reviewDto;
+    }
+
+    private ImageDto convertToImageDto(Image image) {
+        ImageDto imageDto = new ImageDto();
+        imageDto.setImageType(image.getImageType().name());
+        imageDto.setOrderIndex(image.getOrderIndex());
+        imageDto.setImageUrl(image.getImageUrl());
+
+        return imageDto;
     }
 }

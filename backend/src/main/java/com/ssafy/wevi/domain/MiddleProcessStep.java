@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "MiddleProcessSteps")
 public class MiddleProcessStep {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "middle_process_step_id")
-    private Integer id;
+    private Integer middleProcessStepId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)

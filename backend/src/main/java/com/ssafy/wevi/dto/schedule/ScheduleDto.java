@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class ScheduleDto {
-    private int id;
+    private int scheduleId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String title;
