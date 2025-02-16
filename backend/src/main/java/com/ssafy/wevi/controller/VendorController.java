@@ -121,6 +121,9 @@ public class VendorController {
             @RequestParam(required = false) String vendorName,
             @RequestParam(required = false) Boolean isIndoor,
             @RequestParam(defaultValue = "ASC") String sortDirection,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer day,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -133,6 +136,14 @@ public class VendorController {
             condition.setVendorName(vendorName);
             condition.setIsIndoor(isIndoor);
             condition.setSortDirection(sortDirection);
+
+            if (year != null && month != null && day != null){
+                ConsultationDate consultationDate = new ConsultationDate();
+                consultationDate.setYear(year);
+                consultationDate.setMonth(month);
+                consultationDate.setDay(day);
+                condition.setConsultationDate(consultationDate);
+            }
 
             // 페이징 정보 설정
             Pageable pageable = PageRequest.of(page, size);

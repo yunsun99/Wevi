@@ -9,14 +9,12 @@ import com.ssafy.wevi.dto.vendor.*;
 import com.ssafy.wevi.enums.UserStatus;
 import com.ssafy.wevi.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +31,7 @@ public class VendorService {
     private final ReviewRepository reviewRepository;
     private final CustomerRepository customerRepository;
     private final ImageRepository imageRepository;
+    private final VendorConsultationService vendorConsultationService;
 
     @Transactional(readOnly = true)
     public List<DoDto> getDoList() {
@@ -143,10 +142,44 @@ public class VendorService {
                 sort
         );
 
-            return vendorRepository.findAll(
-                    VendorSpecification.searchVendor(condition),
-                    pageableWithSort
+        // 먼저 기본 검색 조건으로 결과를 가져옴
+        Page<Vendor> vendorPage = vendorRepository.findAll(
+                VendorSpecification.searchVendor(condition),
+                pageableWithSort
+        );
+
+        // 상담 가능 날짜 필터가 있는 경우
+        if (condition.getConsultationDate() != null) {
+            ConsultationDate date = condition.getConsultationDate();
+
+            LocalDate Date = LocalDate.of(date.getYear(), date.getMonth(), date.getDay());
+
+            // 전체 컨텐츠를 가져와서 필터링
+            List<Vendor> filteredContent = vendorPage.getContent().stream()
+                    .filter(vendor -> isVendorAvailable(
+                            vendor.getUserId(),
+                            Date
+                    ))
+                    .collect(Collectors.toList());
+
+            // 새로운 Page 객체 생성
+            return new PageImpl<>(
+                    filteredContent,
+                    pageableWithSort,
+                    filteredContent.size()
             );
+        }
+
+
+        return vendorPage;
+    }
+
+    private boolean isVendorAvailable(Integer vendorId, LocalDate Date) {
+        try {
+            return vendorConsultationService.getAvailability(vendorId, Date).isAvailability();
+        } catch (Exception e) {
+            return false; // 에러 발생 시 불가능으로 처리
+        }
     }
 
     @Transactional(readOnly = true)
