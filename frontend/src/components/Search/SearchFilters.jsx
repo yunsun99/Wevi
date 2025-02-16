@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Region from "../../components/Search/SearchRegion";
 import { useRecoilState } from "recoil";
 import { searchFilterState } from "../../atoms/searchState";
@@ -7,6 +7,19 @@ import { useParams } from "react-router-dom";
 export default function SearchFilters() {
   const { category } = useParams();
   const [searchFilter, setFilterState] = useRecoilState(searchFilterState);
+
+  // ✅ 필터 기본값 설정
+  const defaultFilter = {
+    sido: "",
+    sigungu: "",
+    price: "",
+    inoutside: "",
+  };
+
+  useEffect(() => {
+    setFilterState(defaultFilter);
+  }, [category, setFilterState]);
+
   const handleOptionChange = (event, field) => {
     setFilterState((prevState) => ({
       ...prevState,

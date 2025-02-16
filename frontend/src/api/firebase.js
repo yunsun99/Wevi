@@ -26,8 +26,6 @@ export const requestFCMToken = async () => {
       const token = await getToken(messaging, {
         vapidKey: vapidKey,
       });
-      console.log("FCM Token:", token);
-      console.log("가가");
       return token;
     } else {
       console.log("Notification permission denied");
@@ -41,10 +39,12 @@ export const requestFCMToken = async () => {
 
 // ✅ 포그라운드 메시지 수신
 export const onForegroundMessage = (callback) => {
-  onMessage(messaging, (payload) => {
+  const unsubscribe = onMessage(messaging, (payload) => {
     console.log("포그라운드 메시지 수신:", payload);
     if (callback) callback(payload);
   });
+
+  return unsubscribe;
 };
 
 // ✅ 서비스 워커 등록 (Recoil 상태 업데이트는 컴포넌트에서 처리)

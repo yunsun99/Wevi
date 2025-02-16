@@ -53,7 +53,7 @@ export default function MyPage() {
           {/* 프로필 정보 */}
           <div className="flex items-center gap-3">
             <img
-              src={user.profileImage || "https://via.placeholder.com/60"}
+              src={user.profileImage || "/user.png"}
               alt="프로필 이미지"
               className="w-12 h-12 rounded-full"
             />
@@ -68,7 +68,7 @@ export default function MyPage() {
             className="px-4 py-1 text-sm border rounded-lg text-gray-700"
             onClick={handleButtonClick}
           >
-            {user.spouseId ? user.spouseId : "커플 연동"}
+            {user.spouseId ? user.spouseName : "커플 연동"}
           </button>
         </div>
 

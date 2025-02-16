@@ -6,7 +6,10 @@ import { axiosCoupleReceive } from "../../api/coupleAxios";
 export default function CoupleLinkReceive() {
   const handleRequest = async (status) => {
     try {
-      const code = axiosCoupleReceive(status);
+      const code = await axiosCoupleReceive(status);
+      if (code === 200) {
+        window.location.reload();
+      }
     } catch (err) {
       consolelog(err.message);
     }

@@ -11,7 +11,11 @@ export default function CoupleLinkSend() {
     e.preventDefault();
 
     try {
-      const code = axiosCoupleRequests(email);
+      const code = await axiosCoupleRequests(email);
+      console.log(code);
+      if (code === 201) {
+        window.location.reload();
+      }
     } catch (err) {
       consolelog(err.message);
     }

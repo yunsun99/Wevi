@@ -4,7 +4,7 @@ import CoupleLinkPending from "@/components/CoupleLink/CoupleLinkPending";
 import CoupleLinkReceive from "@/components/CoupleLink/CoupleLinkReceive";
 
 export default function CoupleLinkedNot({ link }) {
-  console.log(link);
+  console.log(link.type);
   return (
     <>
       <div className="relative w-full flex items-center justify-center">
@@ -28,7 +28,7 @@ export default function CoupleLinkedNot({ link }) {
             상대방의 수락을
             <br /> 기다리는 중입니다.
           </p>
-          <CoupleLinkPending />
+          <CoupleLinkPending user={link} />
         </>
       )}
       {link.type === 2 && (
