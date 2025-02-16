@@ -2,9 +2,7 @@ import { atom } from "recoil";
 
 export const notificationState = atom({
   key: "notificationState",
-  default: {
-    selectedCategory: "웨딩홀",
-  },
+  default: {},
 });
 
 export const isNotificationState = atom({

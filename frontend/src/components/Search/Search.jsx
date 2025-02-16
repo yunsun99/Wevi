@@ -2,10 +2,18 @@ import React, { useEffect, useState } from "react";
 import icon_search from "../../assets/icons/icon_search.png";
 import { searchTextState } from "../../atoms/searchState";
 import { useRecoilState } from "recoil";
+import { useParams } from "react-router-dom";
 
 export default function Search() {
+  const { category } = useParams();
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const [localSearchText, setLocalSearchText] = useState(searchText);
+
+  useEffect(() => {
+    setSearchText(""); // ✅ Recoil 상태 초기화
+    setLocalSearchText(""); // ✅ local 상태도 초기화
+  }, [category]);
+
   useEffect(() => {
     const debounce = setTimeout(() => {
       setSearchText(localSearchText);

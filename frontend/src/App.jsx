@@ -95,11 +95,17 @@ function NotificationHandler() {
       console.error("서비스 워커 등록 실패");
     });
 
-    // ✅ 2. 포그라운드 메시지 수신 시에만 상태 업데이트
-    onForegroundMessage(() => {
+    // ✅ 2. 알람이 올 때만 실행되는 이벤트 리스너 추가
+    const handleNotification = () => {
       setIsNotification(true);
       alert("🔔 새로운 알림이 도착했습니다!");
-    });
+    };
+
+    const unsubscribe = onForegroundMessage(handleNotification);
+
+    return () => {
+      unsubscribe();
+    };
   }, [setIsNotification]);
 
   return null; // UI 없음

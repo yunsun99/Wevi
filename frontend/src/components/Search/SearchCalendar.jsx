@@ -2,11 +2,17 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import icon_calendar from "../../assets/icons/icon_calendar.png";
 import { useRecoilState } from "recoil";
 import { searchDateState } from "../../atoms/searchState";
+import { useParams } from "react-router-dom";
 
 export default function SearchCalendar() {
+  const { category } = useParams();
   const [searchDate, setSearchDate] = useRecoilState(searchDateState);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const datePickerRef = useRef(null);
+
+  useEffect(() => {
+    setSearchDate({ date: "" }); // ✅ Recoil 상태 초기화
+  }, [category]);
 
   // 🔹 날짜 변경 핸들러 (이전 값과 다를 때만 업데이트)
   const handleDateChange = useCallback(
