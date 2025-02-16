@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -121,6 +122,7 @@ public class CoupleRequestService {
     }
 
     // 커플연동 삭제 - 커플요청삭제
+    @Transactional
     public void deleteCoupleRequest(Integer customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("해당 ID의 사용자를 찾을 수 없습니다: " + customerId));
@@ -130,6 +132,8 @@ public class CoupleRequestService {
 
         // 본인의 spouse 정보를 초기화
         customer.setSpouse(null);
+        customer.setSentRequests(new ArrayList<>());
+        customer.setReceivedRequests(new ArrayList<>());
         customerRepository.save(customer);
 
         // 배우자의 spouse 정보를 초기화
