@@ -20,7 +20,7 @@ import java.util.List;
 public class Contract extends Schedule{
     private int price;  // 계약금액
 //    @Column(nullable = false)
-//    private LocalDateTime contractDate; // 계약일1
+//    private LocalDateTime contractDate; // 계약일
     private String detail;  // 계약 세부사항
 
     @OneToMany(mappedBy = "contract")
