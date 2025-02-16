@@ -1,6 +1,7 @@
 package com.ssafy.wevi.config;
 
 import com.google.api.client.util.Value;
+import com.ssafy.wevi.service.EmailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -40,6 +41,11 @@ public class EmailConfig {
 
     @Value("${spring.mail.properties.mail.smtp.writetimeout}")
     private int writeTimeout;
+
+    @Bean
+    public EmailService emailService() {
+        return new EmailService(javaMailSender());
+    }
 
     @Bean
     public JavaMailSender javaMailSender() {

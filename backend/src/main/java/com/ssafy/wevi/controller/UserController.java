@@ -5,6 +5,9 @@ import com.ssafy.wevi.dto.ApiResponseDto;
 import com.ssafy.wevi.dto.FcmTokenRequestDto;
 import com.ssafy.wevi.dto.Notifications.NotificationResponseDto;
 import com.ssafy.wevi.dto.Notifications.NotificationsUpdateDto;
+import com.ssafy.wevi.dto.UserEmail.UserEmailRequestDto;
+import com.ssafy.wevi.dto.UserEmail.UserEmailVerifyRequestDto;
+import com.ssafy.wevi.dto.UserEmail.UserEmailVerifyResponseDto;
 import com.ssafy.wevi.service.NotificationService;
 import com.ssafy.wevi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -63,5 +66,43 @@ public class UserController {
                 "Notifications updated successfully",
                 notificationList
         );
+    }
+
+    //인증 번호 전송
+    @PostMapping("/sendEmail")
+    public ApiResponseDto<List<NotificationResponseDto>> sendEmail(@RequestBody UserEmailRequestDto requestDto) {
+        userService.sendCodeToEmail(requestDto.getEmail());
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "Send Email successfully",
+                null
+        );
+    }
+
+    //이메일 인증
+    @PostMapping("/verifyEmail")
+    public ApiResponseDto<UserEmailVerifyResponseDto> verifyEmail(@RequestBody UserEmailVerifyRequestDto requestDto) {
+        boolean isVerified = userService.verifyCode(requestDto.getEmail(), requestDto.getVerificationCode());
+        UserEmailVerifyResponseDto responseDto = new UserEmailVerifyResponseDto();
+        responseDto.setVerified(isVerified);
+        responseDto.setMessage(isVerified ? "Email verified successfully." : "Invalid or expired verification code.");
+
+        if(isVerified) {
+            return new ApiResponseDto<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "VerifyEmail successfully",
+                    responseDto
+            );
+        }
+        else {
+            return new ApiResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    false,
+                    "VerifyEmail Fail",
+                    responseDto
+            );
+        }
     }
 }
