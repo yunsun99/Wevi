@@ -2,6 +2,7 @@ package com.ssafy.wevi.controller;
 
 import com.ssafy.wevi.config.SecurityUtils;
 import com.ssafy.wevi.dto.ApiResponseDto;
+import com.ssafy.wevi.dto.vendor.VendorConsultationAvailabilityResponseDto;
 import com.ssafy.wevi.dto.vendor.VendorConsultationDateResponseDto;
 import com.ssafy.wevi.dto.vendor.VendorConsultationTimeResponseDto;
 import com.ssafy.wevi.service.VendorConsultationService;
@@ -56,5 +57,21 @@ public class VendorConsultationController {
                 "Available consultation times found by vendorId and date successfully.",
                 availableTimes
                 );
+    }
+
+    @GetMapping("/is-available")
+    public ApiResponseDto<VendorConsultationAvailabilityResponseDto> getVendorConsultationAvailability(
+            @RequestParam Integer vendorId,
+            @RequestParam int year,
+            @RequestParam int month,
+            @RequestParam int day) {
+        LocalDate date = LocalDate.of(year, month, day);
+        VendorConsultationAvailabilityResponseDto availability = vendorConsultationService.getAvailability(vendorId, date);
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "Availability found by vendorId and date successfully.",
+                availability
+        );
     }
 }
