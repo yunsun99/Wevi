@@ -163,8 +163,8 @@ public class CustomerService {
                                     ? dateTimeToString(sentRequest.getUpdatedAt())
                                     : (receivedRequest != null ? dateTimeToString(receivedRequest.getUpdatedAt()) : null);
                         }).orElse(null))
-                .sentRequestId(customer.getSentRequests().isEmpty() ? null : customer.getSentRequests().get(0).getCoupleRequestId())
-                .receivedRequestId(customer.getReceivedRequests().isEmpty() ? null : customer.getReceivedRequests().get(0).getCoupleRequestId())
+                .sentRequestId(customer.getSentRequests() == null ? null : customer.getSentRequests().get(0).getCoupleRequestId())
+                .receivedRequestId(customer.getReceivedRequests() == null ? null : customer.getReceivedRequests().get(0).getCoupleRequestId())
                 .build();
     }
 }
