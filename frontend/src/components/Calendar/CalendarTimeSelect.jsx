@@ -1,52 +1,69 @@
-import React, { useState, useRef, useEffect } from "react";
-import Calendar from "react-calendar";
+import React, { useState, useEffect } from "react";
 import dayjs from "dayjs"; // 날짜 처리 라이브러리
-// import "../../Calendar.css"; // 커스터마이징 CSS
-
 import { useRecoilState } from "recoil";
 import { searchDateState } from "../../atoms/searchState";
 import ReservationModal from "../Modals/ReservationModal";
+import { getAvailableTimes } from "../../api/schedule"; // ✅ API 요청 함수 추가
 
-export default function CalendarTimeSelect() {
-  // 날짜 상태 관리
-  const [selectedDate, setSelectedDate] = useRecoilState(searchDateState); // 초기값을 현재 날짜로 설정
+export default function CalendarTimeSelect({ vendorId }) {
+  const [selectedDate, setSelectedDate] = useRecoilState(searchDateState);
+  const [availableTimes, setAvailableTimes] = useState([]); // ✅ API로 가져온 시간 데이터
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 예제 데이터: 날짜별로 가능한 시간대
-  const scheduleData = [
-    {
-      date: "2025-02-08",
-      times: ["09:00", "09:30", "10:00", "10:30", "11:00", "13:00", "14:00"],
-    },
-    { date: "2025-02-09", times: ["09:30", "10:00", "14:30", "15:30"] },
-    { date: "2025-02-10", times: ["09:00", "10:30", "13:30", "15:00"] },
-  ];
+  // ✅ 선택한 날짜가 변경될 때 API 요청하여 시간 데이터 가져오기
+  useEffect(() => {
+    const fetchAvailableTimes = async () => {
+      if (!selectedDate.date) return; // 선택된 날짜가 없으면 요청 안함
 
-  const handleTimeClick = (time) => {
+      try {
+        const year = dayjs(selectedDate.date).year();
+        const month = dayjs(selectedDate.date).month() + 1;
+        const day = dayjs(selectedDate.date).date();
+
+        console.log(
+          `⏰ Fetching available times: vendorId=${vendorId}, date=${selectedDate.date}`
+        );
+
+        const response = await getAvailableTimes({
+          vendorId,
+          year,
+          month,
+          day,
+        });
+        console.log(response.availableTime);
+        if (response.availableTime) {
+          setAvailableTimes(response.availableTime);
+        } else {
+          setAvailableTimes([]); // 데이터가 없을 경우 빈 배열 처리
+        }
+      } catch (err) {
+        console.error("API 요청 중 에러 발생:", err);
+        setAvailableTimes([]); // 에러 발생 시 빈 배열 유지
+      }
+    };
+
+    fetchAvailableTimes();
+  }, [selectedDate.date, vendorId]);
+
+  // ✅ 시간 선택 핸들러
+  const handleTimeClick = (time, available) => {
+    if (!available) return; // ❌ 비활성화된 시간은 선택 불가능
     setSelectedDate((prevState) => ({
       ...prevState,
       time: time,
-    })); // 현재 선택된 시간을 업데이트
+    }));
   };
 
-  // 선택된 날짜에 해당하는 시간대 필터링
-  const availableTimes =
-    scheduleData.find(
-      (schedule) =>
-        schedule.date === dayjs(selectedDate.date).format("YYYY-MM-DD")
-    )?.times || [];
-
-  // 오전과 오후로 시간대 구분
+  // ✅ 오전/오후 시간 분리
   const morningTimes = availableTimes.filter(
-    (time) => parseInt(time.split(":")[0], 10) < 12
+    (t) => parseInt(t.time.split(":")[0], 10) < 12
   );
   const afternoonTimes = availableTimes.filter(
-    (time) => parseInt(time.split(":")[0], 10) >= 12
+    (t) => parseInt(t.time.split(":")[0], 10) >= 12
   );
 
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
-
   function handleReservation() {
-    setIsModalOpen(true); // 모달 열기
+    setIsModalOpen(true);
   }
 
   return (
@@ -59,15 +76,18 @@ export default function CalendarTimeSelect() {
             <>
               <h4 className="text-md font-semibold mt-4">오전</h4>
               <div className="grid grid-cols-4 gap-2">
-                {morningTimes.map((time) => (
+                {morningTimes.map(({ time, available }) => (
                   <button
                     key={time}
-                    onClick={() => handleTimeClick(time)}
-                    className={`p-2 border rounded ${
-                      selectedDate.time === time
-                        ? "bg-green-500 text-white"
-                        : "bg-gray-100"
+                    onClick={() => handleTimeClick(time, available)}
+                    className={`p-2 border rounded transition ${
+                      available
+                        ? selectedDate.time === time
+                          ? "bg-[#609966] text-white"
+                          : "bg-gray-100 hover:bg-gray-200 border-gray-400"
+                        : "bg-gray-300 border-gray-300 text-gray-500 cursor-not-allowed opacity-50"
                     }`}
+                    disabled={!available} // ❌ 선택 불가능한 시간 버튼 비활성화
                   >
                     {time}
                   </button>
@@ -81,15 +101,18 @@ export default function CalendarTimeSelect() {
             <>
               <h4 className="text-md font-semibold mt-4">오후</h4>
               <div className="grid grid-cols-4 gap-2">
-                {afternoonTimes.map((time) => (
+                {afternoonTimes.map(({ time, available }) => (
                   <button
                     key={time}
-                    onClick={() => handleTimeClick(time)}
-                    className={`p-2 border rounded ${
-                      selectedDate.time === time
-                        ? "bg-green-500 text-white"
-                        : "bg-gray-100"
+                    onClick={() => handleTimeClick(time, available)}
+                    className={`p-2 border rounded transition ${
+                      available
+                        ? selectedDate.time === time
+                          ? "bg-[#609966] text-white"
+                          : "bg-gray-100 border-gray-400 hover:bg-gray-200"
+                        : "bg-gray-300 border-gray-300 text-gray-500 cursor-not-allowed opacity-50"
                     }`}
+                    disabled={!available}
                   >
                     {time}
                   </button>
@@ -111,16 +134,22 @@ export default function CalendarTimeSelect() {
       <button
         className={`mt-4 w-full p-3 rounded-lg ${
           selectedDate.date && selectedDate.time
-            ? "bg-green-500 text-white cursor-pointer"
+            ? "bg-[#609966] text-white cursor-pointer"
             : "bg-gray-300 text-gray-500 cursor-not-allowed"
         }`}
         onClick={handleReservation}
-        disabled={!selectedDate.date || !selectedDate.time} // 하나라도 false면 비활성화
+        disabled={!selectedDate.date || !selectedDate.time}
       >
         다음
       </button>
+
+      {/* 예약 모달 */}
       {isModalOpen && (
-        <ReservationModal onClose={() => setIsModalOpen(false)} />
+        <ReservationModal
+          onClose={() => setIsModalOpen(false)}
+          selectedDate={selectedDate} // ✅ 선택된 날짜 및 시간 전달
+          vendorId={vendorId} // ✅ vendorId 전달
+        />
       )}
     </>
   );
