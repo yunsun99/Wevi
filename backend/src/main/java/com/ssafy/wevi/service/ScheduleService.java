@@ -67,8 +67,9 @@ public class ScheduleService {
         scheduleRepository.save(consultation);
 
         notificationService.createScheduleNotification(vendor, "\uD83C\uDF40 새로운 상담이 예약되었습니다.", dateTimeToString(startDateTime)[0] + " " + dateTimeToString(startDateTime)[1] + " " + customer.getName() + " 고객님", consultation, NotificationType.CONSULTATION_REGISTERED.name());
-        notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 연인이 일정을 추가하였습니다.", dateTimeToString(startDateTime)[0] + " " + dateTimeToString(startDateTime)[1] + " " + vendor.getName(), consultation, NotificationType.CONTRACT_REGISTERED.name());
-
+        if (customer.getSpouse() != null) {
+            notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 연인이 일정을 추가하였습니다.", dateTimeToString(startDateTime)[0] + " " + dateTimeToString(startDateTime)[1] + " " + vendor.getName(), consultation, NotificationType.CONTRACT_REGISTERED.name());
+        }
         return toConsultationResponseDto(consultation, customerId);
     }
 
@@ -125,8 +126,9 @@ public class ScheduleService {
                 String stepName = middleProcessStep.getName();
 
                 notificationService.createScheduleNotification(customer, "\uD83C\uDF40 일정 등록 - " + vendor.getName(), date + " " + time + " " + stepName, contract, NotificationType.SCHEDULE_REGISTERED.name());
-                notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 일정 등록 - " + vendor.getName(), date + " " + time + " " + stepName, contract, NotificationType.SCHEDULE_REGISTERED.name());
-
+                if (customer.getSpouse() != null) {
+                    notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 일정 등록 - " + vendor.getName(), date + " " + time + " " + stepName, contract, NotificationType.SCHEDULE_REGISTERED.name());
+                }
             }
 
             scheduleRepository.save(middleProcess);
@@ -153,8 +155,9 @@ public class ScheduleService {
         }
 
         notificationService.createScheduleNotification(customer, "\uD83C\uDF40 " + vendor.getName(), "업체와의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
-        notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 " + vendor.getName(), "연인과 업체 간의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
-
+        if (customer.getSpouse() != null) {
+            notificationService.createScheduleNotification(customer.getSpouse(), "\uD83C\uDF40 " + vendor.getName(), "연인과 업체 간의 계약이 성사되었습니다.", contract, NotificationType.CONTRACT_REGISTERED.name());
+        }
         return toContractResponseDto(contract, vendorId);
     }
 
