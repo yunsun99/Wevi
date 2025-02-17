@@ -76,7 +76,7 @@ function filterData(data) {
 // 시도 데이터 수집
 export async function axiosSidoData() {
   try {
-    const response = await api.get("http://localhost:8080/api/vendors/dolist");
+    const response = await api.get("/api/vendors/dolist");
     if (response.data.success) {
       return response.data.data;
     }
@@ -89,9 +89,7 @@ export async function axiosSidoData() {
 // 시군구 데이터 수집
 export async function axiosSigunguData(selectedDoId) {
   try {
-    const response = await api.get(
-      `http://localhost:8080/api/vendors/sigungulist/${selectedDoId}`
-    );
+    const response = await api.get(`/api/vendors/sigungulist/${selectedDoId}`);
     if (response.data.success) {
       return response.data.data;
     }
