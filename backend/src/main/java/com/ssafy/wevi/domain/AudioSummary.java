@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AudioAnalysis {
+public class AudioSummary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,6 +26,7 @@ public class AudioAnalysis {
 
     @Lob
     private String analysisResult; // AI 분석 결과 (JSON 형태)
+
 
 
 //    @Lob
