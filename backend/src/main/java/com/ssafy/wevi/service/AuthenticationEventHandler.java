@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class AuthenticationEventHandler {
-
     @EventListener(AuthenticationSuccessEvent.class)
     public void onAuthenticationSuccess(AuthenticationSuccessEvent event) {
         log.debug("Authentication SUCCESS: {}", event);
