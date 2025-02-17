@@ -59,7 +59,7 @@ export default function SearchCalendar() {
           <img src={icon_calendar} alt="Calendar Icon" className="h-5 w-5" />
         </div>
         <span className="flex-1 bg-transparent px-4 text-sm text-gray-700">
-          {searchDate.date || "날짜 선택"} {/* 문자열 렌더링 가능 */}
+          {searchDate.date || "상담 날짜"} {/* 문자열 렌더링 가능 */}
         </span>
       </div>
 
@@ -74,7 +74,7 @@ export default function SearchCalendar() {
             showMonthDropdown
             showYearDropdown
             dropdownMode="select" // 드롭다운 모드 활성화
-            className="w-full p-2 \border rounded-md focus:outline-none"
+            className="w-full p-2 border rounded-md focus:outline-none"
             inline
           />
         </div>
