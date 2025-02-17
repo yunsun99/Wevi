@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import icon_calendar from "../../assets/icons/icon_calendar.png";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; // 스타일 import
 import { useRecoilState } from "recoil";
 import { searchDateState } from "../../atoms/searchState";
 import { useParams } from "react-router-dom";
+import icon_calendar from "../../assets/icons/icon_calendar.png";
+import "../../DatePicker.css";
+import { ko } from "date-fns/locale"; // 한글 로케일 불러오기
 
 export default function SearchCalendar() {
   const { category } = useParams();
@@ -11,32 +15,26 @@ export default function SearchCalendar() {
   const datePickerRef = useRef(null);
 
   useEffect(() => {
-    setSearchDate({ date: "" }); // ✅ Recoil 상태 초기화
+    setSearchDate({ date: "" }); // Recoil 상태 초기화
   }, [category]);
 
-  // 🔹 날짜 변경 핸들러 (이전 값과 다를 때만 업데이트)
-  const handleDateChange = useCallback(
-    (e) => {
-      const newDate = e.target.value;
-      if (newDate !== searchDate) {
-        setSearchDate((prev) => ({
-          ...prev,
-          date: newDate,
-        })); // ✅ searchDate를 문자열로 저장
-      }
-      setIsCalendarVisible(false);
-    },
-    [searchDate, setSearchDate]
-  );
+  // 날짜 변경 핸들러
+  const handleDateChange = (date) => {
+    setSearchDate((prev) => ({
+      ...prev,
+      date: date.toISOString().split("T")[0], // ISO 형식으로 저장 (YYYY-MM-DD)
+    }));
+    setIsCalendarVisible(false); // 날짜 선택 후 캘린더 닫기
+  };
 
-  // 🔹 달력 토글 (닫힘 이벤트보다 먼저 실행되도록 setTimeout 사용)
+  // 달력 토글
   const toggleCalendar = () => {
     setTimeout(() => {
       setIsCalendarVisible((prev) => !prev);
     }, 0);
   };
 
-  // 🔹 바깥 클릭 감지하여 달력 닫기
+  // 바깥 클릭 감지하여 달력 닫기
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -61,7 +59,7 @@ export default function SearchCalendar() {
           <img src={icon_calendar} alt="Calendar Icon" className="h-5 w-5" />
         </div>
         <span className="flex-1 bg-transparent px-4 text-sm text-gray-700">
-          {searchDate.date || "날짜 선택"} {/* ✅ 문자열 렌더링 가능 */}
+          {searchDate.date || "날짜 선택"} {/* 문자열 렌더링 가능 */}
         </span>
       </div>
 
@@ -70,12 +68,17 @@ export default function SearchCalendar() {
           ref={datePickerRef}
           className="absolute z-10 bg-white shadow-lg p-4 rounded-lg w-60"
         >
-          <input
-            type="date"
-            value={searchDate || ""} // ✅ 기본값 처리
+          <DatePicker
+            selected={searchDate.date ? new Date(searchDate.date) : null}
             onChange={handleDateChange}
+            dateFormat="yyyy-MM-dd"
+            locale={ko} // 한글 로케일 적용
+            // showDayMonthYearPicker
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select" // 드롭다운 모드 활성화
             className="w-full p-2 border rounded-md focus:outline-none"
-            autoFocus
+            inline
           />
         </div>
       )}
