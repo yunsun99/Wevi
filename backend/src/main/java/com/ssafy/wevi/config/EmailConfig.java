@@ -1,7 +1,7 @@
 package com.ssafy.wevi.config;
 
-import com.google.api.client.util.Value;
 import com.ssafy.wevi.service.EmailService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
