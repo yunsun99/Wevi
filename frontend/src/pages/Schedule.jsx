@@ -10,6 +10,8 @@ import ScheduleList from "../components/Schedule/ScheduleList.jsx";
 
 export default function Schedule() {
   const [selectedDate, setSelectedDate] = useRecoilState(scheduleState);
+  const [currentYear, setCurrentYear] = useState(dayjs().year()); // ✅ 현재 연도 상태 추가
+  const [currentMonth, setCurrentMonth] = useState(dayjs().month() + 1); // ✅ 현재 월 상태 추가 (month()는 0부터 시작)
 
   const handleDateClick = (date) => {
     setSelectedDate((prevState) => ({
@@ -53,6 +55,9 @@ export default function Schedule() {
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           handleDateClick={handleDateClick}
+          vendorId={""}
+          setCurrentYear={setCurrentYear} // ✅ 현재 연도 상태 전달
+          setCurrentMonth={setCurrentMonth} // ✅ 현재 월 상태 전달
         />
         <div className="flex w-screen flex-col h-[calc(50vh-0rem)] overflow-y-auto bg-white rounded-lg shadow-md">
           {scheduleData && scheduleData.length > 0 ? (

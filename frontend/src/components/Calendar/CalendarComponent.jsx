@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom"; // ✅ 현재 경로 확인을 위해 추가
 import Calendar from "react-calendar";
 import dayjs from "dayjs";
 import "react-calendar/dist/Calendar.css";
@@ -10,6 +11,9 @@ export default function CalendarComponent({
   handleDateClick,
   vendorId,
 }) {
+  const location = useLocation(); // ✅ 현재 경로 가져오기
+  const isSchedulePage = location.pathname === "/schedule"; // ✅ 특정 경로 확인
+
   // ✅ 현재 보고 있는 연도와 월을 상태로 관리
   const [currentYear, setCurrentYear] = useState(dayjs().year());
   const [currentMonth, setCurrentMonth] = useState(dayjs().month() + 1);
@@ -17,6 +21,8 @@ export default function CalendarComponent({
 
   // ✅ API에서 상담 가능 날짜 가져오기 (현재 달 + 이전 달 + 다음 달)
   const fetchAvailableDates = async () => {
+    if (isSchedulePage) return; // ✅ 특정 페이지에서는 요청 안 보냄
+
     try {
       console.log(
         `📅 Fetching available dates: vendorId=${vendorId}, year=${currentYear}, month=${currentMonth}`
@@ -54,7 +60,7 @@ export default function CalendarComponent({
     }
   };
 
-  // ✅ 연도 또는 월이 변경될 때 API 다시 호출
+  // ✅ 연도 또는 월이 변경될 때 API 다시 호출 (단, 특정 페이지 제외)
   useEffect(() => {
     fetchAvailableDates();
   }, [currentYear, currentMonth]);
@@ -69,9 +75,11 @@ export default function CalendarComponent({
     }
   }, [setSelectedDate, selectedDate.date]);
 
-  // ✅ 선택 불가능한 날짜 확인 함수
+  // ✅ 선택 불가능한 날짜 확인 함수 (특정 페이지에서는 항상 활성화)
   const isDateDisabled = ({ date, view }) => {
     if (view !== "month") return false; // ✅ 연도 선택 시 비활성화 적용 안 함
+    if (isSchedulePage) return false; // ✅ 특정 페이지에서는 비활성화 제외
+
     const formattedDate = dayjs(date).format("YYYY-MM-DD");
     const foundDate = validAvailableDate.find((d) => d.date === formattedDate);
     return foundDate ? !foundDate.available : true;
@@ -97,7 +105,7 @@ export default function CalendarComponent({
         formatMonthYear={(locale, date) => dayjs(date).format("YYYY. MM")}
         tileDisabled={({ date, view }) => isDateDisabled({ date, view })}
         tileClassName={({ date, view }) => {
-          if (view !== "month") return "";
+          if (view !== "month" || isSchedulePage) return ""; // ✅ 특정 페이지에서는 비활성화 X
           const formattedDate = dayjs(date).format("YYYY-MM-DD");
           const foundDate = validAvailableDate.find(
             (d) => d.date === formattedDate

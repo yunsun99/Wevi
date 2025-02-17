@@ -27,29 +27,6 @@ export default function ConsultationReservation() {
     }));
   };
 
-  // ✅ 현재 연도/월이 변경될 때 API 호출
-  // useEffect(() => {
-  //   const fetchAvailableDates = async () => {
-  //     try {
-  //       console.log(
-  //         `📅 Fetching available dates: vendorId=${vendorId}, year=${currentYear}, month=${currentMonth}`
-  //       );
-
-  //       const availableData = await getAvailableDates({
-  //         vendorId,
-  //         year: currentYear,
-  //         month: currentMonth,
-  //       });
-
-  //       setAvailableDate(availableData);
-  //     } catch (err) {
-  //       console.error("API 요청 중 에러 발생:", err);
-  //     }
-  //   };
-
-  //   fetchAvailableDates();
-  // }, [currentYear, currentMonth]); // ✅ 연도와 월이 변경될 때 API 호출
-
   return (
     <>
       <TopNavigationBar2 title={"예약하기"} />
@@ -59,7 +36,6 @@ export default function ConsultationReservation() {
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           handleDateClick={handleDateClick}
-          // availableDate={availableDate}
           vendorId={vendorId}
           setCurrentYear={setCurrentYear} // ✅ 현재 연도 상태 전달
           setCurrentMonth={setCurrentMonth} // ✅ 현재 월 상태 전달
