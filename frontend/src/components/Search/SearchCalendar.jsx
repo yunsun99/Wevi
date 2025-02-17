@@ -64,10 +64,7 @@ export default function SearchCalendar() {
       </div>
 
       {isCalendarVisible && (
-        <div
-          ref={datePickerRef}
-          className="absolute z-10 bg-white shadow-lg p-4 rounded-lg w-60"
-        >
+        <div ref={datePickerRef} className="absolute z-10 shadow-lg rounded-lg">
           <DatePicker
             selected={searchDate.date ? new Date(searchDate.date) : null}
             onChange={handleDateChange}
@@ -77,7 +74,7 @@ export default function SearchCalendar() {
             showMonthDropdown
             showYearDropdown
             dropdownMode="select" // 드롭다운 모드 활성화
-            className="w-full p-2 border rounded-md focus:outline-none"
+            className="w-full p-2 \border rounded-md focus:outline-none"
             inline
           />
         </div>
