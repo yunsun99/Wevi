@@ -138,6 +138,8 @@ public class CoupleRequestService {
 
         // 배우자의 spouse 정보를 초기화
         spouse.setSpouse(null);
+        spouse.setSentRequests(new ArrayList<>());
+        spouse.setReceivedRequests(new ArrayList<>());
         customerRepository.save(spouse);
 
         // userId가 sender 또는 receiver인 커플 요청 삭제
