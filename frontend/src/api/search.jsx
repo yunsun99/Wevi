@@ -54,7 +54,10 @@ function filterData(data) {
   if (data.searchFilter.sigungu !== 0) {
     transformedData.sigunguId = data.searchFilter.sigungu;
   }
-
+  if (data.searchDate.date) {
+    [transformedData.year, transformedData.month, transformedData.day] =
+      data.searchDate.date.split("-").map(Number);
+  }
   if (data.searchFilter.inoutside === "inside") {
     transformedData.isIndoor = true;
   } else if (data.searchFilter.inoutside === "outside") {

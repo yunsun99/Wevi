@@ -47,9 +47,7 @@ export default function Login() {
     handelInputChange: handlePasswordChange,
     handleInputBlur: handlePasswordBlur,
     hasError: passwordHasError,
-  } = useInput(formData, setFormData, "password", (value) =>
-    hasMinLength(value)
-  );
+  } = useInput(formData, setFormData, "password", (value) => isNotEmpty(value));
 
   // 로그인 요청 함수
   const onLoginSubmit = async (e) => {
