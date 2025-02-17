@@ -32,6 +32,8 @@ dependencies {
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'com.google.firebase:firebase-admin:8.0.1'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 //	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 //	implementation "software.amazon.awssdk:s3:2.13.0"
 	implementation 'software.amazon.awssdk:s3:2.21.5'

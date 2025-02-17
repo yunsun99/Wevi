@@ -5,6 +5,9 @@ import com.ssafy.wevi.dto.ApiResponseDto;
 import com.ssafy.wevi.dto.FcmTokenRequestDto;
 import com.ssafy.wevi.dto.Notifications.NotificationResponseDto;
 import com.ssafy.wevi.dto.Notifications.NotificationsUpdateDto;
+import com.ssafy.wevi.dto.UserEmail.UserEmailRequestDto;
+import com.ssafy.wevi.dto.UserEmail.UserEmailVerifyRequestDto;
+import com.ssafy.wevi.dto.UserEmail.UserEmailVerifyResponseDto;
 import com.ssafy.wevi.service.NotificationService;
 import com.ssafy.wevi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -63,5 +66,64 @@ public class UserController {
                 "Notifications updated successfully",
                 notificationList
         );
+    }
+
+    //이메일 중복 확인
+    @PostMapping("/existEmail") //이메일인증
+    public ApiResponseDto<Void> existsEmail(@RequestBody UserEmailRequestDto requestDto) {
+        Boolean user = userService.getUserByEmail(requestDto.getEmail());
+        if (user == false) { //중복확인 통과
+            return new ApiResponseDto<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "사용가능한 이메일 주소입니다!",
+                    null
+            );
+        } else {
+            return new ApiResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    false,
+                    "중복된 이메일이 있습니다.",
+                    null
+            );
+        }
+    }
+
+    //인증 번호 전송
+    @PostMapping("/sendEmail")
+    public ApiResponseDto<Void> sendEmail(@RequestBody UserEmailRequestDto requestDto) {
+        userService.sendCodeToEmail(requestDto.getEmail());
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "Send Email successfully",
+                null
+        );
+    }
+
+    //이메일 인증
+    @PostMapping("/verifyEmail")
+    public ApiResponseDto<UserEmailVerifyResponseDto> verifyEmail(@RequestBody UserEmailVerifyRequestDto requestDto) {
+        boolean isVerified = userService.verifyCode(requestDto.getEmail(), requestDto.getVerificationCode());
+        UserEmailVerifyResponseDto responseDto = new UserEmailVerifyResponseDto();
+        responseDto.setVerified(isVerified);
+        responseDto.setMessage(isVerified ? "Email verified successfully." : "Invalid or expired verification code.");
+
+        if(isVerified) {
+            return new ApiResponseDto<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "VerifyEmail successfully",
+                    responseDto
+            );
+        }
+        else {
+            return new ApiResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    false,
+                    "VerifyEmail Fail",
+                    responseDto
+            );
+        }
     }
 }
