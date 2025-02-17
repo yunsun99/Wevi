@@ -101,10 +101,10 @@ public class VendorConsultationService {
                 .collect(Collectors.toSet());
 
         // 영업시간 내 1시간 단위의 슬롯 생성
-        while (startDateTime.isBefore(endDateTime)) {
-            boolean isAvailable = !reservedTimes.contains(startDateTime.toLocalTime());
-            availableTimes.add(new VendorConsultationTimeResponseDto.AvailableTimeDto(startDateTime.toLocalTime().toString(), isAvailable));
-            startDateTime = startDateTime.plusHours(1);
+        while (startTime.isBefore(endTime)) {
+            boolean isAvailable = !reservedTimes.contains(startTime);
+            availableTimes.add(new VendorConsultationTimeResponseDto.AvailableTimeDto(startTime.toString(), isAvailable));
+            startTime = startTime.plusHours(1);
         }
 
         return VendorConsultationTimeResponseDto.builder()
@@ -138,12 +138,12 @@ public class VendorConsultationService {
 
         // 영업시간 내 모든 1시간 단위의 슬롯을 체크
         boolean availability = false;
-        while (startDateTime.isBefore(endDateTime)) {
-            if (!reservedTimes.contains(startDateTime)) {
+        while (startTime.isBefore(endTime)) {
+            if (!reservedTimes.contains(startTime)) {
                 availability = true; // 예약되지 않은 시간이 하나라도 있으면 true
                 break;
             }
-            startDateTime = startDateTime.plusHours(1);
+            startTime = startTime.plusHours(1);
         }
 
         // DTO 생성
