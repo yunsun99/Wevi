@@ -138,12 +138,12 @@ public class VendorConsultationService {
 
         // 영업시간 내 모든 1시간 단위의 슬롯을 체크
         boolean availability = false;
-        while (startTime.isBefore(endTime)) {
-            if (!reservedTimes.contains(startTime)) {
+        while (startDateTime.isBefore(endDateTime)) {
+            if (!reservedTimes.contains(startDateTime)) {
                 availability = true; // 예약되지 않은 시간이 하나라도 있으면 true
                 break;
             }
-            startTime = startTime.plusHours(1);
+            startDateTime = startDateTime.plusHours(1);
         }
 
         // DTO 생성
