@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 public class VendorConsultationDateResponseDto {
     private Integer vendorId;
-    private List<AvailableDateDto> availableDate;
+    private List<AvailableDateDto> availableDates;
 
     @Getter
     @Setter
