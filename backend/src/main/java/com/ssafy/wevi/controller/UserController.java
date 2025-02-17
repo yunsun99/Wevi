@@ -68,9 +68,30 @@ public class UserController {
         );
     }
 
+    //이메일 중복 확인
+    @PostMapping("/existEmail") //이메일인증
+    public ApiResponseDto<Void> existsEmail(@RequestBody UserEmailRequestDto requestDto) {
+        Boolean user = userService.getUserByEmail(requestDto.getEmail());
+        if (user == false) { //중복확인 통과
+            return new ApiResponseDto<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "사용가능한 이메일 주소입니다!",
+                    null
+            );
+        } else {
+            return new ApiResponseDto<>(
+                    HttpStatus.BAD_REQUEST.value(),
+                    false,
+                    "중복된 이메일이 있습니다.",
+                    null
+            );
+        }
+    }
+
     //인증 번호 전송
     @PostMapping("/sendEmail")
-    public ApiResponseDto<List<NotificationResponseDto>> sendEmail(@RequestBody UserEmailRequestDto requestDto) {
+    public ApiResponseDto<Void> sendEmail(@RequestBody UserEmailRequestDto requestDto) {
         userService.sendCodeToEmail(requestDto.getEmail());
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),

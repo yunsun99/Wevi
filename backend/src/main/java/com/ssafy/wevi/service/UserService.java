@@ -1,20 +1,16 @@
 package com.ssafy.wevi.service;
 
-import com.ssafy.wevi.domain.user.User;
 import com.ssafy.wevi.domain.user.VerificationCode;
 import com.ssafy.wevi.repository.EmailRepository;
-import jakarta.mail.MessagingException;
-import lombok.extern.slf4j.Slf4j;
 import com.ssafy.wevi.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.SecureRandom;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
@@ -31,6 +27,11 @@ public class UserService {
             user.setFcmToken(fcmToken);
             userRepository.save(user);
         });
+    }
+
+    // 이메일 중복 검사
+    public Boolean getUserByEmail(String email){
+        return userRepository.existsByEmail(email);
     }
 
     public void sendCodeToEmail(String email) {
