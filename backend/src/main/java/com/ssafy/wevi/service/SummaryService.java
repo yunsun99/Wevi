@@ -1,87 +1,116 @@
 package com.ssafy.wevi.service;
 
 import com.ssafy.wevi.domain.AudioSummary;
+import com.ssafy.wevi.domain.schedule.Consultation;
+import com.ssafy.wevi.domain.schedule.Schedule;
+import com.ssafy.wevi.domain.user.Customer;
+import com.ssafy.wevi.domain.user.User;
+import com.ssafy.wevi.dto.AudioSummary.AudioSummaryCreateDto;
 import com.ssafy.wevi.dto.AudioSummary.AudioSummaryResponseDto;
+import com.ssafy.wevi.repository.ScheduleRepository;
 import com.ssafy.wevi.repository.SummaryRepository;
+import com.ssafy.wevi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
 public class SummaryService {
-    private final SummaryRepository analysisRepository;
+    private final SummaryRepository summaryRepository;
     private final S3ClientService s3ClientService;
-
+    private final UserRepository userRepository;
+    private final ScheduleRepository scheduleRepository;
     // ✅ 1. 파일을 S3에 저장 후 AI 분석 요청
-    public AudioSummaryResponseDto uploadAndSummarizeAudio(MultipartFile file) throws IOException {
+    @Transactional
+    public AudioSummaryResponseDto uploadAndSummarizeAudio(MultipartFile file, Integer loginUserId, Integer scheduleId) throws IOException {
+        User user = userRepository.findById(loginUserId).orElseThrow();
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();
+
+        if (!(user instanceof Customer)) throw new IllegalArgumentException("소비자만 상담 요약 요청할 수 있습니다.");
+        if (!(schedule instanceof Consultation)) throw new IllegalArgumentException("상담 일정에 대해서만 상담 요약 요청할 수 있습니다.");
         // ✅ 1.1 파일을 S3에 업로드하고 URL 가져오기
 //        try {
-            String s3Url = s3ClientService.upload(file);
+
+        String s3Url = s3ClientService.upload(file);
 //        } catch (IOException e) {
 //            System.out.println("========== S3 업로드 중 에러 발생 ==========");
 //        }
         // ✅ 1.2 DB에 원본 파일 URL 저장
-        AudioSummary audioAnalysis = new AudioSummary();
-        audioAnalysis.setOriginalFileUrl(s3Url);
-        audioAnalysis = analysisRepository.save(audioAnalysis); // 현재 원본파일url, status(PENDING)만 존재
+        AudioSummary audioSummary = new AudioSummary();
+        audioSummary.setOriginalFileUrl(s3Url);
+        audioSummary.setCustomer((Customer) user);
+        audioSummary.setSchedule((Consultation) schedule);
+        audioSummary.setStatus("PENDING");
+        audioSummary = summaryRepository.save(audioSummary); // 현재 원본파일url, status(PENDING)만 존재
 
-        // ✅ 1.3 AI 서버에 비동기 요청
-        summarizeAudioAsync(audioAnalysis.getId(), s3Url);
+        // ✅ 1.3 FastAPI 요청을 위한 데이터 준비
+        String fastApiUrl = "http://127.0.0.1:8001/predict";  // FastAPI 서버 URL
+        RestTemplate restTemplate = new RestTemplate();
 
-        return toAudioSummaryResponseDto(audioAnalysis);
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("file_url", s3Url);
+        requestBody.put("audio_summary_id", audioSummary.getId());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        // ✅ 3. FastAPI 서버에 동기 요청 보내기
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    fastApiUrl,
+                    HttpMethod.POST,
+                    requestEntity,
+                    String.class
+            );
+            System.out.println("✅ FastAPI 요청 성공: " + response.getBody());
+
+            // 요청이 성공하면 상태를 "COMPLETED"로 업데이트 가능
+            audioSummary.setStatus("PROCESSING");
+            summaryRepository.save(audioSummary);
+
+        } catch (Exception e) {
+            System.out.println("❌ FastAPI 요청 실패: " + e.getMessage());
+            audioSummary.setStatus("FAILED");  // 요청 실패 시 상태 변경
+            summaryRepository.save(audioSummary);
+        }
+        // ✅ 4. 최종 응답 반환
+        return toAudioSummaryResponseDto(audioSummary);
     }
 
-    // ✅ 2. 비동기 AI 분석 실행 (원본 파일 URL 전달)
-    @Async
-    public CompletableFuture<Void> summarizeAudioAsync(Integer fileId, String originalFileUrl) {
-        Optional<AudioSummary> optionalAnalysis = analysisRepository.findById(fileId);
+    // AI 서버로부터 결과를 받음
+    @Transactional
+    public AudioSummaryResponseDto registSummaryResult(AudioSummaryCreateDto audioSummaryCreateDto) {
+        AudioSummary audioSummary = summaryRepository.findById(audioSummaryCreateDto.getAudioSummaryId()).orElseThrow();
 
-        if (optionalAnalysis.isEmpty()) {
-            log.error("분석 요청 실패: 파일 ID {}를 찾을 수 없음", fileId);
-            return CompletableFuture.completedFuture(null); // 예외 대신 빈 CompletableFuture 반환하여 비동기 흐름 유지
+        if (audioSummaryCreateDto.getStatus().equals("COMPLETED")) {
+            audioSummary.setStatus("COMPLETED");
+            audioSummary.setSummaryResult(audioSummaryCreateDto.getSummaryResult());
+        } else {
+            audioSummary.setStatus("FAILED");
         }
-
-        // 존재하는 경우, AudioAnalysis 객체를 가져옴
-        AudioSummary audioAnalysis = optionalAnalysis.get();
-
         // 현재 상태를 "PROCESSING"으로 변경 (AI 분석 시작됨)
-        audioAnalysis.setStatus("PROCESSING");
-        analysisRepository.save(audioAnalysis); // 변경 사항을 DB에 반영
+        summaryRepository.save(audioSummary); // 변경 사항을 DB에 반영
 
-        // FastAPI 서버에 비동기 HTTP 요청 (파일 URL 전달)
-//        webClient.post()
-//                .uri(aiServerUrl) // FastAPI 서버의 분석 API 엔드포인트
-//                .bodyValue(Map.of("file_url", originalFileUrl)) // JSON 형식으로 요청 데이터 전송
-//                .retrieve() // 응답을 받기 위한 WebClient의 메서드
-//                .bodyToMono(Map.class) // 응답을 Map 형태로 비동기 처리
-//                .doOnError(error -> log.error("❌ AI 서버 요청 중 오류 발생: {}", error.getMessage())) // 오류 발생 시 로그 출력
-//                .subscribe(response -> { // 응답이 오면 아래 로직 실행 (비동기 처리)
-//                    log.info("AI 분석 완료: {}", response);
-//
-//                    // ✅ 분석이 완료되었으므로 결과를 DB에 반영
-//                    audioAnalysis.setAnalysisResult(response.toString()); // 응답 결과를 저장
-//                    audioAnalysis.setStatus("COMPLETED"); // 상태를 "완료"로 변경
-//                    analysisRepository.save(audioAnalysis); // DB에 반영
-//                });
-
-        // 비동기 작업이므로 즉시 반환 (AI 서버의 응답을 기다리지 않음)
-        return CompletableFuture.completedFuture(null);
+        return toAudioSummaryResponseDto(audioSummary);
     }
 
     // 분석 상황 반환
-    public AudioSummaryResponseDto getSummaryResult(Integer audioSummarizeId) {
+    public AudioSummaryResponseDto registSummaryResult(Integer audioSummarizeId) {
 
-        AudioSummary audioAnalysis = analysisRepository.findById(audioSummarizeId).orElseThrow();
+        AudioSummary audioAnalysis = summaryRepository.findById(audioSummarizeId).orElseThrow();
 
         return toAudioSummaryResponseDto(audioAnalysis);
     }
@@ -92,7 +121,7 @@ public class SummaryService {
 
         audioAnalysisResponseDto.setId(audioAnalysis.getId());
         audioAnalysisResponseDto.setStatus(audioAnalysis.getStatus());
-        audioAnalysisResponseDto.setAnalysisResult(audioAnalysis.getAnalysisResult());
+        audioAnalysisResponseDto.setSummaryResult(audioAnalysis.getSummaryResult());
 
         return audioAnalysisResponseDto;
     }

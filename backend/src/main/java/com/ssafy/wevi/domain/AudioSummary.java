@@ -1,5 +1,7 @@
 package com.ssafy.wevi.domain;
 
+import com.ssafy.wevi.domain.schedule.Schedule;
+import com.ssafy.wevi.domain.user.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +27,15 @@ public class AudioSummary {
     private String status = "PENDING"; // ✅ 분석 상태 (PENDING, PROCESSING, COMPLETED)
 
     @Lob
-    private String analysisResult; // AI 분석 결과 (JSON 형태)
+    private String summaryResult; // AI 분석 결과 (JSON 형태)
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", referencedColumnName = "user_id")
+    private Customer customer;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "consultation_id", referencedColumnName = "schedule_id")
+    private Schedule schedule;
 
 //    @Lob
 //    private String transcription; // Whisper STT 결과

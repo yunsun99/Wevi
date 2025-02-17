@@ -64,7 +64,8 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/api/vendors/signup", "POST"),
                                 new AntPathRequestMatcher("/api/users/existEmail", "POST"),
                                 new AntPathRequestMatcher("/api/users/sendEmail", "POST"),
-                                new AntPathRequestMatcher("/api/users/verifyEmail", "POST")
+                                new AntPathRequestMatcher("/api/users/verifyEmail", "POST"),
+                                new AntPathRequestMatcher("/api/ai/analyze/result", "PATCH")
                         ).permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(customizer -> customizer
