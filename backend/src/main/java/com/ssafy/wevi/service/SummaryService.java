@@ -1,8 +1,8 @@
 package com.ssafy.wevi.service;
 
-import com.ssafy.wevi.domain.AudioAnalysis;
-import com.ssafy.wevi.dto.AudioAnalysis.AudioAnalysisResponseDto;
-import com.ssafy.wevi.repository.AnalysisRepository;
+import com.ssafy.wevi.domain.AudioSummary;
+import com.ssafy.wevi.dto.AudioSummary.AudioSummaryResponseDto;
+import com.ssafy.wevi.repository.SummaryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -18,12 +18,12 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class AnalysisService {
-    private final AnalysisRepository analysisRepository;
+public class SummaryService {
+    private final SummaryRepository analysisRepository;
     private final S3ClientService s3ClientService;
 
     // ✅ 1. 파일을 S3에 저장 후 AI 분석 요청
-    public AudioAnalysisResponseDto uploadAndAnalyzeAudio(MultipartFile file) throws IOException {
+    public AudioSummaryResponseDto uploadAndSummarizeAudio(MultipartFile file) throws IOException {
         // ✅ 1.1 파일을 S3에 업로드하고 URL 가져오기
 //        try {
             String s3Url = s3ClientService.upload(file);
@@ -31,20 +31,20 @@ public class AnalysisService {
 //            System.out.println("========== S3 업로드 중 에러 발생 ==========");
 //        }
         // ✅ 1.2 DB에 원본 파일 URL 저장
-        AudioAnalysis audioAnalysis = new AudioAnalysis();
+        AudioSummary audioAnalysis = new AudioSummary();
         audioAnalysis.setOriginalFileUrl(s3Url);
         audioAnalysis = analysisRepository.save(audioAnalysis); // 현재 원본파일url, status(PENDING)만 존재
 
         // ✅ 1.3 AI 서버에 비동기 요청
-        analyzeAudioAsync(audioAnalysis.getId(), s3Url);
+        summarizeAudioAsync(audioAnalysis.getId(), s3Url);
 
-        return toAudioAnalysisResponseDto(audioAnalysis);
+        return toAudioSummaryResponseDto(audioAnalysis);
     }
 
     // ✅ 2. 비동기 AI 분석 실행 (원본 파일 URL 전달)
     @Async
-    public CompletableFuture<Void> analyzeAudioAsync(Integer fileId, String originalFileUrl) {
-        Optional<AudioAnalysis> optionalAnalysis = analysisRepository.findById(fileId);
+    public CompletableFuture<Void> summarizeAudioAsync(Integer fileId, String originalFileUrl) {
+        Optional<AudioSummary> optionalAnalysis = analysisRepository.findById(fileId);
 
         if (optionalAnalysis.isEmpty()) {
             log.error("분석 요청 실패: 파일 ID {}를 찾을 수 없음", fileId);
@@ -52,7 +52,7 @@ public class AnalysisService {
         }
 
         // 존재하는 경우, AudioAnalysis 객체를 가져옴
-        AudioAnalysis audioAnalysis = optionalAnalysis.get();
+        AudioSummary audioAnalysis = optionalAnalysis.get();
 
         // 현재 상태를 "PROCESSING"으로 변경 (AI 분석 시작됨)
         audioAnalysis.setStatus("PROCESSING");
@@ -79,16 +79,16 @@ public class AnalysisService {
     }
 
     // 분석 상황 반환
-    private AudioAnalysisResponseDto getAnalysisResult(Integer audioAnalyzeId) {
+    public AudioSummaryResponseDto getSummaryResult(Integer audioSummarizeId) {
 
-        AudioAnalysis audioAnalysis = analysisRepository.findById(audioAnalyzeId).orElseThrow();
+        AudioSummary audioAnalysis = analysisRepository.findById(audioSummarizeId).orElseThrow();
 
-        return toAudioAnalysisResponseDto(audioAnalysis);
+        return toAudioSummaryResponseDto(audioAnalysis);
     }
 
 
-    private AudioAnalysisResponseDto toAudioAnalysisResponseDto(AudioAnalysis audioAnalysis) {
-        AudioAnalysisResponseDto audioAnalysisResponseDto = new AudioAnalysisResponseDto();
+    private AudioSummaryResponseDto toAudioSummaryResponseDto(AudioSummary audioAnalysis) {
+        AudioSummaryResponseDto audioAnalysisResponseDto = new AudioSummaryResponseDto();
 
         audioAnalysisResponseDto.setId(audioAnalysis.getId());
         audioAnalysisResponseDto.setStatus(audioAnalysis.getStatus());
