@@ -4,7 +4,7 @@ import BottomNavigationBar from "@/components/Navigators/BottomNavigationBar";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { plannerState } from "../atoms/AIPlannerState";
-import AiPlannerLocation from "../components/AIPlanner/AIPlannerLocation";
+import AiPlannerMessage from "../components/AIPlanner/AIPlannerMessage";
 
 export default function AiPlanner() {
   // 화면 띄우기를 위한 스텝
@@ -17,14 +17,7 @@ export default function AiPlanner() {
   return (
     <>
       <TopNavigationBar title="AI플래너" />
-      {step === 1 && (
-        <AiPlannerLocation
-          formData={formData}
-          setFormData={setFormData}
-          onNext={handleNext}
-        />
-      )}
-
+      <AiPlannerMessage />
       <BottomNavigationBar />
     </>
   );

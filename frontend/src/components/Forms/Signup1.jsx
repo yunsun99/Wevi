@@ -10,21 +10,48 @@ import { useInput } from "@/components/Inputs/useInput.js";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TopNavigationBar3 from "../Navigators/TopNavigationBar3";
+import { isEmailDuplicate } from "../../api/auth";
 
 const Signup1 = ({ formData, setFormData, onNext }) => {
   const navigate = useNavigate(); // 페이지 이동
+
+  const [isEmailValid, setIsEmailValid] = useState(false);
+
+  // 인증버튼 관리
+  const onValidSubmit = async (e) => {
+    e.preventDefault();
+    setError(null); // 기존 에러 초기화
+
+    try {
+      const userCode = await handleLogin(formData.username, formData.password);
+      setUser(userCode);
+      const currentToken = await requestFCMToken();
+      await sendFCMToken(currentToken);
+      if (userCode === 200) {
+        setRecoil(isAuthenticatedState, true);
+        navigate("/");
+      }
+    } catch (err) {
+      setError(err.message); // ✅ 서버에서 받은 오류 메시지 표시
+    }
+  };
 
   // 이메일 입력 관리
   const {
     value: emailValue,
     handelInputChange: handleEmailChange,
     handleInputBlur: handleEmailBlur,
+    handleKeyDown: handleEmailKeyDown, // ✅ Enter 감지
+    isChecking: isCheckingEmail, // ✅ 중복 확인 중 상태
+    extraError: emailError, // ✅ 중복 에러 메시지
     hasError: emailHasError,
   } = useInput(
     formData,
     setFormData,
     "email",
-    (value) => isEmail(value || "") && isNotEmpty(value)
+    (value) => isEmail(value || "") && isNotEmpty(value),
+    isEmailDuplicate, // ✅ 이메일 중복 검사 함수
+    setIsEmailValid
   );
 
   // 비밀번호 입력 관리
@@ -96,10 +123,11 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
               value={emailValue}
               onChange={handleEmailChange}
               onBlur={handleEmailBlur}
-              error={emailHasError && "유효한 이메일을 입력해주세요."}
+              onKeyDown={handleEmailKeyDown} // ✅ Enter 감지 추가
+              error={emailError}
             />
             <div className="pt-7">
-              <Button2>인증</Button2>
+              <Button2 disabled={!isEmailValid}>인증</Button2>
             </div>
           </div>
 

@@ -2,11 +2,17 @@ import React, { useEffect } from "react";
 import Region from "../../components/Search/SearchRegion";
 import { useRecoilState } from "recoil";
 import { searchFilterState } from "../../atoms/searchState";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import AISearchImage from "@/assets/icons/icon_AIsearch.png";
 
 export default function SearchFilters() {
   const { category } = useParams();
   const [searchFilter, setFilterState] = useRecoilState(searchFilterState);
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate("/aiplanner");
+  };
 
   // ✅ 필터 기본값 설정
   const defaultFilter = {
@@ -29,6 +35,13 @@ export default function SearchFilters() {
 
   return (
     <div className="flex gap-4 mb-4 overflow-x-auto scrollbar-hide">
+      <div onClick={handleNavigation} className="cursor-pointer">
+        <img
+          src={AISearchImage}
+          alt="AI Search"
+          className="w-auto h-auto max-w-[50px] max-h-[50px]"
+        />
+      </div>
       <Region key="region" />
       {category === "weddinghall" ? (
         <select

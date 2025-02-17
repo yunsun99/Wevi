@@ -25,19 +25,40 @@ export async function handleLogin(email, password) {
   }
 }
 
-export async function emailCertification(email) {
+export async function isEmailDuplicate(email) {
+  if (!email || typeof email !== "string") {
+    console.error("❌ 유효하지 않은 이메일 값:", email);
+    return 400;
+  }
+
   try {
     const response = await api.post(
-      `/api/user/profile`,
-      {
-        email: email,
-      },
+      `/api/users/existEmail`,
+      { email },
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       }
     );
+
+    return response.data.status;
+  } catch (error) {
+    console.error(
+      "❌ API 요청 실패:",
+      error.response ? error.response.data : error
+    );
+    return error.response ? error.response.status : 500;
+  }
+}
+
+export async function sendEmail(email) {
+  try {
+    const response = await api.post(`/api/users/sendEmail`, emial, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return response.status;
   } catch (error) {
     console.log(error);

@@ -1,64 +1,31 @@
 import { atom } from "recoil";
 
+export const questionIndexState = atom({
+  key: "questionIndexState",
+  default: 0,
+});
+
 export const plannerState = atom({
-  key: "plannerState",
+  key: "formDataState",
   default: {
     location: "",
-    inoutSide: "",
-    price: "",
-    hall: "",
-    studio: "",
-    dress: "",
-    makeUp: "tmp",
+    venueType: "",
+    budget: "",
+    venueStyle: "",
+    studioStyle: "",
+    dressStyle: "",
+    makeupStyle: "",
   },
 });
 
-import example_weddinghall from "@/assets/example_weddinghall.png";
-
-const data = [
-  {
-    id: 1,
-    category: "웨딩홀",
-    title: "웨스턴베니비스",
-    date: "2025년 5월 25일",
-    price: "19,420,000원",
-    tags: "#화려함 #웅장함 #주차장",
-    image: example_weddinghall,
-  },
-  {
-    id: 2,
-    category: "메이크업",
-    title: "마리앙끌레르",
-    date: "2025년 5월 25일",
-    price: "1,280,000원",
-    tags: "#수수함 #고급진 #친절함",
-    image: example_weddinghall,
-  },
-  {
-    id: 3,
-    category: "드레스",
-    title: "에비뉴 준호",
-    date: "2025년 5월 25일",
-    price: "3,720,000원",
-    tags: "#독특함 #친절함 #밝은",
-    image: example_weddinghall,
-  },
-  {
-    id: 4,
-    category: "드레스",
-    title: "에비뉴 준호",
-    date: "2025년 5월 25일",
-    price: "3,720,000원",
-    tags: "#독특함 #친절함 #밝은",
-    image: example_weddinghall,
-  },
-  {
-    id: 5,
-    category: "드레스",
-    title: "에비뉴 준호",
-    date: "2025년 5월 25일",
-    price: "3,720,000원",
-    tags: "#독특함 #친절함 #밝은",
-    image: example_weddinghall,
-  },
+export const AIquestions = [
+  "지금부터 제가 하는 질문에 답하시면 예식장, 스드메를 추천해드릴게요!", // 1번 (자동 2초 후 다음)
+  "우선, 지역은 어디가 좋으신가요? (ex. 서울시 ㅇㅇ구)",
+  "예식장은 실내 / 야외 중 어떤 것이 좋으신가요? (ex. 실내)",
+  "생각해둔 전체 예산이 있으신가요?",
+  "그럼 이제부턴 원하시는 분위기를 알아볼게요.", // 5번 (자동 2초 후 다음)
+  "예식장 분위기는 어떤게 좋으세요? 1. 우아 2. 화려 3. 수수 4. ???",
+  "스튜디오 분위기는 어떤게 좋으세요? 1. 우아 2. 화려 3. 수수 4. ???",
+  "드레스 분위기는 어떤게 좋으세요? 1. 우아 2. 화려 3. 수수 4. ???",
+  "헤어/메이크업 분위기는 어떤게 좋으세요? 1. 우아 2. 화려 3. 수수 4. ???",
 ];

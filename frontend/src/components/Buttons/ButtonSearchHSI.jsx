@@ -17,7 +17,6 @@ export default function ButtonSearch() {
 
   // ✅ 버튼 클릭 시 검색 요청
   const handleSearch = async () => {
-    console.log("btn");
     try {
       const requestData = { category, searchFilter, searchText, searchDate };
       const data = await getSearchData(requestData);
