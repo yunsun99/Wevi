@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,7 +23,6 @@ import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -63,7 +61,9 @@ public class SecurityConfig {
                                 // 로그인 안했어도 요청 가능한 API는 여기 추가해주기
                                 new AntPathRequestMatcher("/api/auth/login", "POST"),
                                 new AntPathRequestMatcher("/api/customers/signup", "POST"),
-                                new AntPathRequestMatcher("/api/vendors/signup", "POST")
+                                new AntPathRequestMatcher("/api/vendors/signup", "POST"),
+                                new AntPathRequestMatcher("/api/users/sendEmail", "POST"),
+                                new AntPathRequestMatcher("/api/users/verifyEmail", "POST")
                         ).permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(customizer -> customizer
