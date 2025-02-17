@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "pannellum/build/pannellum.css";
 import "pannellum";
-import * as pannellum from "pannellum";
 
 export default function Vendor360View({ data }) {
   const panoramaImages = data.images.filter(
