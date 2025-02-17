@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.Where;
 
+import java.util.List;
+
 @Entity
 @Table(name = "couple_requests")
 @SQLRestriction("status <> 'REJECTED' AND status <> 'TERMINATED'")
@@ -29,4 +31,7 @@ public class CoupleRequest extends BaseEntity {
 
     @Column(nullable = false)
     private String status;
+
+    @OneToMany(mappedBy = "coupleRequest", fetch = FetchType.LAZY)
+    private List<Notification> notifications;
 }

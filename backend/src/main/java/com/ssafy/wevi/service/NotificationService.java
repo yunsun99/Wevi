@@ -97,4 +97,13 @@ public class NotificationService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void deleteNotifications(List<Integer> notificationIds) {
+        if (notificationIds == null || notificationIds.isEmpty()) return;
+
+        for (Integer notificationId : notificationIds) {
+            notificationRepository.deleteById(notificationId);
+        }
+    }
+
 }

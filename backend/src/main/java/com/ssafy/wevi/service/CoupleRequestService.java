@@ -1,6 +1,7 @@
 package com.ssafy.wevi.service;
 
 import com.ssafy.wevi.domain.CoupleRequest;
+import com.ssafy.wevi.domain.Notification;
 import com.ssafy.wevi.domain.user.Customer;
 import com.ssafy.wevi.dto.CoupleRequest.CoupleRequestResponseDto;
 import com.ssafy.wevi.enums.CoupleRequestStatus;
@@ -114,8 +115,10 @@ public class CoupleRequestService {
             throw new SecurityException("본인이 보낸 요청만 취소할 수 있습니다.");
         }
 
-        // 상대에게 전송된 커플요청 알림 삭제
-        notificationRepository.deleteByCoupleRequest(coupleRequest);
+        // 커플요청 관련 알림 삭제
+        List<Notification> notifications = coupleRequest.getNotifications();
+        List<Integer> notificationIds = notifications.stream().map(Notification::getNotificationId).toList();
+        notificationService.deleteNotifications(notificationIds);
 
         // 커플요청 삭제
         coupleRequestRepository.delete(coupleRequest);
@@ -141,6 +144,14 @@ public class CoupleRequestService {
         spouse.setSentRequests(new ArrayList<>());
         spouse.setReceivedRequests(new ArrayList<>());
         customerRepository.save(spouse);
+
+        // 해당 유저의 커플요청 찾기
+        CoupleRequest coupleRequest = coupleRequestRepository.findBySenderUserIdOrReceiverUserId(customerId, customerId).orElseThrow();
+
+        // 커플요청 관련 알림 삭제
+        List<Notification> notifications = coupleRequest.getNotifications();
+        List<Integer> notificationIds = notifications.stream().map(Notification::getNotificationId).toList();
+        notificationService.deleteNotifications(notificationIds);
 
         // userId가 sender 또는 receiver인 커플 요청 삭제
         coupleRequestRepository.deleteBySenderUserIdOrReceiverUserId(customer.getUserId(), spouseId);
