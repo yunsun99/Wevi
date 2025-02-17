@@ -1,19 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
-import testimage from "../../test02.jpg"; // src 폴더에서 직접 import
-import "@/assets/pannellum/pannellum.css"; // CSS 파일 import
+import "pannellum/build/pannellum.css";
+import "pannellum";
+import * as pannellum from "pannellum";
 
 export default function Vendor360View({ data }) {
+  const panoramaImages = data.images.filter(
+    (img) => img.imageType === "PANORAMA"
+  );
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const viewerRef = useRef(null);
+  const panoramaContainerRef = useRef(null);
+
   useEffect(() => {
-    // pannellum.js 스크립트 로드
-    const script = document.createElement("script");
-    script.src = "/pannellum/pannellum.js"; // public 폴더 내 경로로 수정
-    script.async = true;
-    script.onload = () => {
-      // pannellum.viewer 초기화
-      if (window.pannellum) {
-        pannellum.viewer("panorama", {
+    if (panoramaImages.length > 0) {
+      // Pannellum 초기화
+      viewerRef.current = window.pannellum.viewer(
+        panoramaContainerRef.current,
+        {
           type: "equirectangular",
-          panorama: data.images[1].imageUrl, // 로컬 이미지 경로
+          panorama: panoramaImages[currentIndex].imageUrl,
           autoLoad: true,
           compass: true,
           pitch: -10,
@@ -23,10 +28,6 @@ export default function Vendor360View({ data }) {
           hfov: 100,
           showZoomCtrl: true,
           disablePitchLimits: true,
-          xhr: {
-            // CORS 우회 설정: 서버에서 이미지를 로드할 때 사용될 요청 헤더
-            withCredentials: true, // 쿠키나 인증 정보가 필요하면 true로 설정
-          },
           hotSpots: [
             {
               pitch: 10,
@@ -36,16 +37,56 @@ export default function Vendor360View({ data }) {
               URL: "https://example.com",
             },
           ],
-        });
-      }
-    };
+        }
+      );
+    }
+  }, [currentIndex, panoramaImages]); // 🔄 currentIndex가 변경될 때마다 업데이트
 
-    document.body.appendChild(script);
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? panoramaImages.length - 1 : prevIndex - 1
+    );
+  };
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === panoramaImages.length - 1 ? 0 : prevIndex + 1
+    );
+  };
 
-  return <div id="panorama" style={{ width: "100%", height: "40vh" }}></div>;
+  return (
+    <div className="bg-white rounded-lg shadow-md mt-4 p-4 relative">
+      <h3 className="text-xl font-bold">360도 뷰</h3>
+      {panoramaImages.length > 0 ? (
+        <div className="relative w-full h-[300px] mt-2 rounded-lg">
+          {/* 🛠 Pannellum 컨테이너 */}
+          <div
+            ref={panoramaContainerRef}
+            className="w-full h-full rounded-lg"
+          ></div>
+
+          {/* 🔄 이전 버튼 */}
+          {panoramaImages.length > 1 && (
+            <>
+              <button
+                onClick={prevSlide}
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full"
+              >
+                ◀
+              </button>
+              {/* ⏩ 다음 버튼 */}
+              <button
+                onClick={nextSlide}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full"
+              >
+                ▶
+              </button>
+            </>
+          )}
+        </div>
+      ) : (
+        <p className="text-gray-500 mt-2">360도 뷰 이미지가 없습니다.</p>
+      )}
+    </div>
+  );
 }
