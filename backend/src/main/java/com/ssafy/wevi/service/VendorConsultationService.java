@@ -55,12 +55,12 @@ public class VendorConsultationService {
 
             // 영업시간 내 모든 1시간 단위의 슬롯을 체크
             boolean isAvailable = false;
-            while (startTime.isBefore(endTime)) {
-                if (!reservedTimes.contains(startTime)) {
+            while (startDateTime.isBefore(endDateTime)) {
+                if (!reservedTimes.contains(startDateTime.toLocalTime())) {
                     isAvailable = true; // 예약되지 않은 시간이 하나라도 있으면 true
                     break;
                 }
-                startTime = startTime.plusHours(1);
+                startDateTime = startDateTime.plusHours(1);
             }
 
             // DTO 추가
@@ -71,10 +71,9 @@ public class VendorConsultationService {
 
         // 최종 결과 반환
         return VendorConsultationDateResponseDto.builder()
-                .vendorId(vendor.getUserId())
-                .availableDate(availableDates)
+                .vendorId(vendorId)
+                .availableDates(availableDates)
                 .build();
-
     }
 
     public VendorConsultationTimeResponseDto getAvailableTimes(Integer vendorId, LocalDate date) {
