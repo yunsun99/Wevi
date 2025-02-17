@@ -22,7 +22,7 @@ export default function CalendarComponent({
   // ✅ API에서 상담 가능 날짜 가져오기 (현재 달 + 이전 달 + 다음 달)
   const fetchAvailableDates = async () => {
     if (isSchedulePage) return; // ✅ 특정 페이지에서는 요청 안 보냄
-
+    console.log("되는건가");
     try {
       console.log(
         `📅 Fetching available dates: vendorId=${vendorId}, year=${currentYear}, month=${currentMonth}`
@@ -33,27 +33,31 @@ export default function CalendarComponent({
       const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
       const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
       const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
-
+      console.log(vendorId);
+      console.log(prevMonth);
+      console.log(prevYear);
       // ✅ 현재 달, 이전 달, 다음 달의 데이터를 병렬 요청
       const [prevData, currentData, nextData] = await Promise.all([
         getAvailableDates({ vendorId, year: prevYear, month: prevMonth }),
         getAvailableDates({ vendorId, year: currentYear, month: currentMonth }),
         getAvailableDates({ vendorId, year: nextYear, month: nextMonth }),
       ]);
-
+      console.log(prevData);
+      console.log(currentData);
+      console.log(nextData);
       // ✅ 받아온 데이터를 하나의 배열로 합침
       const combinedData = [
-        ...(Array.isArray(prevData.availableDate)
-          ? prevData.availableDate
+        ...(Array.isArray(prevData.availableDates)
+          ? prevData.availableDates
           : []),
-        ...(Array.isArray(currentData.availableDate)
-          ? currentData.availableDate
+        ...(Array.isArray(currentData.availableDates)
+          ? currentData.availableDates
           : []),
-        ...(Array.isArray(nextData.availableDate)
-          ? nextData.availableDate
+        ...(Array.isArray(nextData.availableDates)
+          ? nextData.availableDates
           : []),
       ];
-
+      console.log(combinedData);
       setValidAvailableDate(combinedData);
     } catch (err) {
       console.error("API 요청 중 에러 발생:", err);
@@ -63,6 +67,7 @@ export default function CalendarComponent({
   // ✅ 연도 또는 월이 변경될 때 API 다시 호출 (단, 특정 페이지 제외)
   useEffect(() => {
     fetchAvailableDates();
+    console.log(validAvailableDate);
   }, [currentYear, currentMonth]);
 
   // ✅ 선택된 날짜가 없으면 기본값을 오늘 날짜로 설정
