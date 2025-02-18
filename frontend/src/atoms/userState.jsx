@@ -26,3 +26,14 @@ export const signupState = atom({
     addressDetail: "tmp",
   },
 });
+
+export const initialFormData = {
+  email: "",
+  nickname: "",
+  name: "",
+  password: "",
+  phone: "",
+  zonecode: "tmp",
+  autoRoadAddress: "tmp",
+  addressDetail: "tmp",
+};

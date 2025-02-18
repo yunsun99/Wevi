@@ -8,6 +8,7 @@ import {
 import { useEffect, useRef } from "react";
 import { axiosNotification, axiosReadNotification } from "../api/notification";
 import CardNotification from "../components/Cards/CardNotification";
+import BottomNavigationBar from "../components/Navigators/BottomNavigationBar";
 
 export default function Notification() {
   const [alarm, setAlarm] = useRecoilState(notificationState);
@@ -49,9 +50,12 @@ export default function Notification() {
   }, []);
 
   return (
-    <>
+    <div className="h-screen flex flex-col">
       <TopNavigationBar title="알림" />
-      <ListView data={alarm} CardComponent={CardNotification} />
-    </>
+      <div className="flex-1 overflow-auto">
+        <ListView data={alarm} CardComponent={CardNotification} />
+      </div>
+      <BottomNavigationBar />
+    </div>
   );
 }

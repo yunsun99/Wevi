@@ -20,7 +20,7 @@ export async function handleLogin(email, password) {
     });
     return response.status; // 성공 시 응답 코드 반환 (예: 200)
   } catch (error) {
-    console.log(error);
+    alert("아이디와 비밀번호를 확인해주세요.");
     return error.response ? error.response.status : 500;
   }
 }
