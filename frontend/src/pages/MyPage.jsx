@@ -42,7 +42,7 @@ export default function MyPage() {
       await handleLogout();
       navigate("/login");
     } catch (err) {
-      setError(err.message); // ✅ 서버에서 받은 오류 메시지 표시
+      return; // ✅ 서버에서 받은 오류 메시지 표시
     }
   };
 
