@@ -23,7 +23,9 @@ export default function Card({ data }) {
         <p className="text-sm text-gray-500">{data.doName}</p>
       </div>
       <div className="p-4">
-        <h3 className="font-bold text-md text-right">{data.minPrice}</h3>
+        <h3 className="font-bold text-md text-right">
+          {data.minPrice.toLocaleString()}원 ~
+        </h3>
       </div>
     </div>
   );
