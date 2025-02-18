@@ -25,5 +25,7 @@ public class CustomerResponseDto {
     private String spouseNickname;
     private String coupleUpdatedAt;
     private Integer sentRequestId;
+    private String sentRequestNickname;
     private Integer receivedRequestId;
+    private String receivedRequestNickname;
 }
