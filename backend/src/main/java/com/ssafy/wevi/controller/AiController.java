@@ -1,11 +1,13 @@
 package com.ssafy.wevi.controller;
 
 import com.ssafy.wevi.config.SecurityUtils;
+import com.ssafy.wevi.dto.Ai.RecommendCreateDto;
+import com.ssafy.wevi.dto.Ai.RecommendResponseDto;
 import com.ssafy.wevi.dto.ApiResponseDto;
-import com.ssafy.wevi.dto.AudioSummary.AudioSummaryCreateDto;
-import com.ssafy.wevi.dto.AudioSummary.AudioSummaryResponseDto;
+import com.ssafy.wevi.dto.Ai.AudioSummaryCreateDto;
+import com.ssafy.wevi.dto.Ai.AudioSummaryResponseDto;
 import com.ssafy.wevi.repository.SummaryRepository;
-import com.ssafy.wevi.service.SummaryService;
+import com.ssafy.wevi.service.AiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,7 @@ import java.util.List;
 @RequestMapping("/api/ai")
 @RequiredArgsConstructor
 public class AiController {
-    private final SummaryService summaryService;
+    private final AiService aiService;
     private final SummaryRepository analysisRepository;
 
     // ✅ 1. 오디오 파일 업로드 및 AI 분석 요청
@@ -27,7 +29,7 @@ public class AiController {
         // 로그인한 유저 ID 가져오기
         Integer loginUserId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
 
-        AudioSummaryResponseDto audioAnalysisResponseDto = summaryService.uploadAndSummarizeAudio(file, loginUserId, scheduleId);
+        AudioSummaryResponseDto audioAnalysisResponseDto = aiService.uploadAndSummarizeAudio(file, loginUserId, scheduleId);
 
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
@@ -40,7 +42,7 @@ public class AiController {
     @PatchMapping("/analyze/result")
     public ApiResponseDto<?> addSummaryResult(@RequestBody AudioSummaryCreateDto audioSummaryCreateDto) {
         System.out.println(audioSummaryCreateDto.getAudioSummaryId()+", "+ audioSummaryCreateDto.getSummaryResult()+", "+audioSummaryCreateDto.getStatus());
-        AudioSummaryResponseDto audioAnalysisResponseDto = summaryService.patchSummaryResult(audioSummaryCreateDto);
+        AudioSummaryResponseDto audioAnalysisResponseDto = aiService.patchSummaryResult(audioSummaryCreateDto);
 
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
@@ -70,7 +72,7 @@ public class AiController {
         // 로그인한 유저 ID 가져오기
         Integer loginUserId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
 
-        List<AudioSummaryResponseDto> audioSummaryResponseDtoList = summaryService.getAllSummary(loginUserId);
+        List<AudioSummaryResponseDto> audioSummaryResponseDtoList = aiService.getAllSummary(loginUserId);
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
                 true,
@@ -78,4 +80,20 @@ public class AiController {
                 audioSummaryResponseDtoList
         );
     }
+    @PostMapping("/recommend")
+    public ApiResponseDto<?> getRecommend(@RequestBody RecommendCreateDto recommendCreateDto) {
+        // 로그인한 유저 ID 가져오기
+        Integer loginUserId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+
+        RecommendResponseDto audioSummaryResponseDtoList = aiService.getRecommend(recommendCreateDto, loginUserId);
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "Audio summary status founded successfully.",
+                audioSummaryResponseDtoList
+        );
+
     }
+
+
+}

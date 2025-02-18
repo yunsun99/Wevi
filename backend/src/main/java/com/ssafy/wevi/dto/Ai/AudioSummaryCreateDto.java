@@ -1,4 +1,4 @@
-package com.ssafy.wevi.dto.AudioSummary;
+package com.ssafy.wevi.dto.Ai;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
