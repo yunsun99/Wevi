@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { signupState } from "../atoms/userState";
+import { initialFormData, signupState } from "../atoms/userState";
 import Signup1 from "@/components/Forms/Signup1";
 import Signup2 from "@/components/Forms/Signup2";
 
@@ -10,6 +10,12 @@ const Signup = () => {
 
   const handleNext = () => setStep(step + 1);
   const handlePrevious = () => setStep(step - 1);
+
+  useEffect(() => {
+    return () => {
+      setFormData(initialFormData);
+    };
+  }, []);
 
   return (
     <>

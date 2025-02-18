@@ -15,7 +15,9 @@ export async function axiosCoupleRequests(spouseEmail) {
     );
     return response.status; // 성공 시 응답 코드 반환 (예: 200)
   } catch (error) {
-    console.log(error);
+    if (error.response.status === 404) {
+      alert("이메일을 다시 확인해주세요.");
+    }
     return error.response ? error.response.status : 500;
   }
 }

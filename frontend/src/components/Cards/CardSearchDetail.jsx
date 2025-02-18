@@ -14,8 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useRef } from "react";
 
 // GPT왈 memo가 더 최적화이다?
-const CardSearchDetail = React.memo(({ data }) => {
-  const [selectedButton, setSelectedButton] = useRecoilState(searchDetailState);
+const CardSearchDetail = React.memo(({ data, selectedButton }) => {
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -51,16 +50,16 @@ const CardSearchDetail = React.memo(({ data }) => {
   };
 
   useEffect(() => {
-    if (selectedButton.selectedCategory === "information") {
+    if (selectedButton === "information") {
       scrollToSection(imageRef);
-    } else if (selectedButton.selectedCategory === "360view") {
+    } else if (selectedButton === "360view") {
       scrollToSection(viewRef);
-    } else if (selectedButton.selectedCategory === "location") {
+    } else if (selectedButton === "location") {
       scrollToSection(locationRef);
-    } else if (selectedButton.selectedCategory === "review") {
+    } else if (selectedButton === "review") {
       scrollToSection(reviewRef);
     }
-  }, [selectedButton.selectedCategory]);
+  }, [selectedButton]);
 
   return (
     <div>
@@ -90,7 +89,6 @@ const CardSearchDetail = React.memo(({ data }) => {
         <VendorReview />
       </div>
 
-      {selectedButton.selectedCategory === "review" ? <VendorReview /> : null}
       <ButtonSearch2 onClick={handleConsultationReservation}>
         상담 예약
       </ButtonSearch2>

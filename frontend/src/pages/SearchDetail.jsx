@@ -15,9 +15,11 @@ export default function SearchDetail() {
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id"); // 쿼리 파라미터에서 id 값 가져오기
 
+  // 카테고리바 검색용
+  const [selectedButton, setSelectedButton] = useState("information");
+
   const [vendorData, setVendorData] = useState();
   const [reviewData, setReviewData] = useRecoilState(vendorState);
-  const [title, setTitle] = useState(""); // ⬅️ title을 상태로 선언
 
   useEffect(() => {
     if (!id) {
@@ -60,8 +62,13 @@ export default function SearchDetail() {
   return (
     <>
       <TopNavigationBar title={category} />
-      <SearchDetailCategoryBar />
-      {vendorData ? <CardSearchDetail data={vendorData} /> : null}
+      <SearchDetailCategoryBar
+        selectedButton={selectedButton}
+        setSelectedButton={setSelectedButton}
+      />
+      {vendorData ? (
+        <CardSearchDetail data={vendorData} selectedButton={selectedButton} />
+      ) : null}
       <div className="h-[2vh]"></div>
       <BottomNavigationBar />
     </>
