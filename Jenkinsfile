@@ -69,7 +69,7 @@ pipeline {
                             ./gradlew clean build -x test --no-daemon
                         '''
                         
-                        // Docker 배포
+                        // Docker 배포!
                         sh '''
                             docker rm -f ${APP_NAME} || true
                             docker rmi ${DOCKER_IMAGE} || true
