@@ -166,7 +166,9 @@ public class CustomerService {
                                     : (receivedRequest != null ? dateTimeToString(receivedRequest.getUpdatedAt()) : null);
                         }).orElse(null))
                 .sentRequestId(customer.getSentRequests() == null || customer.getSentRequests().isEmpty() ? null : customer.getSentRequests().get(0).getCoupleRequestId())
+                .sentRequestNickname(customer.getSentRequests() == null || customer.getSentRequests().isEmpty() ? null : customer.getSentRequests().get(0).getReceiver().getNickname())
                 .receivedRequestId(customer.getReceivedRequests() == null || customer.getReceivedRequests().isEmpty() ? null : customer.getReceivedRequests().get(0).getCoupleRequestId())
+                .receivedRequestNickname(customer.getReceivedRequests() == null || customer.getReceivedRequests().isEmpty() ? null : customer.getReceivedRequests().get(0).getSender().getNickname())
                 .build();
     }
 }
