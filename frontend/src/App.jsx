@@ -32,6 +32,7 @@ import { isNotificationState } from "./atoms/notificationState";
 import { useEffect, useState } from "react";
 import { onForegroundMessage, registerServiceWorker } from "./api/firebase";
 import splashVideo from "./assets/splashMP4.mp4";
+import { axiosNotification } from "./api/notification";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -102,6 +103,21 @@ function NotificationHandler() {
     };
 
     const unsubscribe = onForegroundMessage(handleNotification);
+
+    // 커져있었을떄 알람 설정
+    setIsNotification(false);
+    const loadAlarms = async () => {
+      try {
+        const data = await axiosNotification();
+        console.log("🔔 알림 데이터 로드:", data);
+        const reverseData = [...data].reverse();
+        if (!reverseData[0].isRead) {
+          setIsNotification(true);
+        }
+      } catch (error) {}
+    };
+
+    loadAlarms();
 
     return () => {
       unsubscribe();

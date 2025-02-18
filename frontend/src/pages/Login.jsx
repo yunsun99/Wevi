@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "@/atoms/userState";
 import {
   isEmail,
@@ -17,11 +17,15 @@ import { requestFCMToken } from "../api/firebase";
 import { sendFCMToken } from "../api/auth";
 import { setRecoil } from "recoil-nexus";
 import { isAuthenticatedState } from "../atoms/userState";
+import { isNotificationState } from "../atoms/notificationState";
+import { axiosNotification } from "../api/notification";
 
 export default function Login() {
   const [error, setError] = useState(null); // 로그인 실패 메시지
   const setUser = useSetRecoilState(userState); // Recoil 상태 업데이트
   const navigate = useNavigate(); // 페이지 이동
+  const [isNotification, setIsNotification] =
+    useRecoilState(isNotificationState);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -61,6 +65,21 @@ export default function Login() {
       await sendFCMToken(currentToken);
       if (userCode === 200) {
         setRecoil(isAuthenticatedState, true);
+
+        setIsNotification(false);
+        const loadAlarms = async () => {
+          try {
+            const data = await axiosNotification();
+            console.log("🔔 알림 데이터 로드:", data);
+            const reverseData = [...data].reverse();
+            if (!reverseData[0].isRead) {
+              setIsNotification(true);
+            }
+          } catch (error) {}
+        };
+
+        loadAlarms();
+
         navigate("/");
       }
     } catch (err) {

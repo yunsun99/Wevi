@@ -13,7 +13,6 @@ export default function SearchDetailCategoryBar() {
         selectedCategory: buttonName,
       }));
     }
-    navigate(`?${buttonName}`);
   };
   // 활성화 버튼 css
   const buttonActive =
@@ -32,14 +31,14 @@ export default function SearchDetailCategoryBar() {
 
   return (
     <>
-      <div className="flex border-b border-gray-300  bg-white whitespace-nowrap ">
+      <div className="h-[6vh] z-10 flex border-b top-[6vh] border-gray-300 sticky bg-white whitespace-nowrap ">
         <button
           className={
-            selectedButton.selectedCategory === "informtaion"
+            selectedButton.selectedCategory === "information"
               ? buttonActive
               : buttonInactive
           }
-          onClick={() => handleButtonClick("informtaion")}
+          onClick={() => handleButtonClick("information")}
         >
           정보
         </button>

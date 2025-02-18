@@ -6,6 +6,7 @@ import CardSearchDetail from "../components/Cards/CardSearchDetail";
 import { getVendorInfo, getVendorReviews } from "../api/vendor";
 import { vendorState } from "../atoms/vendorState";
 import { useRecoilState } from "recoil";
+import SearchDetailCategoryBar from "../components/Bars/SearchDetailCategoryBar";
 
 // 성일
 export default function SearchDetail() {
@@ -59,6 +60,7 @@ export default function SearchDetail() {
   return (
     <>
       <TopNavigationBar title={category} />
+      <SearchDetailCategoryBar />
       {vendorData ? <CardSearchDetail data={vendorData} /> : null}
       <div className="h-[2vh]"></div>
       <BottomNavigationBar />
