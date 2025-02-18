@@ -4,7 +4,7 @@ import CoupleLinkPending from "@/components/CoupleLink/CoupleLinkPending";
 import CoupleLinkReceive from "@/components/CoupleLink/CoupleLinkReceive";
 
 export default function CoupleLinkedNot({ link }) {
-  console.log(link.type);
+  console.log(link);
   return (
     <>
       <div className="relative w-full flex items-center justify-center">
@@ -34,7 +34,7 @@ export default function CoupleLinkedNot({ link }) {
       {link.type === 2 && (
         <>
           <p className="text-center text-gray-700 text-lg mt-6 font-pretendard">
-            OOO님으로부터
+            {link.nickName}님으로부터
             <br /> 연동 신청이 왔습니다.
           </p>
           <CoupleLinkReceive />

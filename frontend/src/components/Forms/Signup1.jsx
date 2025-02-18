@@ -7,32 +7,48 @@ import {
   hasMinLength,
 } from "@/components/Inputs/validation";
 import { useInput } from "@/components/Inputs/useInput.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import TopNavigationBar3 from "../Navigators/TopNavigationBar3";
-import { isEmailDuplicate } from "../../api/auth";
+import { isEmailDuplicate, sendEmail, verifyEmail } from "../../api/auth";
 
 const Signup1 = ({ formData, setFormData, onNext }) => {
   const navigate = useNavigate(); // 페이지 이동
-
+  // 다음버튼 검증
   const [isEmailValid, setIsEmailValid] = useState(false);
+  // 인증버튼 보내졌을시 띄우는 용
+  const [isEmailSended, setIsEmailSended] = useState(false);
+  // 인증번호
+  const verifyInput = useRef();
+  // 인증완료시
+  const [verifyComplete, setVerifyComplete] = useState(false);
 
-  // 인증버튼 관리
-  const onValidSubmit = async (e) => {
+  // 이메일 전송 함수
+  const onEmailSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // 기존 에러 초기화
 
     try {
-      const userCode = await handleLogin(formData.username, formData.password);
-      setUser(userCode);
-      const currentToken = await requestFCMToken();
-      await sendFCMToken(currentToken);
-      if (userCode === 200) {
-        setRecoil(isAuthenticatedState, true);
-        navigate("/");
+      const verifyCode = await sendEmail(formData.email);
+      setIsEmailSended(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // 이메일 인증함수
+  const onVerifySubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const verifyCode = await verifyEmail(formData.email, verifyInput.current);
+      if (verifyCode.data.status === 200) {
+        setVerifyComplete(true);
+        alert("인증되었습니다.");
+      } else if (verifyCode.data.status === 400) {
+        alert("인증번호를 다시 입력하세요.");
       }
     } catch (err) {
-      setError(err.message); // ✅ 서버에서 받은 오류 메시지 표시
+      alert("인증번호를 다시 입력하세요.");
     }
   };
 
@@ -83,7 +99,8 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
         isNotEmpty(passwordCheck) &&
         !emailHasError &&
         !passwordHasError &&
-        !passwordCheckHasError
+        !passwordCheckHasError &&
+        verifyComplete
     );
   }, [
     formData,
@@ -91,6 +108,7 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
     emailHasError,
     passwordHasError,
     passwordCheckHasError,
+    verifyComplete,
   ]);
 
   const onBack = () => {
@@ -125,9 +143,28 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
               onBlur={handleEmailBlur}
               onKeyDown={handleEmailKeyDown} // ✅ Enter 감지 추가
               error={emailError}
+              disabled={verifyComplete}
             />
             <div className="pt-7">
-              <Button2 disabled={!isEmailValid}>인증</Button2>
+              <Button2 onClick={onEmailSubmit} disabled={!isEmailValid}>
+                입력
+              </Button2>
+            </div>
+          </div>
+
+          {/* 인증번호 입력 */}
+          <div className="flex gap-2 mb-4">
+            <Input
+              label="인증번호"
+              id="verify"
+              type="text"
+              name="verify"
+              onChange={(e) => (verifyInput.current = e.target.value)}
+            />
+            <div className="pt-7">
+              <Button2 onClick={onVerifySubmit} disabled={!isEmailSended}>
+                인증
+              </Button2>
             </div>
           </div>
 
