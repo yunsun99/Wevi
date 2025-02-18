@@ -62,3 +62,27 @@ const mypageData = {
   receivedRequest: 1,
   profileImage: profileImage,
 };
+
+// AI 상담 내역 파일 업로드드
+export async function upLoadConsultation(file, scheduleId) {
+  try {
+    const formData = new FormData();
+    formData.append("file", file); // 'file' 필드에 파일 추가
+
+    const response = await api.post(`/api/ai/analyze/${scheduleId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (response.status === 200) {
+      console.log(response.data);
+      return response.data;
+    } else {
+      return {};
+    }
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error);
+  }
+}
