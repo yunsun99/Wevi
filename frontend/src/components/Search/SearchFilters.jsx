@@ -34,7 +34,7 @@ export default function SearchFilters() {
   };
 
   return (
-    <div className="flex gap-4 mb-4 overflow-x-auto scrollbar-hide">
+    <div className="flex gap-4 mb-4 overflow-x-auto scrollbar-none scrollbar-hidden">
       <div onClick={handleNavigation} className="cursor-pointer">
         <img
           src={AISearchImage}

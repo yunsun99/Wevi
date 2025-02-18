@@ -1,8 +1,21 @@
 import close_icon from "@/assets/icons/icon_close.png";
 import logo from "@/assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { handleLogout } from "../../api/auth";
 
 export default function Hamburger({ isOpen, setMenuOpen }) {
+  const navigate = useNavigate();
+
+  const onLogoutSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await handleLogout();
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       {/* 어두운 배경 (메뉴가 열렸을 때만 보임) */}
@@ -90,6 +103,15 @@ export default function Hamburger({ isOpen, setMenuOpen }) {
           >
             계약서 분석
           </Link>
+          <hr className="border-t border-gray-300" />
+
+          {/* 로그아웃 버튼 */}
+          <button
+            className="p-3 text-red-500 hover:bg-gray-200 rounded transition text-left text-sm"
+            onClick={onLogoutSubmit}
+          >
+            로그아웃
+          </button>
         </nav>
       </div>
     </>

@@ -21,7 +21,7 @@
 
 /* ✅ 헤더 스타일 (연/월 선택 영역) */
 .react-datepicker__header {
-  background-color: #4caf50; /* 연두색 배경 */
+  background-color: #609966; /* 연두색 배경 */
   border: none;
   border-radius: 12px 12px 0 0;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
@@ -82,7 +82,7 @@
 
 /* ✅ 선택된 날짜 */
 .react-datepicker__day--selected {
-  background-color: #4caf50;
+  background-color: #609966;
   color: white;
   font-weight: bold;
 }
@@ -90,7 +90,7 @@
 /* ✅ 오늘 날짜 */
 .react-datepicker__day--today {
   /* border: 2px solid #4caf50; */
-  background-color: #70c472;
+  background-color: #93b397;
   font-weight: bold;
   color: white;
 }
@@ -118,17 +118,71 @@
   color: red;
 }
 
-/* ✅ 드롭다운 스타일 */
+/* ✅ 드롭다운 스타일 수정 */
 .react-datepicker__month-dropdown,
 .react-datepicker__year-dropdown {
-  background-color: white;
+  background-color: #f9f9f9 !important; /* 🔹 배경을 밝은 회색으로 변경 */
   border-radius: 8px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  color: #333 !important; /* 🔹 글씨 색상을 검은색으로 변경 */
+  padding: 5px 0;
 }
 
-/* ✅ 삼각형 제거 */
+/* ✅ 드롭다운 내부 텍스트 색상 수정 */
+.react-datepicker__month-dropdown select,
+.react-datepicker__year-dropdown select {
+  color: #333 !important; /* 🔹 드롭다운 내부 글씨도 검은색 */
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* ✅ 드롭다운 옵션 스타일 */
+.react-datepicker__month-option,
+.react-datepicker__year-option {
+  background-color: white;
+  padding: 8px;
+  text-align: center;
+  color: #333 !important; /* 🔹 드롭다운 내 글씨 색상을 검은색으로 변경 */
+  cursor: pointer;
+}
+
+/* ✅ 드롭다운 항목 hover 효과 */
+.react-datepicker__month-option:hover,
+.react-datepicker__year-option:hover {
+  background-color: #e0e0e0; /* 🔹 호버 시 배경색 변경 */
+}
+
+/* ✅ 드롭다운 삼각형 제거 */
 .react-datepicker__triangle {
-  display: none;
+  display: none !important;
+}
+
+/* ✅ 드롭다운 리스트 배경 및 글씨 색상 */
+.react-datepicker__month-option,
+.react-datepicker__year-option {
+  background-color: rgb(
+    128,
+    41,
+    41
+  ) !important; /* 🔹 리스트 배경색 (기본: 흰색) */
+  color: #333 !important; /* 🔹 리스트 글씨 색상 (검은색) */
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+/* ✅ 드롭다운 리스트 hover 효과 */
+.react-datepicker__month-option:hover,
+.react-datepicker__year-option:hover {
+  background-color: #e0e0e0; /* 🔹 마우스 올렸을 때 배경 변경 */
+  color: black !important;
+}
+
+/* ✅ 선택된 항목 강조 */
+.react-datepicker__month-option--selected,
+.react-datepicker__year-option--selected {
+  background-color: #4caf50 !important; /* 🔹 선택된 항목은 초록색 */
+  color: white !important; /* 🔹 글씨를 흰색으로 변경 */
+  font-weight: bold;
 }
 
 /* ✅ 입력창 스타일 */
