@@ -5,6 +5,7 @@ import com.ssafy.wevi.domain.schedule.Consultation;
 import com.ssafy.wevi.domain.schedule.Schedule;
 import com.ssafy.wevi.domain.user.Customer;
 import com.ssafy.wevi.domain.user.User;
+import com.ssafy.wevi.domain.user.Vendor;
 import com.ssafy.wevi.dto.AudioSummary.AudioSummaryCreateDto;
 import com.ssafy.wevi.dto.AudioSummary.AudioSummaryResponseDto;
 import com.ssafy.wevi.repository.ScheduleRepository;
@@ -19,7 +20,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -40,12 +43,8 @@ public class SummaryService {
         if (!(user instanceof Customer)) throw new IllegalArgumentException("소비자만 상담 요약 요청할 수 있습니다.");
         if (!(schedule instanceof Consultation)) throw new IllegalArgumentException("상담 일정에 대해서만 상담 요약 요청할 수 있습니다.");
         // ✅ 1.1 파일을 S3에 업로드하고 URL 가져오기
-//        try {
-
         String s3Url = s3ClientService.upload(file);
-//        } catch (IOException e) {
-//            System.out.println("========== S3 업로드 중 에러 발생 ==========");
-//        }
+
         // ✅ 1.2 DB에 원본 파일 URL 저장
         AudioSummary audioSummary = new AudioSummary();
         audioSummary.setOriginalFileUrl(s3Url);
@@ -55,12 +54,12 @@ public class SummaryService {
         audioSummary = summaryRepository.save(audioSummary); // 현재 원본파일url, status(PENDING)만 존재
 
         // ✅ 1.3 FastAPI 요청을 위한 데이터 준비
-        String fastApiUrl = "http://127.0.0.1:8001/predict";  // FastAPI 서버 URL
+        String fastApiUrl = "http://localhost:8001/predict";  // FastAPI 서버 URL
         RestTemplate restTemplate = new RestTemplate();
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("file_url", s3Url);
-        requestBody.put("audio_summary_id", audioSummary.getId());
+        requestBody.put("audio_summary_id", audioSummary.getAudioSummaryId());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -87,12 +86,12 @@ public class SummaryService {
             summaryRepository.save(audioSummary);
         }
         // ✅ 4. 최종 응답 반환
-        return toAudioSummaryResponseDto(audioSummary);
+        return toAudioSummaryResponseDto(audioSummary, loginUserId);
     }
 
     // AI 서버로부터 결과를 받음
     @Transactional
-    public AudioSummaryResponseDto registSummaryResult(AudioSummaryCreateDto audioSummaryCreateDto) {
+    public AudioSummaryResponseDto patchSummaryResult(AudioSummaryCreateDto audioSummaryCreateDto) {
         AudioSummary audioSummary = summaryRepository.findById(audioSummaryCreateDto.getAudioSummaryId()).orElseThrow();
 
         if (audioSummaryCreateDto.getStatus().equals("COMPLETED")) {
@@ -104,22 +103,54 @@ public class SummaryService {
         // 현재 상태를 "PROCESSING"으로 변경 (AI 분석 시작됨)
         summaryRepository.save(audioSummary); // 변경 사항을 DB에 반영
 
-        return toAudioSummaryResponseDto(audioSummary);
+        return toAudioSummaryResponseDto(audioSummary, audioSummary.getCustomer().getUserId());
     }
 
-    // 분석 상황 반환
-    public AudioSummaryResponseDto registSummaryResult(Integer audioSummarizeId) {
+    public List<AudioSummaryResponseDto> getAllSummary(Integer loginUserId) {
+        User user = userRepository.findById(loginUserId).orElseThrow();
+        List<AudioSummary> audioSummaryList = new ArrayList<>();
 
-        AudioSummary audioAnalysis = summaryRepository.findById(audioSummarizeId).orElseThrow();
+        // 업체일 때
+        if (user instanceof Vendor) {
+            throw new IllegalArgumentException("업체는 조회 불가합니다.");
 
-        return toAudioSummaryResponseDto(audioAnalysis);
+            // 소비자일 때
+        } else {
+            // 커플 여부 확인
+            if (((Customer)user).getSpouse() == null) {
+                audioSummaryList = summaryRepository.findAllCompletedSummaryByUserId(loginUserId);
+            } else {
+                audioSummaryList = summaryRepository.findAllCompletedSummaryWithSpouse(loginUserId, ((Customer)user).getSpouse().getUserId());
+            }
+        }
+
+        // 반환타입으로 변환하여 반환
+        if (audioSummaryList.size() > 0) {
+            return toAudioSummaryResponseDtoList(audioSummaryList, loginUserId);
+        } else {
+            throw new IllegalArgumentException("해당하는 일정이 없습니다.");
+        }
     }
 
+    private List<AudioSummaryResponseDto> toAudioSummaryResponseDtoList(List<AudioSummary> audioSummaryList, Integer loginUserId) {
+        List<AudioSummaryResponseDto> audioSummaryResponseDtoList = new ArrayList<>();
 
-    private AudioSummaryResponseDto toAudioSummaryResponseDto(AudioSummary audioAnalysis) {
+        for (AudioSummary audioSummary : audioSummaryList) {
+            audioSummaryResponseDtoList.add(toAudioSummaryResponseDto(audioSummary, loginUserId));
+        }
+
+        return audioSummaryResponseDtoList;
+    }
+
+    private AudioSummaryResponseDto toAudioSummaryResponseDto(AudioSummary audioAnalysis, Integer loginUserId) {
         AudioSummaryResponseDto audioAnalysisResponseDto = new AudioSummaryResponseDto();
 
-        audioAnalysisResponseDto.setId(audioAnalysis.getId());
+        audioAnalysisResponseDto.setLoginUserId(loginUserId);
+        audioAnalysisResponseDto.setScheduleId(audioAnalysis.getSchedule().getScheduleId());
+        audioAnalysisResponseDto.setScheduleTitle(audioAnalysis.getSchedule().getTitle());
+        audioAnalysisResponseDto.setCategoryId(audioAnalysis.getSchedule().getCategory().getId());
+        audioAnalysisResponseDto.setCategoryName(audioAnalysis.getSchedule().getCategory().getName());
+        audioAnalysisResponseDto.setAudioSummaryId(audioAnalysis.getAudioSummaryId());
         audioAnalysisResponseDto.setStatus(audioAnalysis.getStatus());
         audioAnalysisResponseDto.setSummaryResult(audioAnalysis.getSummaryResult());
 

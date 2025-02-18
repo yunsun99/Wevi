@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/ai")
@@ -35,11 +36,11 @@ public class AiController {
                 audioAnalysisResponseDto
         );
     }
-    // AI 서버로부터 결과를 받음
+    // AI 서버로부터 분석 결과를 받는 API
     @PatchMapping("/analyze/result")
     public ApiResponseDto<?> addSummaryResult(@RequestBody AudioSummaryCreateDto audioSummaryCreateDto) {
         System.out.println(audioSummaryCreateDto.getAudioSummaryId()+", "+ audioSummaryCreateDto.getSummaryResult()+", "+audioSummaryCreateDto.getStatus());
-        AudioSummaryResponseDto audioAnalysisResponseDto = summaryService.registSummaryResult(audioSummaryCreateDto);
+        AudioSummaryResponseDto audioAnalysisResponseDto = summaryService.patchSummaryResult(audioSummaryCreateDto);
 
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
@@ -49,17 +50,32 @@ public class AiController {
         );
     }
     // ✅ 2. 분석 상태 확인 API
-    @GetMapping("/analyze/{audioAnalyzeId}")
-    public ApiResponseDto<?> getAnalysisStatus(@PathVariable Integer audioSummarizeId) {
-        AudioSummaryResponseDto audioAnalysisResponseDto = summaryService.registSummaryResult(audioSummarizeId);
-//        if (audioAnalysisResponseDto) {
-//            return ResponseEntity.status(404).body(Map.of("status", "NOT_FOUND"));
-//        }
+//    @GetMapping("/analyze/{audioAnalyzeId}")
+//    public ApiResponseDto<?> getAnalysisStatus(@PathVariable Integer audioSummarizeId) {
+//        AudioSummaryResponseDto audioAnalysisResponseDto = summaryService.patchSummaryResult(audioSummarizeId);
+////        if (audioAnalysisResponseDto) {
+////            return ResponseEntity.status(404).body(Map.of("status", "NOT_FOUND"));
+////        }
+//        return new ApiResponseDto<>(
+//                HttpStatus.OK.value(),
+//                true,
+//                "Audio summary status founded successfully.",
+//                audioAnalysisResponseDto
+//        );
+//    }
+
+    // 모든 요약 정보 조회
+    @GetMapping("/analyze")
+    public ApiResponseDto<?> getAllSummary() {
+        // 로그인한 유저 ID 가져오기
+        Integer loginUserId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+
+        List<AudioSummaryResponseDto> audioSummaryResponseDtoList = summaryService.getAllSummary(loginUserId);
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
                 true,
                 "Audio summary status founded successfully.",
-                audioAnalysisResponseDto
+                audioSummaryResponseDtoList
         );
     }
-}
+    }
