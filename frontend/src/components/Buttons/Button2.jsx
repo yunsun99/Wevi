@@ -1,16 +1,24 @@
-export default function Button1({ children, onClick = () => {}, disabled }) {
+export default function Button2({ children, onClick = () => {}, disabled }) {
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <button
-        className={`w-12 h-12 bg-[#C7E3CA] text-xs text-[#535353] border border-[#BDBDBD] rounded-lg transition ${
+    <button
+      className={`w-12 h-12 bg-[#C7E3CA] text-xs text-[#535353] border border-[#BDBDBD] rounded-lg transition 
+        ${
           disabled
             ? "opacity-50 cursor-not-allowed bg-gray-400"
             : "hover:bg-green-600"
         }`}
-        onClick={onClick}
-      >
-        {children}
-      </button>
-    </div>
+      onClick={(e) => {
+        if (disabled) {
+          e.preventDefault(); // 🔥 버튼이 비활성화된 경우 클릭 이벤트 방지
+          console.log("🚫 버튼이 비활성화되어 클릭되지 않음");
+          return;
+        }
+        console.log("✅ 버튼 클릭됨!"); // ✅ 클릭 이벤트가 실행되는지 확인
+        onClick(e);
+      }}
+      disabled={disabled}
+    >
+      {children}
+    </button>
   );
 }

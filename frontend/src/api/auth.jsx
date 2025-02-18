@@ -54,12 +54,41 @@ export async function isEmailDuplicate(email) {
 
 export async function sendEmail(email) {
   try {
-    const response = await api.post(`/api/users/sendEmail`, emial, {
-      headers: {
-        "Content-Type": "application/json",
+    const response = await api.post(
+      `/api/users/sendEmail`,
+      {
+        email,
       },
-    });
-    return response.status;
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error.response ? error.response.status : 500;
+  }
+}
+
+export async function verifyEmail(email, verificationCode) {
+  console.log(email);
+  console.log(verificationCode);
+  try {
+    const response = await api.post(
+      `/api/users/verifyEmail`,
+      {
+        email,
+        verificationCode,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
   } catch (error) {
     console.log(error);
     return error.response ? error.response.status : 500;
