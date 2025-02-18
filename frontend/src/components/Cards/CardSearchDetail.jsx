@@ -11,7 +11,7 @@ import VendorSimpleInformation from "../Vendors/VendorSimpleInformation";
 import VendorVisitInformation from "../Vendors/VendorVisitInformation";
 import { searchDetailState } from "../../atoms/searchState";
 import { useLocation, useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 // GPT왈 memo가 더 최적화이다?
 const CardSearchDetail = React.memo(({ data }) => {
@@ -21,6 +21,7 @@ const CardSearchDetail = React.memo(({ data }) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const vendorId = searchParams.get("id"); // 쿼리 파라미터에서 id 값 가져오기
+
   function handleConsultationReservation() {
     navigate(`/consultationReservation?id=${vendorId}`);
   }
@@ -28,29 +29,66 @@ const CardSearchDetail = React.memo(({ data }) => {
   console.log("CardSearchDetail Rendered");
   console.log(data);
 
+  // 🔥 각 섹션을 위한 useRef 생성
+  const imageRef = useRef(null);
+  const viewRef = useRef(null);
+  const locationRef = useRef(null);
+  const reviewRef = useRef(null);
+
+  // 🔥 원하는 위치보다 조금 더 위로 이동하도록 스크롤 조정
+  const scrollToSection = (sectionRef) => {
+    if (sectionRef.current) {
+      const headerOffset = 100; // 헤더 높이 (px 단위, 조정 가능)
+      const elementPosition =
+        sectionRef.current.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (selectedButton.selectedCategory === "information") {
+      scrollToSection(imageRef);
+    } else if (selectedButton.selectedCategory === "360view") {
+      scrollToSection(viewRef);
+    } else if (selectedButton.selectedCategory === "location") {
+      scrollToSection(locationRef);
+    } else if (selectedButton.selectedCategory === "review") {
+      scrollToSection(reviewRef);
+    }
+  }, [selectedButton.selectedCategory]);
+
   return (
     <div>
-      {selectedButton.selectedCategory !== "review" ? (
-        <>
-          <VendorImage data={data} />
-          <VendorSimpleInformation data={data} />
-          <VendorInformation data={data} />
-          {data.categoryId === 1 ? (
-            <Vendor360View data={data} />
-          ) : (
-            <VendorMagazine data={data} />
-          )}
-          <VendorOptionPrice data={data} />
-          <VendorVisitInformation data={data} />
-          <VendorBusinessInformation data={data} />
-          <VendorReview />
-        </>
+      <div ref={imageRef}>
+        <VendorImage data={data} />
+        <VendorSimpleInformation data={data} />
+        <VendorInformation data={data} />
+      </div>
+      {data.categoryId === 1 ? (
+        <div ref={viewRef}>
+          <Vendor360View data={data} />
+        </div>
       ) : (
-        <>
-          <VendorImage data={data} />
-          <VendorSimpleInformation data={data} />
-        </>
+        <div ref={viewRef}>
+          <VendorMagazine data={data} />
+        </div>
       )}
+      {/* 🏷 옵션 가격 & 방문 정보 */}
+      <VendorOptionPrice data={data} />
+      <div ref={locationRef}>
+        <VendorVisitInformation data={data} />
+      </div>
+      <VendorBusinessInformation data={data} />
+
+      {/* 🏷 리뷰 */}
+      <div ref={reviewRef}>
+        <VendorReview />
+      </div>
 
       {selectedButton.selectedCategory === "review" ? <VendorReview /> : null}
       <ButtonSearch2 onClick={handleConsultationReservation}>

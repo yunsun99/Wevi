@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import icon_search from "@/assets/icons/icon_search.png";
 import icon_alarm from "@/assets/icons/icon_alaram.png";
+import icon_alarm_on from "@/assets/icons/icon_alarm_on.png";
 import icon_menu from "@/assets/icons/icon_menu.png";
 import logo from "@/assets/logo.png";
 import close_icon from "@/assets/icons/icon_close.png";
@@ -32,11 +33,9 @@ function TopNavigationBar() {
 
           <Link to="/notification" aria-label="Notifications">
             <img
-              src={icon_alarm}
+              src={`${notification ? icon_alarm_on : icon_alarm}`}
               alt="Alarm Icon"
-              className={`h-8 w-8 ${
-                notification ? "border-2 border-amber-700 rounded-full" : ""
-              }`}
+              className={`h-8 w-8 `}
             />
           </Link>
 

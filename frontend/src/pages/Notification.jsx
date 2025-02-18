@@ -22,8 +22,9 @@ export default function Notification() {
       try {
         const data = await axiosNotification();
         console.log("🔔 알림 데이터 로드:", data);
-        setAlarm(data);
-        alarmRef.current = data; // ✅ 최신 `alarm`을 `useRef`에 저장
+        const reverseData = [...data].reverse();
+        setAlarm(reverseData);
+        alarmRef.current = reverseData; // ✅ 최신 `alarm`을 `useRef`에 저장
       } catch (error) {
         console.error("❌ 알림 데이터를 불러오는 중 오류 발생:", error);
       }
