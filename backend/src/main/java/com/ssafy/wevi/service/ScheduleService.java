@@ -338,6 +338,7 @@ public class ScheduleService {
                 scheduleList = scheduleRepository.findAllMiddleProcessWithSpouse(userId, spouse.getUserId());
             }
         }
+
         // 반환타입으로 변환하여 반환
         if (scheduleList.size() > 0) {
             return toMiddleProcessList(scheduleList);

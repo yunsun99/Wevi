@@ -173,7 +173,7 @@ public class ScheduleController {
         );
     }
     
-    // 지정된 소비자의 중간과정을 조회
+    // 지정된 소비자의 중간과정을 조회 (업체용)
     @GetMapping("/middle-process/progress/{userId}")
     public ApiResponseDto<?> getMiddleProcessProgress(@PathVariable Integer userId) {
         // 로그인한 유저 ID 가져오기

@@ -1,4 +1,4 @@
-package com.ssafy.wevi.dto.AudioSummary;
+package com.ssafy.wevi.dto.Ai;
 
 import com.ssafy.wevi.dto.schedule.ConsultationResponseDto;
 import lombok.Getter;
