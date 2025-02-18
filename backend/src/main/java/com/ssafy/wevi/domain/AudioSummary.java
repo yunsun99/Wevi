@@ -8,20 +8,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "audio_analysis")
+@Table(name = "audio_summaries")
 @Getter
 @Setter
 @NoArgsConstructor
 public class AudioSummary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer audioSummaryId;
 
     @Column(nullable = false)
     private String originalFileUrl;  // 원본 파일 URL
 
-    @Column
-    private String convertedFileUrl; // 변환된 WAV 파일 URL (없을 수도 있음)
+//    @Column
+//    private String convertedFileUrl; // 변환된 WAV 파일 URL (없을 수도 있음)
 
     @Column(nullable = false)
     private String status = "PENDING"; // ✅ 분석 상태 (PENDING, PROCESSING, COMPLETED)
