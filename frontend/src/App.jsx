@@ -29,7 +29,7 @@ import RecoilNexus from "recoil-nexus";
 import ContractList from "./pages/ContractList";
 import Schedule from "./pages/Schedule";
 import { isNotificationState } from "./atoms/notificationState";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { onForegroundMessage, registerServiceWorker } from "./api/firebase";
 import splashVideo from "./assets/splashMP4.mp4";
 import { axiosNotification } from "./api/notification";
@@ -89,8 +89,12 @@ function SplashScreen() {
 function NotificationHandler() {
   const [isNotification, setIsNotification] =
     useRecoilState(isNotificationState);
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
     // ✅ 1. 서비스 워커 등록 (상태 변경 없음)
     registerServiceWorker().catch(() => {
       console.error("서비스 워커 등록 실패");
@@ -122,7 +126,7 @@ function NotificationHandler() {
     return () => {
       unsubscribe();
     };
-  }, [setIsNotification]);
+  }, []);
 
   return null; // UI 없음
 }
