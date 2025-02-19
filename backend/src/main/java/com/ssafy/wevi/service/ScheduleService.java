@@ -301,12 +301,14 @@ public class ScheduleService {
 
             // 소비자일 때
         } else {
-//        Customer spouse = customerRepository.findById(userId).orElseThrow().getSpouse();
+        Customer spouse = customerRepository.findById(userId).orElseThrow().getSpouse();
         // 커플 여부 확인
             if (((Customer)user).getSpouse() == null) {
                 scheduleList = scheduleRepository.findAllScheduleByCustomerId(userId);
             } else {
-                scheduleList = scheduleRepository.findAllScheduleWithSpouse(userId, ((Customer)user).getSpouse().getUserId());
+                scheduleList = scheduleRepository.findAllScheduleByCustomerId(userId);
+                scheduleList.addAll(scheduleRepository.findAllScheduleByCustomerId(spouse.getUserId()));
+//                scheduleList = scheduleRepository.findAllScheduleWithSpouse(userId, ((Customer)user).getSpouse().getUserId());
             }
         }
         // 반환타입으로 변환하여 반환
@@ -335,7 +337,10 @@ public class ScheduleService {
             if (spouse == null) {
                 scheduleList = scheduleRepository.findAllMiddleProcessByCustomerId(userId);
             } else {
-                scheduleList = scheduleRepository.findAllMiddleProcessWithSpouse(userId, spouse.getUserId());
+                System.out.println("커플 아이디: "+ spouse.getUserId());
+                scheduleList = scheduleRepository.findAllMiddleProcessByCustomerId(userId);
+                scheduleList.addAll(scheduleRepository.findAllMiddleProcessByCustomerId(spouse.getUserId()));
+//                scheduleList = scheduleRepository.findAllMiddleProcessWithSpouse(userId, spouse.getUserId());
             }
         }
 
@@ -388,7 +393,9 @@ public class ScheduleService {
             if (spouse == null) {
                 scheduleList = scheduleRepository.findAllConsultationByCustomerId(userId);
             } else {
-                scheduleList = scheduleRepository.findAllConsultationWithSpouse(userId, spouse.getUserId());
+                scheduleList = scheduleRepository.findAllConsultationByCustomerId(userId);
+                scheduleList.addAll(scheduleRepository.findAllConsultationByCustomerId(spouse.getUserId()));
+//                scheduleList = scheduleRepository.findAllConsultationWithSpouse(userId, spouse.getUserId());
             }
         }
         // 반환타입으로 변환하여 반환
@@ -416,7 +423,9 @@ public class ScheduleService {
             if (spouse == null) {
                 scheduleList = scheduleRepository.findAllContractByCustomerId(userId);
             } else {
-                scheduleList = scheduleRepository.findAllContractWithSpouse(userId, spouse.getUserId());
+                scheduleList = scheduleRepository.findAllContractByCustomerId(userId);
+                scheduleList.addAll(scheduleRepository.findAllContractByCustomerId(spouse.getUserId()));
+//                scheduleList = scheduleRepository.findAllContractWithSpouse(userId, spouse.getUserId());
             }
         }
         // 반환타입으로 변환하여 반환
@@ -623,6 +632,12 @@ public class ScheduleService {
         middleProcessResponseDto.setStatus(schedule.getStatus());
         middleProcessResponseDto.setCategoryId(schedule.getCategory().getId());
         middleProcessResponseDto.setCategoryName(schedule.getCategory().getName());
+
+
+        middleProcessResponseDto.setCustomerId(schedule.getCustomer().getUserId());
+        middleProcessResponseDto.setCustomerName(schedule.getCustomer().getName());
+        middleProcessResponseDto.setVendorId(schedule.getVendor().getUserId());
+        middleProcessResponseDto.setVendorName(schedule.getVendor().getName());
 
         return middleProcessResponseDto;
     }
