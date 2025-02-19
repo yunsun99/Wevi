@@ -16,4 +16,9 @@ public interface SummaryRepository extends JpaRepository<AudioSummary, Integer> 
     // 소비자 ID, 커플 ID로 모두 조회
     @Query("SELECT a FROM AudioSummary a WHERE (a.status = 'COMPLETED') AND (a.customer.userId = :customerId OR a.customer.spouse.userId = :spouseId)")
     List<AudioSummary> findAllCompletedSummaryWithSpouse(@Param("customerId") Integer customerId,@Param("spouseId") Integer spouseId);
+
+
+    AudioSummary findBySchedule_ScheduleId(Integer scheduleId);
+
 }
+
