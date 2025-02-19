@@ -20,14 +20,18 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
+  console.log("여기");
   self.registration.showNotification(payload.notification.title, {
     body: payload.notification.body,
     icon: "/icon.png",
-    data: { url: payload.notification.click_action },
+    data: {
+      url: payload.data?.click_action || "http://localhost:5173/notification",
+    },
   });
 });
 
 self.addEventListener("notificationclick", (event) => {
+  console.log("aaa");
   event.notification.close();
-  event.waitUntil(clients.openWindow(event.notification.data.url));
+  event.waitUntil(clients.openWindow("http://localhost:5173/notification"));
 });

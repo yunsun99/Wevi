@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { useRecoilState } from "recoil";
 import { isNotificationState } from "../atoms/notificationState";
+import { onBackgroundMessage } from "firebase/messaging/sw";
 
 export const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
