@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { useRecoilState } from "recoil";
 import { isNotificationState } from "../atoms/notificationState";
-import { onBackgroundMessage } from "firebase/messaging/sw";
 
 export const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -49,19 +48,23 @@ export const onForegroundMessage = (callback) => {
 };
 
 // ✅ 서비스 워커 등록 (Recoil 상태 업데이트는 컴포넌트에서 처리)
+let isServiceWorkerRegistered = false; // 중복 방지 플래그
+
 export const registerServiceWorker = async () => {
-  if ("serviceWorker" in navigator) {
-    try {
-      const registration = await navigator.serviceWorker.register(
-        "/firebase-messaging-sw.js"
-      );
-      console.log("Service Worker 등록 성공:", registration);
-      return registration;
-    } catch (error) {
-      console.error("Service Worker 등록 실패:", error);
-      throw error;
-    }
-  } else {
-    console.error("Service Worker가 브라우저에서 지원되지 않습니다.");
+  if (!("serviceWorker" in navigator)) {
+    console.error("❌ 서비스 워커가 지원되지 않습니다.");
+    return;
+  }
+
+  if (isServiceWorkerRegistered) return; // 이미 등록된 경우 중복 방지
+  isServiceWorkerRegistered = true;
+
+  try {
+    const registration = await navigator.serviceWorker.register(
+      "/firebase-messaging-sw.js"
+    );
+    console.log("✅ 서비스 워커 등록 성공:", registration);
+  } catch (error) {
+    console.error("❌ 서비스 워커 등록 실패:", error);
   }
 };
