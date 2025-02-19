@@ -160,7 +160,7 @@ public class AiService {
         recommendRepository.save(recommend);
 
         // FastAPI 요청을 위한 데이터 준비
-        String fastApiUrl = "http://airecommend-container:8000/recommend";  // FastAPI 서버 URL
+        String fastApiUrl = "http://airecommend-container:8002/recommend";  // FastAPI 서버 URL
         RestTemplate restTemplate = new RestTemplate();
 
         Map<String, Object> requestBody = new HashMap<>();
