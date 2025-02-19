@@ -119,6 +119,7 @@ public class ScheduleController {
 
         List<MiddleProcessResponseDto> middleProcessList =  scheduleService.findAllMiddleProcesses(Integer.valueOf(customerId));
 
+
         return new ApiResponseDto<>(
                 HttpStatus.OK.value(),
                 true,
