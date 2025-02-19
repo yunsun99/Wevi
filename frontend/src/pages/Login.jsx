@@ -11,7 +11,7 @@ import { handleLogin } from "@/api/auth";
 import { useInput } from "@/components/Inputs/useInput.js";
 import logo from "@/assets/logo.png";
 import Input from "@/components/Inputs/Input_gray";
-import Button1 from "@/components/Buttons/Button1";
+import ButtonLogin from "@/components/Buttons/ButtonLogin";
 import { Link } from "react-router-dom";
 import { requestFCMToken } from "../api/firebase";
 import { sendFCMToken } from "../api/auth";
@@ -88,43 +88,46 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[100vh] bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-[100vh]">
       {/* 로고 */}
-      <img src={logo} alt="WEVI Logo" className="w-32 mb-6" />
+      <img src={logo} alt="WEVI Logo" className="w-40 mb-6" />
 
       {/* 입력 폼 */}
       <form onSubmit={onLoginSubmit} className="w-90">
         <div className="w-full max-w-sm p-6 rounded-lg">
-          <Input
-            label="이메일"
-            id="email"
-            type="email"
-            name="email"
-            onBlur={handleEmailBlur}
-            onChange={handleEmailChange}
-            value={emailValue}
-            error={emailHasError && "이메일을 입력해주세요."}
-          />
-
-          <Input
-            id="password"
-            label="비밀번호"
-            type="password"
-            name="password"
-            onBlur={handlePasswordBlur}
-            onChange={handlePasswordChange}
-            value={passwordValue}
-            error={passwordHasError && "비밀번호를 입력해주세요."}
-          />
-
+          <div className="flex flex-col gap-3">
+            <Input
+              label="이메일"
+              id="email"
+              type="email"
+              name="email"
+              onBlur={handleEmailBlur}
+              onChange={handleEmailChange}
+              value={emailValue}
+              error={emailHasError && "이메일 양식이 일치하지 않습니다."}
+            />
+            <Input
+              id="password"
+              label="비밀번호"
+              type="password"
+              name="password"
+              onBlur={handlePasswordBlur}
+              onChange={handlePasswordChange}
+              value={passwordValue}
+              error={passwordHasError && "비밀번호를 입력해주세요."}
+            />
+          </div>
           {/* 에러 메시지 */}
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
           {/* 로그인 버튼 */}
-          <Button1 type="submit">로그인</Button1>
+          <ButtonLogin type="submit">로그인</ButtonLogin>
 
           {/* 회원가입 문구 */}
-          <Link to="/signup" className="text-center text-gray-600 mt-4 text-sm">
+          <Link
+            to="/signup"
+            className="block text-center text-[#747474] mt-2 text-sm underline"
+          >
             처음이신가요?
           </Link>
         </div>

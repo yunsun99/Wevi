@@ -1,7 +1,7 @@
 export default function Input({ label, id, error, disabled, ...props }) {
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <label htmlFor={id} className="text-sm font-medium">
+    <div className="flex flex-col gap-1 w-full">
+      <label htmlFor={id} className="text-lg font-pretendard">
         {label}
       </label>
       <input

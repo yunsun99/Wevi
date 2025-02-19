@@ -45,7 +45,7 @@ export default function SearchFilters() {
       <Region key="region" />
       {category === "weddinghall" ? (
         <select
-          className="border border-[#D1D1D1] text-[#6E6E6E] p-2 rounded-full flex-shrink-0"
+          className="border border-[#D1D1D1] text-[#6E6E6E] p-2 rounded-lg w-fit flex-shrink-0"
           value={searchFilter.inoutside || ""}
           onChange={(e) => handleOptionChange(e, "inoutside")}
         >
@@ -55,7 +55,7 @@ export default function SearchFilters() {
         </select>
       ) : null}
       <select
-        className="border border-[#D1D1D1] text-[#6E6E6E] p-2 rounded-full flex-shrink-0"
+        className="border border-[#D1D1D1] text-[#6E6E6E] p-2 rounded-lg w-fit flex-shrink-0 max-w-max"
         value={searchFilter.price || ""}
         onChange={(e) => handleOptionChange(e, "price")}
       >
