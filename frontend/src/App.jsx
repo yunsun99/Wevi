@@ -33,6 +33,7 @@ import { useEffect, useState } from "react";
 import { onForegroundMessage, registerServiceWorker } from "./api/firebase";
 import splashVideo from "./assets/splashMP4.mp4";
 import { axiosNotification } from "./api/notification";
+import AIConsultationSummary from "./pages/AIConsultationSummary";
 
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
       { path: "/consultationDetail/:id", element: <ConsultationDetail /> },
       { path: "/contractList", element: <ContractList /> },
       { path: "/contractDetail/:id", element: <ContractDetail /> },
+      { path: "/aiConsultationSummary", element: <AIConsultationSummary /> },
     ],
   },
 ]);

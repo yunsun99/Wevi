@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useRef } from "react";
 import dayjs from "dayjs";
 import dress_schedule from "../../assets/backgroundImages_Schedule/dress_schedule.jpg";
 import hairmakeup_schedule from "../../assets/backgroundImages_Schedule/hairmakeup_schedule.png";
 import studio_schedule from "../../assets/backgroundImages_Schedule/studio_schedule.png";
 import weddinghall_schedule from "../../assets/backgroundImages_Schedule/weddinghall_schedule.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { upLoadConsultation } from "../../api/user";
 
 export default function CardSchedule({ data }) {
+  console.log(data);
+  const location = useLocation(); // ✅ 현재 경로 가져오기
+  const isConsultationListPage = location.pathname === "/consultationList"; // ✅ 특정 경로 확인
+
   const categoryBackgroundMap = {
     weddinghall:
       "https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/weddinghall_schedule.png",
@@ -47,6 +52,49 @@ export default function CardSchedule({ data }) {
       }
     }
   }
+  const fileInputRef = useRef(null);
+  async function goSummary(event) {
+    try {
+      const [fileHandle] = await window.showOpenFilePicker({
+        types: [
+          {
+            description: "M4A 오디오 파일",
+            accept: {
+              "audio/x-m4a": [".m4a"], // .m4a 파일만 허용
+            },
+          },
+        ],
+        excludeAcceptAllOption: true, // "모든 파일" 옵션 제거
+        multiple: false, // 한 개의 파일만 선택 가능
+      });
+
+      const file = await fileHandle.getFile();
+      console.log("선택한 파일:", file.name);
+      uploadFile(file, data.scheduleId);
+    } catch (error) {
+      console.error("파일 선택 취소 또는 오류:", error);
+    }
+  }
+
+  function handleFileChange(event) {
+    const file = event.target.files[0];
+    if (file) {
+      uploadFile(file);
+    }
+  }
+
+  async function uploadFile(file, scheduleId) {
+    try {
+      const response = await upLoadConsultation(file, scheduleId);
+      if (response.ok) {
+        console.log("파일 업로드 성공!");
+      } else {
+        console.error("파일 업로드 실패");
+      }
+    } catch (error) {
+      console.error("파일 업로드 중 오류 발생:", error);
+    }
+  }
   return (
     <>
       <div
@@ -81,6 +129,28 @@ export default function CardSchedule({ data }) {
               ? `${data.customerName}님 예약`
               : "상대방 예약"}
           </span>
+        </div>
+        <div className="absolute top-25 right-4 transform -translate-y-1/2 text-white">
+          {isConsultationListPage ? (
+            <>
+              <button
+                className="text-sm text-white bg-gray-700 rounded-lg px-4"
+                onClick={(event) => {
+                  event.stopPropagation(); // 상위 div의 클릭 이벤트 전파 막기
+                  goSummary();
+                }}
+              >
+                AI 상담 요약 요청하기
+              </button>
+              {/* 숨겨진 파일 입력 */}
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
+            </>
+          ) : null}
         </div>
       </div>
     </>

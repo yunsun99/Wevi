@@ -97,11 +97,11 @@ export default function Hamburger({ isOpen, setMenuOpen }) {
           <hr className="border-t border-gray-300" />
 
           <Link
-            to="/contract-analysis"
+            to="/aiConsultationSummary"
             className="p-3 text-gray-800 hover:bg-gray-200 rounded transition"
             onClick={() => setMenuOpen(false)}
           >
-            계약서 분석
+            AI 상담 요약
           </Link>
           <hr className="border-t border-gray-300" />
 
