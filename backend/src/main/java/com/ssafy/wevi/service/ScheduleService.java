@@ -1,5 +1,6 @@
 package com.ssafy.wevi.service;
 
+import com.ssafy.wevi.domain.AudioSummary;
 import com.ssafy.wevi.domain.MiddleProcessStep;
 import com.ssafy.wevi.domain.schedule.*;
 import com.ssafy.wevi.domain.user.Customer;
@@ -9,6 +10,7 @@ import com.ssafy.wevi.dto.schedule.*;
 import com.ssafy.wevi.enums.MiddleProcessStatus;
 import com.ssafy.wevi.enums.NotificationType;
 import com.ssafy.wevi.repository.*;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,8 @@ public class ScheduleService {
     private final MiddleProcessStepRepository middleProcessStepRepository;
     private final NotificationService notificationService;
     private final VendorService vendorService;
+    private final SummaryRepository summaryRepository;
+    private final EntityManager entityManager;
 
     // ========= 등록 ========//
 
@@ -65,6 +69,8 @@ public class ScheduleService {
 
 
         scheduleRepository.save(consultation);
+//        entityManager.flush();
+//        entityManager.clear();
 
         notificationService.createScheduleNotification(vendor, "\uD83C\uDF40 새로운 상담이 예약되었습니다.", dateTimeToString(startDateTime)[0] + " " + dateTimeToString(startDateTime)[1] + " " + customer.getName() + " 고객님", consultation, NotificationType.CONSULTATION_REGISTERED.name());
         if (customer.getSpouse() != null) {
@@ -393,9 +399,9 @@ public class ScheduleService {
             if (spouse == null) {
                 scheduleList = scheduleRepository.findAllConsultationByCustomerId(userId);
             } else {
-                scheduleList = scheduleRepository.findAllConsultationByCustomerId(userId);
-                scheduleList.addAll(scheduleRepository.findAllConsultationByCustomerId(spouse.getUserId()));
-//                scheduleList = scheduleRepository.findAllConsultationWithSpouse(userId, spouse.getUserId());
+//                scheduleList = scheduleRepository.findAllConsultationByCustomerId(userId);
+//                scheduleList.addAll(scheduleRepository.findAllConsultationByCustomerId(spouse.getUserId()));
+                scheduleList = scheduleRepository.findAllConsultationWithSpouse(userId, spouse.getUserId());
             }
         }
         // 반환타입으로 변환하여 반환
@@ -830,6 +836,12 @@ public class ScheduleService {
         consultationDto.setCategoryId(consultation.getCategory().getId());
         consultationDto.setCategoryName(consultation.getCategory().getName());
         consultationDto.setVendorImageUrl(vendorService.getImage(consultation.getVendor()).getImageUrl());
+
+        // 상담 분석 요청했는지 여부 확인용
+        AudioSummary audioSummary = summaryRepository.findBySchedule_ScheduleId(consultation.getScheduleId());
+        if (audioSummary != null) {
+            consultationDto.setStatus(audioSummary.getStatus());
+        }
 
         return consultationDto;
     }

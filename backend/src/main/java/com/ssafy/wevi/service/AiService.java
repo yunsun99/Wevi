@@ -44,14 +44,39 @@ public class AiService {
     private final RecommendRepository recommendRepository;
     private final ImageRepository imageRepository;
     private final VendorRepository vendorRepository;
+
+
+    /**
+     * 상담 분석 기능
+     */
     // ✅ 1. 파일을 S3에 저장 후 AI 분석 요청
     @Transactional
     public AudioSummaryResponseDto uploadAndSummarizeAudio(MultipartFile file, Integer loginUserId, Integer scheduleId) throws IOException {
+        // 1. 파일이 비어있는지 확인
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("파일이 비어 있습니다.");
+        }
+
+        // 2. 파일 확장자 확인 (m4a, wav만 허용)
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || !(originalFilename.toLowerCase().endsWith(".m4a") || originalFilename.toLowerCase().endsWith(".wav"))) {
+            throw new IllegalArgumentException("m4a, wav 형식의 오디오 파일만 업로드할 수 있습니다.");
+        }
+
         User user = userRepository.findById(loginUserId).orElseThrow();
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();
 
+        // 조건 충족 여부 확인
+        // 소비자인가?
         if (!(user instanceof Customer)) throw new IllegalArgumentException("소비자만 상담 요약 요청할 수 있습니다.");
+        // 상담 일정인가?
         if (!(schedule instanceof Consultation)) throw new IllegalArgumentException("상담 일정에 대해서만 상담 요약 요청할 수 있습니다.");
+        // 본인 상담인가?
+        if (!schedule.getCustomer().getUserId().equals(user.getUserId())) throw new IllegalArgumentException("본인의 상담일 경우에만 상담 요청할 수 있습니다.");
+        // 이미 분석 요청한 상담인가?
+        if (summaryRepository.findBySchedule_ScheduleId(schedule.getScheduleId()) != null) throw new IllegalArgumentException("해당 상담에 대해 이미 분석 요청하셨습니다.");
+
+
         // ✅ 1.1 파일을 S3에 업로드하고 URL 가져오기
         String s3Url = s3ClientService.upload(file);
 
@@ -60,11 +85,11 @@ public class AiService {
         audioSummary.setOriginalFileUrl(s3Url);
         audioSummary.setCustomer((Customer) user);
         audioSummary.setSchedule((Consultation) schedule);
-        audioSummary.setStatus("PENDING");
-        audioSummary = summaryRepository.save(audioSummary); // 현재 원본파일url, status(PENDING)만 존재
+//        audioSummary.setStatus("PENDING");
+//        audioSummary = summaryRepository.save(audioSummary); // 현재 원본파일url, status(PENDING)만 존재
 
         // ✅ 1.3 FastAPI 요청을 위한 데이터 준비
-        String fastApiUrl = "http://fastapi-container:8001/predict";  // FastAPI 서버 URL
+        String fastApiUrl = "http://127.0.0.1:8001/predict";  // FastAPI 서버 URL
         RestTemplate restTemplate = new RestTemplate();
 
         Map<String, Object> requestBody = new HashMap<>();
@@ -86,14 +111,14 @@ public class AiService {
             );
             System.out.println("✅ FastAPI 요청 성공: " + response.getBody());
 
-            // 요청이 성공하면 상태를 "COMPLETED"로 업데이트 가능
+            // 요청이 성공하면 상태를 "PROCESSING"로 업데이트 가능
             audioSummary.setStatus("PROCESSING");
             summaryRepository.save(audioSummary);
-
         } catch (Exception e) {
             System.out.println("❌ FastAPI 요청 실패: " + e.getMessage());
-            audioSummary.setStatus("FAILED");  // 요청 실패 시 상태 변경
-            summaryRepository.save(audioSummary);
+            throw new IllegalArgumentException("AI 서버로 요청이 실패. AI 서버 정상 동작 여부 확인 필요");
+//            audioSummary.setStatus("FAILED");  // 요청 실패 시 상태 변경
+//            summaryRepository.save(audioSummary);
         }
         // ✅ 4. 최종 응답 반환
         return toAudioSummaryResponseDto(audioSummary, loginUserId);
@@ -142,9 +167,12 @@ public class AiService {
         }
     }
 
-    // 사용자 요구사항을 받아 ai 서버로 요청 => 응답 받아 DB에 저장 후 결과 반환
+    /**
+     * 업체 추천 기능
+     */
+    // 사용자 요구사항을 받아 ai 서버로 업체 추천 요청 => 응답 받아 DB에 저장 후 결과 반환
     @Transactional
-    public RecommendResponseDto getRecommend(RecommendCreateDto recommendCreateDto, Integer loginUserId) {
+    public RecommendResponseDto addRecommend(RecommendCreateDto recommendCreateDto, Integer loginUserId) {
         User user = userRepository.findById(loginUserId).orElseThrow();
 
         if (user instanceof Vendor) throw new IllegalArgumentException("소비자만 추천 요청 가능합니다.");
@@ -209,6 +237,14 @@ public class AiService {
         return toRecommendResponseDto(recommend, loginUserId);
         
     }
+
+    //
+//    @Transactional
+//    public RecommendResponseDto getRecentRecommend(RecommendCreateDto recommendCreateDto, Integer loginUserId) {
+//        User user = userRepository.findById(loginUserId).orElseThrow();
+//
+//        if (user instanceof Vendor) throw new IllegalArgumentException("소비자만 추천 요청 가능합니다.");
+//    }
 
     private RecommendResponseDto toRecommendResponseDto(Recommend recommend, Integer loginUserId) {
         RecommendResponseDto recommendResponseDto = new RecommendResponseDto();

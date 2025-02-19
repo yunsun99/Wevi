@@ -45,5 +45,8 @@ public class ConsultationResponseDto {
     private String vendorAutoRoadAddress;
     private String vendorPhone;
     private String vendorImageUrl;
+    
+    // 상담 분석 요청 여부 확인용
+    private String status;
 
 }

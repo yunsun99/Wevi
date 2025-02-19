@@ -24,7 +24,7 @@ public class AudioSummary {
 //    private String convertedFileUrl; // 변환된 WAV 파일 URL (없을 수도 있음)
 
     @Column(nullable = false)
-    private String status = "PENDING"; // ✅ 분석 상태 (PENDING, PROCESSING, COMPLETED)
+    private String status; // ✅ 분석 상태 (PROCESSING, COMPLETED)
 
     @Lob
     private String summaryResult; // AI 분석 결과 (JSON 형태)
