@@ -154,7 +154,7 @@ public class VendorController {
             // Entity -> DTO 변환
             Page<VendorResponseDto> responseDto = vendorPage.map(vendor ->
                     VendorResponseDto.builder()
-                            .id(vendor.getUserId())
+                            .vendorId(vendor.getUserId())
                             .vendorName(vendor.getName())
                             .categoryId(vendor.getCategory().getId())
                             .doId(vendor.getSigunguCode().getDoId())
