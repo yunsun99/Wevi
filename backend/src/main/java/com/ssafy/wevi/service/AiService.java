@@ -184,14 +184,13 @@ public class AiService {
         recommend.setDressRequest(recommendCreateDto.getDressRequest());
         recommend.setMakeUpRequest(recommendCreateDto.getMakeUpRequest());
 
-        // 저장
-        recommendRepository.save(recommend);
+
 
         // FastAPI 요청을 위한 데이터 준비
-        String fastApiUrl = "http://airecommend-container:8002/recommend";  // FastAPI 서버 URL
-        RestTemplate restTemplate = new RestTemplate();
+        String fastApiUrl = "http://127.0.0.1:8000/recommend";  // FastAPI 서버 URL
 
-        Map<String, Object> requestBody = new HashMap<>();
+
+        RestTemplate restTemplate = new RestTemplate();Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("wedding_hall", recommend.getWeddingHallRequest());
         requestBody.put("studio", recommend.getStudioRequest());
         requestBody.put("dress", recommend.getDressRequest());
@@ -228,23 +227,29 @@ public class AiService {
             recommend.setDressVendor(vendorRepository.findById(dressVendorId).orElseThrow());
             recommend.setMakeUpVendor(vendorRepository.findById(makeupVendorId).orElseThrow());
 
-//            recommendRepository.save(recommend);
+            // 저장
+            recommendRepository.save(recommend);
 
         } catch (Exception e) {
             System.out.println("❌ FastAPI 요청 실패: " + e.getMessage());
+            throw new IllegalArgumentException("ai 서버 요청 실패");
         }
         // 최종 응답 반환
         return toRecommendResponseDto(recommend, loginUserId);
         
     }
 
-    //
-//    @Transactional
-//    public RecommendResponseDto getRecentRecommend(RecommendCreateDto recommendCreateDto, Integer loginUserId) {
-//        User user = userRepository.findById(loginUserId).orElseThrow();
-//
-//        if (user instanceof Vendor) throw new IllegalArgumentException("소비자만 추천 요청 가능합니다.");
-//    }
+    @Transactional(readOnly = true)
+    public RecommendResponseDto getRecentRecommend(Integer loginUserId) {
+        User user = userRepository.findById(loginUserId).orElseThrow();
+
+        // 소비자인가?
+        if (user instanceof Vendor) throw new IllegalArgumentException("소비자만 AI 추천이 가능합니다.");
+
+        Recommend recommend = recommendRepository.findRecentRecommend(loginUserId).orElseThrow();
+
+        return toRecommendResponseDto(recommend, loginUserId);
+    }
 
     private RecommendResponseDto toRecommendResponseDto(Recommend recommend, Integer loginUserId) {
         RecommendResponseDto recommendResponseDto = new RecommendResponseDto();

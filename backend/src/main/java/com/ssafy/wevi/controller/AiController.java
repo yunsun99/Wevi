@@ -97,17 +97,17 @@ public class AiController {
     }
 
     // 최근 추천 내용 조회
-//    @GetMapping("/recommend")
-//    public ApiResponseDto<?> getRecommend() {
-//        // 로그인한 유저 ID 가져오기
-//        Integer loginUserId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
-//
-//        RecommendResponseDto audioSummaryResponseDtoList = aiService.getRecommend(loginUserId);
-//        return new ApiResponseDto<>(
-//                HttpStatus.OK.value(),
-//                true,
-//                "Audio summary status founded successfully.",
-//                audioSummaryResponseDtoList
-//        );
-//    }
+    @GetMapping("/recommend")
+    public ApiResponseDto<?> getRecentRecommend() {
+        // 로그인한 유저 ID 가져오기
+        Integer loginUserId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
+
+        RecommendResponseDto recommendResponseDto = aiService.getRecentRecommend(loginUserId);
+        return new ApiResponseDto<>(
+                HttpStatus.OK.value(),
+                true,
+                "Audio summary status founded successfully.",
+                recommendResponseDto
+        );
+    }
 }

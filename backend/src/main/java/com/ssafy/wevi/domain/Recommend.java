@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Recommend {
+public class Recommend extends BaseEntity{
 
     @Id
     @GeneratedValue
