@@ -76,6 +76,8 @@ pipeline {
                             docker build -t ${DOCKER_IMAGE} .
                             docker run -d \
                                 --name ${APP_NAME} \
+                                -e SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE=50MB \
+                                -e SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE=100MB \
                                 --network my-network \
                                 --restart unless-stopped \
                                 -p 8080:8080 \
