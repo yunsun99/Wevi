@@ -116,11 +116,13 @@ export default function Home() {
         <main className="flex flex-col w-screen items-center justify-center overflow-hidden h-[75vh]">
           <div className="relative w-full flex items-center justify-center">
             {/* 기본 캐릭터 배경 (항상 표시) */}
-            <img
-              src={character_background}
-              alt="Character Background"
-              className="absolute object-contain"
-            />
+            {categoryExists.weddinghall && (
+              <img
+                src={character_background}
+                alt="Character Background"
+                className="absolute object-contain"
+              />
+            )}
 
             {/* 기본 캐릭터 (항상 표시) */}
             <img
