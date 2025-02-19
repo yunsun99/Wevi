@@ -24,8 +24,8 @@ export default function CardReservation({ data, category }) {
       return;
     }
 
-    // const isSuccess = await cancelReservation(data.scheduleId);
-    let isSuccess = true;
+    const isSuccess = await cancelReservation(data.scheduleId);
+    // let isSuccess = true;
     if (isSuccess === true) {
       alert("예약이 취소되었습니다.");
       navigate(-1);
