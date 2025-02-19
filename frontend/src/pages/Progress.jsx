@@ -10,7 +10,10 @@ export default function Progress() {
     const axiosProgressList = async () => {
       try {
         const progressData = await getProgressList();
-        setProgressList(progressData);
+        const sortedData = [...progressData].sort(
+          (a, b) => a.scheduleId - b.scheduleId
+        );
+        setProgressList(sortedData);
       } catch (err) {
         console.log(err);
       }
