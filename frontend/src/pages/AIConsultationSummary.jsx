@@ -6,6 +6,8 @@ export default function AIConsultationSummary() {
   const [summaryData, setSummaryData] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [showComparison, setShowComparison] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("weddinghall"); // 기본값: 전체 보기
+
   const responseData = {
     status: 200,
     success: true,
@@ -14,6 +16,17 @@ export default function AIConsultationSummary() {
       {
         loginUserId: 1,
         scheduleId: 1,
+        scheduleTitle: "웨딩홀 상담",
+        categoryId: 1,
+        categoryName: "weddinghall",
+        audioSummaryId: 1,
+        status: "COMPLETED",
+        summaryResult:
+          '{\n  "날짜": "20/05/24 14:00",\n  "업체명": "박성근 웨딩홀",\n  "홀명": "컨벤션홀",\n  "위치": "서울 강남구",\n  "가능 날짜": "2024년 5월 20일 가능",\n  "홀_유형": "컨벤션홀",\n  "최대인원": "300명",\n  "대관료": "200만 원",\n  "예식_방식": "단독홀",\n  "식사_형태": "뷔페",\n  "1인당_식사_비용": "5만원",\n  "최소_보장_인원": "200명",\n  "포함_서비스": ["플라워 장식", "조명 연출"],\n  "계약금": "50만 원",\n  "환불_규정": "1개월 전 100% 환불, 2주 전 50% 환불",\n  "기타사항": ["주차 100대 무료", "평일 예식 10% 할인", "3개월 내 계약시 대관료 10% 할인"]\n}',
+      },
+      {
+        loginUserId: 1,
+        scheduleId: 13,
         scheduleTitle: "웨딩홀 상담",
         categoryId: 1,
         categoryName: "weddinghall",
@@ -68,6 +81,17 @@ export default function AIConsultationSummary() {
       },
       {
         loginUserId: 1,
+        scheduleId: 14,
+        scheduleTitle: "스튜디오 촬영 예약",
+        categoryId: 2,
+        categoryName: "studio",
+        audioSummaryId: 2,
+        status: "COMPLETED",
+        summaryResult:
+          '{\n  "날짜": "20/07/01 15:00",\n  "업체명": "루미네 스튜디오",\n  "위치": "서울 서초구",\n  "촬영 유형": "실내 촬영",\n  "의상 갯수": "2벌",\n  "촬영 시간": "3시간",\n  "앨범 포함 여부": "아니오",\n  "계약금": "20만 원",\n  "환불 규정": "1주 전 100% 환불, 3일 전 50% 환불",\n  "기타사항": ["액자 제공", "신부전용 대기실 제공"]\n}',
+      },
+      {
+        loginUserId: 1,
         scheduleId: 6,
         scheduleTitle: "야외 스냅 촬영",
         categoryId: 2,
@@ -91,6 +115,17 @@ export default function AIConsultationSummary() {
       {
         loginUserId: 1,
         scheduleId: 8,
+        scheduleTitle: "웨딩 드레스 선택",
+        categoryId: 3,
+        categoryName: "dress",
+        audioSummaryId: 2,
+        status: "COMPLETED",
+        summaryResult:
+          '{\n  "날짜": "20/07/01 11:00",\n  "업체명": "엘레강스 드레스샵",\n  "위치": "서울 종로구",\n  "드레스 유형": "공주풍, 심플라인",\n  "피팅 가능 개수": "3벌",\n  "렌탈 가격": "120만 원",\n  "맞춤 제작 여부": "가능",\n  "계약금": "40만 원",\n  "환불 규정": "3주 전 100% 환불, 1주 전 50% 환불",\n  "기타사항": ["헤어 악세서리 포함", "드레스 보정 가능"]\n}',
+      },
+      {
+        loginUserId: 1,
+        scheduleId: 15,
         scheduleTitle: "웨딩 드레스 선택",
         categoryId: 3,
         categoryName: "dress",
@@ -134,6 +169,17 @@ export default function AIConsultationSummary() {
       },
       {
         loginUserId: 1,
+        scheduleId: 16,
+        scheduleTitle: "웨딩 메이크업 시연",
+        categoryId: 4,
+        categoryName: "makeup",
+        audioSummaryId: 2,
+        status: "COMPLETED",
+        summaryResult:
+          '{\n  "날짜": "20/07/01 11:00",\n  "업체명": "엘레강스 메이크업 살롱",\n  "위치": "서울 종로구",\n  "메이크업 스타일": "클래식 웨딩",\n  "헤어 스타일": "롱 웨이브",\n  "포함 서비스": ["프리미엄 스킨케어", "립컬러 맞춤 조정"],\n  "가격": "40만 원",\n  "계약금": "15만 원",\n  "환불 규정": "2주 전 100% 환불, 1주 전 50% 환불",\n  "기타사항": ["전문 아티스트 담당", "웨딩 액세서리 포함"]\n}',
+      },
+      {
+        loginUserId: 1,
         scheduleId: 12,
         scheduleTitle: "스페셜 웨딩 메이크업",
         categoryId: 4,
@@ -152,68 +198,120 @@ export default function AIConsultationSummary() {
       return;
     }
 
-    const parsedData = responseData.data
-      .filter((item) => item.summaryResult !== "파싱 오류")
-      .map((item) => ({
-        ...item,
-        summaryResult: JSON.parse(item.summaryResult),
-      }));
+    const parsedData = responseData.data.map((item) => ({
+      ...item,
+      summaryResult:
+        item.status === "COMPLETED" ? JSON.parse(item.summaryResult) : null,
+    }));
 
     setSummaryData(parsedData);
   }, []);
 
-  const toggleCardSelection = (scheduleId) => {
+  const toggleCardSelection = (scheduleId, status) => {
+    if (status !== "COMPLETED") return; // ✅ COMPLETED가 아닌 경우 선택 불가
+
     setSelectedCards((prev) => {
       if (prev.includes(scheduleId)) {
-        return prev.filter((id) => id !== scheduleId); // 이미 선택된 경우 해제
+        return prev.filter((id) => id !== scheduleId); // 선택 해제
       } else if (prev.length < 2) {
-        return [...prev, scheduleId]; // 최대 2개까지만 선택 가능
+        return [...prev, scheduleId]; // 최대 2개까지 선택 가능
       }
       return prev;
     });
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category); // ✅ 카테고리 변경
+    setSelectedCards([]); // ✅ 선택된 카드 초기화
   };
 
   const selectedItems = summaryData.filter((item) =>
     selectedCards.includes(item.scheduleId)
   );
 
+  // ✅ 카테고리 필터링
+  const filteredData = summaryData.filter(
+    (item) => item.categoryName === selectedCategory
+  );
+
   return (
     <>
       <TopNavigationBar title="AI 상담 요약" />
+
+      {/* ✅ 카테고리 필터 바 추가 */}
+      <div className="flex justify-around bg-gray-200 p-2">
+        {["weddinghall", "studio", "dress", "makeup"].map((category) => (
+          <button
+            key={category}
+            onClick={() => handleCategoryChange(category)}
+            className={`px-4 py-2 rounded-md text-sm font-semibold ${
+              selectedCategory === category
+                ? "bg-blue-500 text-white"
+                : "bg-white text-gray-700"
+            }`}
+          >
+            {category === "weddinghall"
+              ? "웨딩홀"
+              : category === "studio"
+              ? "스튜디오"
+              : category === "dress"
+              ? "드레스"
+              : "헤어 & 메이크업"}
+          </button>
+        ))}
+      </div>
+
       <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        {summaryData.length > 0 ? (
-          summaryData.map((item) => (
-            <div
-              key={item.scheduleId}
-              onClick={() => toggleCardSelection(item.scheduleId)}
-              className={`cursor-pointer bg-white p-4 shadow-md rounded-lg border-2 ${
-                selectedCards.includes(item.scheduleId)
-                  ? "border-blue-500"
-                  : "border-gray-300"
+        {filteredData.map((item) => (
+          <div
+            key={item.scheduleId}
+            onClick={() => toggleCardSelection(item.scheduleId, item.status)}
+            className={`cursor-pointer bg-white p-4 shadow-md rounded-lg border-2 ${
+              selectedCards.includes(item.scheduleId)
+                ? "border-blue-500"
+                : "border-gray-300"
+            } ${
+              item.status !== "COMPLETED" ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            <h2 className="text-lg font-semibold">{item.scheduleTitle}</h2>
+            <p className="text-gray-500">{item.categoryName}</p>
+            <p
+              className={`text-sm font-semibold ${
+                item.status === "COMPLETED"
+                  ? "text-green-600"
+                  : item.status === "PROCESSING"
+                  ? "text-yellow-600"
+                  : "text-red-600"
               }`}
             >
-              <h2 className="text-lg font-semibold">{item.scheduleTitle}</h2>
-              <p className="text-gray-500">{item.categoryName}</p>
-              <hr className="my-2" />
-              <p>
-                <strong>업체명:</strong> {item.summaryResult["업체명"]}
-              </p>
-              <p>
-                <strong>홀명:</strong> {item.summaryResult["홀명"]}
-              </p>
-              <p>
-                <strong>날짜:</strong> {item.summaryResult["날짜"]}
-              </p>
-            </div>
-          ))
-        ) : (
-          <span>데이터 없음</span>
-        )}
+              {item.status === "COMPLETED"
+                ? "✅ 완료"
+                : item.status === "PROCESSING"
+                ? "⏳ 진행 중(최대 10분 소요)"
+                : "❌ 실패(다시 시도해주세요)"}
+            </p>
+            <hr className="my-2" />
+            {item.status === "COMPLETED" && item.summaryResult && (
+              <>
+                <p>
+                  <strong>업체명:</strong> {item.summaryResult["업체명"]}
+                </p>
+                <p>
+                  <strong>홀명:</strong> {item.summaryResult["홀명"]}
+                </p>
+                <p>
+                  <strong>날짜:</strong> {item.summaryResult["날짜"]}
+                </p>
+              </>
+            )}
+          </div>
+        ))}
       </div>
 
       {/* 비교하기 버튼 */}
       {selectedCards.length === 2 && (
-        <div className="fixed bottom-25 left-0 right-0 flex justify-center z-50">
+        <div className="fixed bottom-5 left-0 right-0 flex justify-center z-50">
           <button
             onClick={() => setShowComparison(true)}
             className="bg-blue-500 text-white px-6 py-2 rounded-lg shadow-md"
