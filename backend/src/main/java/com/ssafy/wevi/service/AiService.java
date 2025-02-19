@@ -64,7 +64,7 @@ public class AiService {
         audioSummary = summaryRepository.save(audioSummary); // 현재 원본파일url, status(PENDING)만 존재
 
         // ✅ 1.3 FastAPI 요청을 위한 데이터 준비
-        String fastApiUrl = "http://localhost:8001/predict";  // FastAPI 서버 URL
+        String fastApiUrl = "http://fastapi-container:8001/predict";  // FastAPI 서버 URL
         RestTemplate restTemplate = new RestTemplate();
 
         Map<String, Object> requestBody = new HashMap<>();
@@ -160,7 +160,7 @@ public class AiService {
         recommendRepository.save(recommend);
 
         // FastAPI 요청을 위한 데이터 준비
-        String fastApiUrl = "http://localhost:8000/recommend";  // FastAPI 서버 URL
+        String fastApiUrl = "http://airecommend-container:8000/recommend";  // FastAPI 서버 URL
         RestTemplate restTemplate = new RestTemplate();
 
         Map<String, Object> requestBody = new HashMap<>();

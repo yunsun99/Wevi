@@ -144,7 +144,7 @@ public class ScheduleController {
     // 계약 내역 조회
     @GetMapping("/contracts")
     public ApiResponseDto<?> getAllContract() {
-// 로그인한 유저 ID 가져오기
+        // 로그인한 유저 ID 가져오기
         Integer userId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
         List<ContractResponseDto> consultationResponseList =  scheduleService.findAllContract(userId);
 
