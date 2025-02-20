@@ -89,7 +89,7 @@ export default function CardReservation({ data, category }) {
         <div className="mb-4 text-gray-600 grid grid-cols-4 gap-y-2">
           <p className="text-sm font-semibold">예약번호:</p>
           <p className="text-base col-span-3">
-            {data.scheduleId || "정보 없음"}
+            {"SP6DLE" + data.scheduleId + "DLCKEX" || "정보 없음"}
           </p>
 
           <p className="text-sm font-semibold">일정:</p>
@@ -97,7 +97,7 @@ export default function CardReservation({ data, category }) {
 
           <p className="text-sm font-semibold">담당자:</p>
           <p className="text-base col-span-3">
-            {vendorData.ownerName || "정보 없음"}
+            {(vendorData && vendorData.ownerName) || "정보 없음"}
           </p>
 
           <p className="text-sm font-semibold">상품:</p>
