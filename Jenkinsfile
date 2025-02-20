@@ -49,15 +49,18 @@ pipeline {
                         '''
 
                         // 시크릿 파일 설정 부분 (필요시 주석 해제)
-                        // withCredentials([
-                        //     file(credentialsId: 'prod-yaml', variable: 'prodFile'),
-                        //     file(credentialsId: 'secret-yaml', variable: 'secretFile')
-                        // ]) 
-                        // sh '''
-                        //     cp "$prodFile" src/main/resources/application-prod.yml
-                        //     cp "$secretFile" src/main/resources/application-secret.yml
-                        //     chmod 644 src/main/resources/application-*.yml
-                        // '''
+                        withCredentials([
+                            file(credentialsId: 'prod-yaml', variable: 'prodFile'),
+                            file(credentialsId: 'firebase-json', variable: 'fireFile')
+                            // file(credentialsId: 'secret-yaml', variable: 'secretFile')
+                        ]) {
+                        sh '''
+                            cp "$prodFile" src/main/resources/application-prod.yml
+                            cp "$fireFile" src/main/resources/firebase-service-account.json
+                            chmod 644 src/main/resources/application-*.yml
+                            chmod 644 src/main/resources/firebase-*.json
+                        '''
+                        }
 
                         // Gradle 빌드
                         sh '''
@@ -72,6 +75,9 @@ pipeline {
                             docker build -t ${DOCKER_IMAGE} .
                             docker run -d \
                                 --name ${APP_NAME} \
+                                -e SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE=50MB \
+                                -e SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE=100MB \
+                                --network my-network \
                                 --restart unless-stopped \
                                 -p 8080:8080 \
                                 ${DOCKER_IMAGE}
@@ -109,7 +115,6 @@ pipeline {
                             pwd
                             ls -la
                         '''
-
                         // 시크릿 파일 설정 부분 (필요시 주석 해제)
                         withCredentials([
                             file(credentialsId: 'react-env', variable: 'envFile')
@@ -119,8 +124,7 @@ pipeline {
                             chmod 644 .env
                         '''
                         }
-
-
+                        
                         sh '''
                             echo "===== Starting Build Process ====="
                             rm -rf node_modules
