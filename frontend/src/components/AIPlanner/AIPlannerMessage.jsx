@@ -87,6 +87,7 @@ export default function QuestionFlow() {
       </div>
       {recommendInfo ? (
         <>
+          <br />
           <AIPlannerCard data={recommendInfo.weddingHallVendor} />
           <AIPlannerCard data={recommendInfo.studioVendor} />
           <AIPlannerCard data={recommendInfo.dressVendor} />
