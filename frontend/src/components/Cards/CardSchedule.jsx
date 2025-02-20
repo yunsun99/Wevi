@@ -140,11 +140,15 @@ export default function CardSchedule({ data }) {
                   event.stopPropagation(); // 상위 div의 클릭 이벤트 전파 막기
                   goSummary();
                 }}
-                disabled={data.status === "COMPLETED"}
+                disabled={
+                  data.status === "COMPLETED" || data.status === "PROCESSING"
+                }
               >
                 {data.status === "COMPLETED"
                   ? "상담 분석 완료"
-                  : "AI 상담 요약 요청하기"}
+                  : data.status === "PROCESSING"
+                  ? "분석 중"
+                  : "AI 상담 분석 요청하기"}
               </button>
               {/* 숨겨진 파일 입력 */}
               <input

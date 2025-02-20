@@ -6,5 +6,10 @@ import Card from "@/components/Search/Card";
 export default function SearchResultsContainer() {
   // ✅ 검색 결과를 가져오지만, 불필요한 리렌더링 방지
   const searchResults = useRecoilValue(searchResultsState);
-  return <ListView data={searchResults} CardComponent={Card} />;
+  console.log(searchResults);
+  const updatedData = searchResults.map((item) => ({
+    ...item,
+    id: item.vendorId,
+  }));
+  return <ListView data={updatedData} CardComponent={Card} />;
 }
