@@ -255,7 +255,7 @@ export default function AIConsultationSummary() {
   return (
     <>
       <TopNavigationBar title="AI 상담 요약" />
-      <div className="h-[84vh]">
+      <div className="h-[86vh]">
         {/* ✅ 카테고리 필터 바 추가 */}
         <div className="flex justify-around bg-gray-200 p-2">
           {["weddinghall", "studio", "dress", "makeup"].map((category) => (
