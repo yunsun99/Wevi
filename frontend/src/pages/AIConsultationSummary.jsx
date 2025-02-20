@@ -278,56 +278,59 @@ export default function AIConsultationSummary() {
             </button>
           ))}
         </div>
-
-        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredData.map((item) => (
-            <div
-              key={item.scheduleId}
-              onClick={() => toggleCardSelection(item.scheduleId, item.status)}
-              className={`cursor-pointer bg-white p-4 shadow-md rounded-lg border-2 ${
-                selectedCards.includes(item.scheduleId)
-                  ? "border-blue-500"
-                  : "border-gray-300"
-              } ${
-                item.status !== "COMPLETED"
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-            >
-              <h2 className="text-lg font-semibold">{item.scheduleTitle}</h2>
-              <p className="text-gray-500">{item.categoryName}</p>
-              <p
-                className={`text-sm font-semibold ${
-                  item.status === "COMPLETED"
-                    ? "text-green-600"
-                    : item.status === "PROCESSING"
-                    ? "text-yellow-600"
-                    : "text-red-600"
+        {filteredData ? (
+          <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {filteredData.map((item) => (
+              <div
+                key={item.scheduleId}
+                onClick={() =>
+                  toggleCardSelection(item.scheduleId, item.status)
+                }
+                className={`cursor-pointer bg-white p-4 shadow-md rounded-lg border-2 ${
+                  selectedCards.includes(item.scheduleId)
+                    ? "border-blue-500"
+                    : "border-gray-300"
+                } ${
+                  item.status !== "COMPLETED"
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
                 }`}
               >
-                {item.status === "COMPLETED"
-                  ? "✅ 완료"
-                  : item.status === "PROCESSING"
-                  ? "⏳ 진행 중(최대 10분 소요)"
-                  : "❌ 실패(다시 시도해주세요)"}
-              </p>
-              <hr className="my-2" />
-              {item.status === "COMPLETED" && item.summaryResult && (
-                <>
-                  <p>
-                    <strong>업체명:</strong> {item.summaryResult["업체명"]}
-                  </p>
-                  <p>
-                    <strong>홀명:</strong> {item.summaryResult["홀명"]}
-                  </p>
-                  <p>
-                    <strong>날짜:</strong> {item.summaryResult["날짜"]}
-                  </p>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
+                <h2 className="text-lg font-semibold">{item.scheduleTitle}</h2>
+                <p className="text-gray-500">{item.categoryName}</p>
+                <p
+                  className={`text-sm font-semibold ${
+                    item.status === "COMPLETED"
+                      ? "text-green-600"
+                      : item.status === "PROCESSING"
+                      ? "text-yellow-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {item.status === "COMPLETED"
+                    ? "✅ 완료"
+                    : item.status === "PROCESSING"
+                    ? "⏳ 진행 중(최대 10분 소요)"
+                    : "❌ 실패(다시 시도해주세요)"}
+                </p>
+                <hr className="my-2" />
+                {item.status === "COMPLETED" && item.summaryResult && (
+                  <>
+                    <p>
+                      <strong>업체명:</strong> {item.summaryResult["업체명"]}
+                    </p>
+                    <p>
+                      <strong>홀명:</strong> {item.summaryResult["홀명"]}
+                    </p>
+                    <p>
+                      <strong>날짜:</strong> {item.summaryResult["날짜"]}
+                    </p>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : null}
 
         {/* 비교하기 버튼 */}
         {selectedCards.length === 2 && (

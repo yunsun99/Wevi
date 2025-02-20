@@ -14,7 +14,7 @@ export default function QuestionFlow() {
 
   // ✅ 1번 & 5번 질문은 2초 후 자동 진행
   useEffect(() => {
-    if (questionIndex === 0 || questionIndex === 4) {
+    if (questionIndex === 0) {
       const timer = setTimeout(() => {
         setQuestionIndex((prev) => prev + 1);
       }, 2000);
@@ -42,33 +42,24 @@ export default function QuestionFlow() {
 
       <div className="w-full flex flex-col items-center justify-center mt-4 gap-4">
         {questionIndex === 1 && (
-          <InputField name="location" placeholder="서울시 ㅇㅇ구" />
-        )}
-        {questionIndex === 2 && (
-          <InputField name="venueType" placeholder="실내 or 야외" />
-        )}
-        {questionIndex === 3 && (
-          <InputField name="budget" placeholder="예산을 입력해주세요" />
-        )}
-        {questionIndex === 5 && (
           <InputField
             name="venueStyle"
             placeholder="1. 우아 2. 화려 3. 수수 4. ???"
           />
         )}
-        {questionIndex === 6 && (
+        {questionIndex === 2 && (
           <InputField
             name="studioStyle"
             placeholder="1. 우아 2. 화려 3. 수수 4. ???"
           />
         )}
-        {questionIndex === 7 && (
+        {questionIndex === 3 && (
           <InputField
             name="dressStyle"
             placeholder="1. 우아 2. 화려 3. 수수 4. ???"
           />
         )}
-        {questionIndex === 8 && (
+        {questionIndex === 4 && (
           <InputField
             name="makeupStyle"
             placeholder="1. 우아 2. 화려 3. 수수 4. ???"
