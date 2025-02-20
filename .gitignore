@@ -429,3 +429,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/java,macos,windows,intellij,intellij+all,visualstudiocode,react,node
+
+# macOS 시스템 파일 무시
+.DS_Store

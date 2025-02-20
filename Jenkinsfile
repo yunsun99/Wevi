@@ -61,15 +61,14 @@ pipeline {
                             chmod 644 src/main/resources/firebase-*.json
                         '''
                         }
-                        
-                        // cp "$secretFile" src/main/resources/application-secret.yml
+
                         // Gradle 빌드
                         sh '''
                             chmod +x gradlew
                             ./gradlew clean build -x test --no-daemon
                         '''
                         
-                        // Docker 배포!
+                        // Docker 배포
                         sh '''
                             docker rm -f ${APP_NAME} || true
                             docker rmi ${DOCKER_IMAGE} || true
@@ -116,7 +115,16 @@ pipeline {
                             pwd
                             ls -la
                         '''
-
+                        // 시크릿 파일 설정 부분 (필요시 주석 해제)
+                        withCredentials([
+                            file(credentialsId: 'react-env', variable: 'envFile')
+                        ]) {
+                        sh '''
+                            cp "$envFile" .env
+                            chmod 644 .env
+                        '''
+                        }
+                        
                         sh '''
                             echo "===== Starting Build Process ====="
                             rm -rf node_modules

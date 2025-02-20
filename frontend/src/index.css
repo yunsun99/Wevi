@@ -1,0 +1,4 @@
+/* ✅ 모든 브라우저에서 스크롤바 숨기기 */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none !important; /* ✅ Chrome, Safari */
+}

@@ -1,0 +1,128 @@
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom"; // ✅ 현재 경로 확인을 위해 추가
+import Calendar from "react-calendar";
+import dayjs from "dayjs";
+import "react-calendar/dist/Calendar.css";
+import { getAvailableDates } from "../../api/schedule";
+
+export default function CalendarComponent({
+  selectedDate,
+  setSelectedDate,
+  handleDateClick,
+  vendorId,
+}) {
+  const location = useLocation(); // ✅ 현재 경로 가져오기
+  const isSchedulePage = location.pathname === "/schedule"; // ✅ 특정 경로 확인
+
+  // ✅ 현재 보고 있는 연도와 월을 상태로 관리
+  const [currentYear, setCurrentYear] = useState(dayjs().year());
+  const [currentMonth, setCurrentMonth] = useState(dayjs().month() + 1);
+  const [validAvailableDate, setValidAvailableDate] = useState([]);
+
+  // ✅ API에서 상담 가능 날짜 가져오기 (현재 달 + 이전 달 + 다음 달)
+  const fetchAvailableDates = async () => {
+    if (isSchedulePage) return; // ✅ 특정 페이지에서는 요청 안 보냄
+    console.log("되는건가");
+    try {
+      console.log(
+        `📅 Fetching available dates: vendorId=${vendorId}, year=${currentYear}, month=${currentMonth}`
+      );
+
+      // 이전 달 & 다음 달 계산
+      const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+      const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+      const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+      const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+      console.log(vendorId);
+      console.log(prevMonth);
+      console.log(prevYear);
+      // ✅ 현재 달, 이전 달, 다음 달의 데이터를 병렬 요청
+      const [prevData, currentData, nextData] = await Promise.all([
+        getAvailableDates({ vendorId, year: prevYear, month: prevMonth }),
+        getAvailableDates({ vendorId, year: currentYear, month: currentMonth }),
+        getAvailableDates({ vendorId, year: nextYear, month: nextMonth }),
+      ]);
+      console.log(prevData);
+      console.log(currentData);
+      console.log(nextData);
+      // ✅ 받아온 데이터를 하나의 배열로 합침
+      const combinedData = [
+        ...(Array.isArray(prevData.availableDates)
+          ? prevData.availableDates
+          : []),
+        ...(Array.isArray(currentData.availableDates)
+          ? currentData.availableDates
+          : []),
+        ...(Array.isArray(nextData.availableDates)
+          ? nextData.availableDates
+          : []),
+      ];
+      console.log(combinedData);
+      setValidAvailableDate(combinedData);
+    } catch (err) {
+      console.error("API 요청 중 에러 발생:", err);
+    }
+  };
+
+  // ✅ 연도 또는 월이 변경될 때 API 다시 호출 (단, 특정 페이지 제외)
+  useEffect(() => {
+    fetchAvailableDates();
+    console.log(validAvailableDate);
+  }, [currentYear, currentMonth]);
+
+  // ✅ 선택된 날짜가 없으면 기본값을 오늘 날짜로 설정
+  useEffect(() => {
+    if (!selectedDate.date) {
+      setSelectedDate((prevState) => ({
+        ...prevState,
+        date: dayjs().format("YYYY-MM-DD"),
+      }));
+    }
+  }, [setSelectedDate, selectedDate.date]);
+
+  // ✅ 선택 불가능한 날짜 확인 함수 (특정 페이지에서는 항상 활성화)
+  const isDateDisabled = ({ date, view }) => {
+    if (view !== "month") return false; // ✅ 연도 선택 시 비활성화 적용 안 함
+    if (isSchedulePage) return false; // ✅ 특정 페이지에서는 비활성화 제외
+
+    const formattedDate = dayjs(date).format("YYYY-MM-DD");
+    const foundDate = validAvailableDate.find((d) => d.date === formattedDate);
+    return foundDate ? !foundDate.available : true;
+  };
+
+  return (
+    <div className="flex bg-[#f4f9f5] justify-center items-center rounded-lg shadow-md mb-4 h-auto">
+      <Calendar
+        locale="en-US"
+        onChange={handleDateClick}
+        onActiveStartDateChange={({ activeStartDate }) => {
+          const newYear = dayjs(activeStartDate).year();
+          const newMonth = dayjs(activeStartDate).month() + 1;
+          setCurrentYear(newYear);
+          setCurrentMonth(newMonth);
+        }}
+        value={selectedDate.date || new Date()}
+        className="custom-calendar flex-1 w-full"
+        formatShortWeekday={(locale, date) =>
+          ["일", "월", "화", "수", "목", "금", "토"][dayjs(date).day()]
+        }
+        formatDay={(locale, date) => dayjs(date).date()}
+        formatMonthYear={(locale, date) => dayjs(date).format("YYYY. MM")}
+        tileDisabled={({ date, view }) => isDateDisabled({ date, view })}
+        tileClassName={({ date, view }) => {
+          if (view !== "month" || isSchedulePage) return ""; // ✅ 특정 페이지에서는 비활성화 X
+          const formattedDate = dayjs(date).format("YYYY-MM-DD");
+          const foundDate = validAvailableDate.find(
+            (d) => d.date === formattedDate
+          );
+
+          if (foundDate && !foundDate.available) {
+            console.log(`❌ 비활성화 날짜: ${formattedDate}`);
+            return "text-gray-400 bg-gray-200 line-through opacity-60 pointer-events-none cursor-not-allowed";
+          }
+          return "text-black";
+        }}
+      />
+    </div>
+  );
+}
