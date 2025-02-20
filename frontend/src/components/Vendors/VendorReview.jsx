@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ReviewModal from "../Modals/ReviewModal";
 import { useRecoilState } from "recoil";
 import { vendorState } from "../../atoms/vendorState";
-import profileImage from "../../assets/DongWoonKing.png";
+import profileImage from "../../assets/profile_default.png";
 
 export default function VendorReview() {
   const [reviewData] = useRecoilState(vendorState);
