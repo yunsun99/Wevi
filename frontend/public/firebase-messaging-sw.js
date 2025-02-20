@@ -20,19 +20,18 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  self.registration.showNotification(payload.notification.title, {
-    body: payload.notification.body,
-    icon: "/LOGO.png",
-    data: {
-      url: payload.data?.click_action || "http://localhost:5173/notification",
-    },
-  });
+  // self.registration.showNotification(payload.notification.title, {
+  //   body: payload.notification.body,
+  //   icon: "/LOGO.png",
+  //   data: {
+  //     url: payload.data?.click_action,
+  //   },
+  // });
 });
 
 self.addEventListener("notificationclick", (event) => {
   if (event.defaultPrevented) return; // 중복 방지
   event.preventDefault();
-
   console.log("수정안됨");
   event.notification.close();
   event.waitUntil(clients.openWindow("http://localhost:5173/notification"));
