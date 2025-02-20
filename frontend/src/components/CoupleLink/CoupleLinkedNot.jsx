@@ -34,7 +34,7 @@ export default function CoupleLinkedNot({ link }) {
       {link.type === 2 && (
         <>
           <p className="text-center text-gray-700 text-lg mt-6 font-pretendard">
-            {link.nickName}님으로부터
+            {link.receivedRequestNickname}님으로부터
             <br /> 연동 신청이 왔습니다.
           </p>
           <CoupleLinkReceive />
