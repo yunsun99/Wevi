@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import dayjs from "dayjs";
 import dress_schedule from "../../assets/backgroundImages_Schedule/dress_schedule.jpg";
 import hairmakeup_schedule from "../../assets/backgroundImages_Schedule/hairmakeup_schedule.png";
@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { upLoadConsultation } from "../../api/user";
 
 export default function CardSchedule({ data }) {
-  console.log(data);
+  // console.log(data);
   const location = useLocation(); // ✅ 현재 경로 가져오기
   const isConsultationListPage = location.pathname === "/consultationList"; // ✅ 특정 경로 확인
 
@@ -93,9 +93,12 @@ export default function CardSchedule({ data }) {
       }
     } catch (error) {
       console.error("파일 업로드 중 오류 발생:", error);
+    } finally {
+      // try-catch 블록이 끝나면 화면 새로고침
+      window.location.reload();
     }
   }
-  console.log(data);
+  // console.log(data);
   return (
     <>
       <div
