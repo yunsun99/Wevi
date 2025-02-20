@@ -16,8 +16,8 @@ public class AudioSummaryResponseDto {
     private Integer audioSummaryId;
     private String status; // ✅ 분석 상태 (PENDING, PROCESSING, COMPLETED)
     private String summaryResult; // AI 분석 결과 (JSON 형태)
-
-    // 일정 공통
+    
+    // 일정 공동
 //    private LocalDateTime startTime;
 //    private LocalDateTime endTime;
     // 상담 별도
