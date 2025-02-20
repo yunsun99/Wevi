@@ -152,9 +152,11 @@ public class CoupleRequestService {
 
         customer.setSpouse(null);
         customer.setSentRequests(new ArrayList<>());
+        customer.setReceivedRequests(new ArrayList<>());
         customerRepository.save(customer);
 
         spouse.setSpouse(null);
+        spouse.setSentRequests(new ArrayList<>());
         spouse.setReceivedRequests(new ArrayList<>());
         customerRepository.save(spouse);
 
