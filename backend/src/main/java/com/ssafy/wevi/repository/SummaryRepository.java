@@ -18,7 +18,6 @@ public interface SummaryRepository extends JpaRepository<AudioSummary, Integer> 
     List<AudioSummary> findAllCompletedSummaryWithSpouse(@Param("customerId") Integer customerId,@Param("spouseId") Integer spouseId);
 
     @Query("SELECT a FROM AudioSummary a WHERE a.schedule.scheduleId = :scheduleId")
-
-    AudioSummary findBySchedule_ScheduleId(Integer scheduleId);
+    AudioSummary findByScheduleId(Integer scheduleId);
 }
 

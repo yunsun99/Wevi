@@ -29,14 +29,23 @@ public class AiController {
         // 로그인한 유저 ID 가져오기
         Integer loginUserId = Integer.parseInt(SecurityUtils.getAuthenticatedUserId());
 
-        AudioSummaryResponseDto audioAnalysisResponseDto = aiService.uploadAndSummarizeAudio(file, loginUserId, scheduleId);
+        AudioSummaryResponseDto audioSummaryResponseDto = aiService.uploadAndSummarizeAudio(file, loginUserId, scheduleId);
 
-        return new ApiResponseDto<>(
-                HttpStatus.OK.value(),
-                true,
-                "Audio analysis request successfully.",
-                audioAnalysisResponseDto
-        );
+        if (audioSummaryResponseDto.getStatus().equals("FAILED")) {
+            return new ApiResponseDto<>(
+                    HttpStatus.SERVICE_UNAVAILABLE.value(),
+                    true,
+                    "AI Server doesn't work normally.",
+                    audioSummaryResponseDto
+            );
+        } else {
+            return new ApiResponseDto<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "Summary requested successfully.",
+                    audioSummaryResponseDto
+            );
+        }
     }
     // AI 서버로부터 분석 결과를 받는 API
     @PatchMapping("/analyze/result")

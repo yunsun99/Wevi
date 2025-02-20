@@ -1144,7 +1144,7 @@ VALUES (81, 1, 68, null, null, 'https://my-vendor-images.s3.ap-northeast-2.amazo
 INSERT  INTO audio_summaries  (audio_summary_id, original_file_url, status, summary_result, customer_id, consultation_id)
 VALUES
         (1, 'https://my-vendor-images.s3.ap-northeast-2.amazonaws.com/audio/f04c5550-f403-4349-934b-9d39198d5c3d', 'COMPLETED', '{
-             "날짜": "25/05/24 14:00",
+             "날짜": "26/03/22 14:00",
              "업체명": "박성근 웨딩홀",
              "홀명": "컨벤션홀",
              "위치": "정보 없음",

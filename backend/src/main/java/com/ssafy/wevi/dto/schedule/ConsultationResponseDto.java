@@ -48,5 +48,4 @@ public class ConsultationResponseDto {
     
     // 상담 분석 요청 여부 확인용
     private String status;
-
 }
