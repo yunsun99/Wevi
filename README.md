@@ -1,4 +1,3 @@
-
 ## 🚩 Work Flow
 
 ---
@@ -11,22 +10,20 @@
 ### **2) 브랜치 생성**
 
 - 브랜치 생성 규칙:
-    - `front/#123-login`
-    - `back/#124-ai-alarm`
+  - `fr/#123-login`
+  - `ba/#124-ai-alarm`
 
 ### **3) 작업 및 커밋**
 
 - 커밋 메시지는 작업 내용을 간결히 작성:
-    - 예: `fix: API endpoint`
-    - 작업의 맥락은 브랜치명과 MR로 연결.
+  - 예: `fix: API endpoint`
+  - 작업의 맥락은 브랜치명과 MR로 연결.
 
 ### **4) 머지 요청(MR)**
 
 - MR 생성 시:
-    - 제목: `[FE#123] FEAT: Create login page`.
-    - 설명: Jira 이슈 링크 및 작업 요약 추가.
-
-
+  - 제목: `[FE#123] FEAT: Create login page`.
+  - 설명: Jira 이슈 링크 및 작업 요약 추가.
 
 ## 🚩 Commit Convention
 
@@ -89,4 +86,3 @@ feat: 사용자 정보 조회 기능 추가
 사용자 정보를 ID를 기준으로 조회 하는 메서드 추가
 MyPageDTO에 정보를 담아 반환
 ```
-
