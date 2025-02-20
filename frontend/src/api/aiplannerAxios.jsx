@@ -7,10 +7,10 @@ export async function requestAIplanner(formData) {
   try {
     // ✅ 서버에 맞는 데이터 형식으로 변환
     const payload = {
-      weddingHallRequest: formData.venueStyle || "", // YYYY-MM-DD 형식
-      studioRequest: formData.studioStyle || "", // HH:mm 형식
-      dressRequest: formData.dressStyle || "", // 고정된 타이틀
-      makeUpRequest: formData.makeupStyle || "", // 기본 요청사항
+      weddingHallRequest: formData.venueStyle || "아무거나", // YYYY-MM-DD 형식
+      studioRequest: formData.studioStyle || "아무거나", // HH:mm 형식
+      dressRequest: formData.dressStyle || "아무거나", // 고정된 타이틀
+      makeUpRequest: formData.makeupStyle || "아무거나", // 기본 요청사항
     };
     console.log(payload);
     console.log("📡 Sending Data:", payload); // ✅ 디버깅 로그
@@ -28,5 +28,22 @@ export async function requestAIplanner(formData) {
   } catch (error) {
     console.error("❌ 플래너 요청 실패:", error);
     return 400; // 오류 코드 반환
+  }
+}
+
+export async function handleSubmit(formData) {
+  console.log("📩 전송할 데이터:", formData);
+
+  try {
+    const recommendData = await requestAIplanner(formData);
+    if (recommendData) {
+      setRecommendInfo(recommendData);
+      alert("🎉 데이터가 성공적으로 저장되었습니다!");
+    } else {
+      alert("⚠️ 데이터 저장 중 오류가 발생했습니다.");
+    }
+  } catch (error) {
+    console.error("❌ 요청 실패:", error);
+    alert("🚨 서버 요청 중 문제가 발생했습니다.");
   }
 }

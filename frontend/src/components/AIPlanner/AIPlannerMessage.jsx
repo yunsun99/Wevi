@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import InputField from "@/components/AIPlanner/AIPlannerInput"; // ✅ 입력 필드 컴포넌트 임포트
 import character_image from "@/assets/characters/couple_link.png";
-import { requestAIplanner } from "../../api/aiplannerAxios";
+import { requestAIplanner, handleSubmit } from "../../api/aiplannerAxios";
 
 export default function QuestionFlow() {
   const [questionIndex, setQuestionIndex] = useRecoilState(questionIndexState);
@@ -22,23 +22,6 @@ export default function QuestionFlow() {
       return () => clearTimeout(timer);
     }
   }, [questionIndex, setQuestionIndex]);
-
-  async function handleSubmit() {
-    console.log("📩 전송할 데이터:", formData);
-
-    try {
-      const recommendData = await requestAIplanner(formData);
-      if (recommendData) {
-        setRecommendInfo(recommendData);
-        alert("🎉 데이터가 성공적으로 저장되었습니다!");
-      } else {
-        alert("⚠️ 데이터 저장 중 오류가 발생했습니다.");
-      }
-    } catch (error) {
-      console.error("❌ 요청 실패:", error);
-      alert("🚨 서버 요청 중 문제가 발생했습니다.");
-    }
-  }
 
   return (
     <>
@@ -79,7 +62,10 @@ export default function QuestionFlow() {
         )}
 
         {questionIndex === AIquestions.length - 1 && (
-          <button onClick={handleSubmit} className="bg-gray-200 p-2 rounded-lg">
+          <button
+            onClick={() => handleSubmit(formData)}
+            className="bg-gray-200 p-2 rounded-lg"
+          >
             제출
           </button>
         )}
