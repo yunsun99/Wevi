@@ -5,7 +5,7 @@ function SearchCategoryBar({ currentCategory, onChangeCategory }) {
   console.log("SearchCategoryBar 렌더링됨");
 
   const buttonActive =
-    "px-4 py-4 flex-1 text-[#121212] text-sm font-medium text-[#121212] hover:text-gray-800 hover:border-b-2 hover:border-black cursor-pointer bg-[#EDE4DC]";
+    "px-4 py-4 flex-1 text-[#121212] text-sm font-semibold text-[#121212] hover:text-gray-800 hover:border-b-2 hover:border-black cursor-pointer bg-[#EDE4DC]";
   const buttonInactive =
     "px-4 py-4 flex-1 text-center text-sm font-semibold text-[#AC9261] hover:text-[#121212] hover:border-b-2 hover:border-black cursor-pointer";
 

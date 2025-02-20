@@ -12,7 +12,6 @@ export default function MyPage() {
 
   const menuItems = [
     { label: "알림 설정", path: "/notification" },
-    { label: "공지사항", path: "/" },
     { label: "문의하기", path: "/" },
     { label: "회원정보 수정", path: "/" },
     { label: "계약 내역", path: "/contractList" },

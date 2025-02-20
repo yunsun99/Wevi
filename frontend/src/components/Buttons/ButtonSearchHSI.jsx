@@ -29,12 +29,12 @@ export default function ButtonSearch() {
   };
 
   return (
-    <div className="px-3 z-3 sticky bottom-28 transition">
+    <div className="px-3 py-5 z-3 sticky bottom-[7vh] bg-white border-1 border-white">
       <button
-        className="w-full bg-[#609966] text-[#FFFDFA] py-3 rounded-lg"
+        className="w-full bg-[#609966] text-[#FFFDFA] py-3 rounded-lg font-semibold"
         onClick={handleSearch}
       >
-        버튼
+        검색
       </button>
     </div>
   );

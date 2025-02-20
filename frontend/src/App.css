@@ -20,11 +20,11 @@
 }
 
 body {
-  background-image: url("background/appBackground3.png"); /* ✅ 배경 이미지 경로 설정 */
   background-size: cover; /* ✅ 화면에 꽉 차게 조정 */
   background-position: center; /* ✅ 중앙 정렬 */
   background-attachment: fixed; /* ✅ 스크롤 시 배경 고정 */
   background-repeat: no-repeat; /* ✅ 이미지 반복 없음 */
+  background-color: #fffdfa;
 }
 
 html {

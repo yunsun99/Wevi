@@ -65,7 +65,7 @@ export default function Hamburger({ isOpen, setMenuOpen }) {
             className="p-3 text-gray-800 hover:bg-gray-200 rounded transition"
             onClick={() => setMenuOpen(false)}
           >
-            진행도도 조회
+            진행도 조회
           </Link>
           <hr className="border-t border-gray-300" />
 

@@ -19,6 +19,7 @@ import { setRecoil } from "recoil-nexus";
 import { isAuthenticatedState } from "../atoms/userState";
 import { isNotificationState } from "../atoms/notificationState";
 import { axiosNotification } from "../api/notification";
+import backgroundImage from "../assets/backgroundImages/appBackground3.png";
 
 export default function Login() {
   const [error, setError] = useState(null); // 로그인 실패 메시지
@@ -88,7 +89,15 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[100vh]">
+    <div
+      className="flex flex-col items-center justify-center min-h-[100vh]"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       {/* 로고 */}
       <img src={logo} alt="WEVI Logo" className="w-40 mb-6" />
 

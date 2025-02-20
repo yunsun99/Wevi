@@ -170,7 +170,7 @@ const Signup2 = ({ formData, setFormData, onPrevious }) => {
               error={autoRoadAddressHasError && "필수 입력 사항입니다."}
             />
             <div className="pt-7">
-              <Button2 onClick={openAddressSearch}>주소 검색</Button2>
+              <Button2 onClick={openAddressSearch}>주소</Button2>
             </div>
           </div>
           <div className="mb-4">
