@@ -1,6 +1,5 @@
 import { useRecoilState } from "recoil";
 import { plannerState, questionIndexState } from "@/atoms/AIPlannerState";
-import { handleSubmit } from "../../api/aiplannerAxios";
 
 export default function InputField({ name, placeholder }) {
   const [formData, setFormData] = useRecoilState(plannerState);
@@ -17,7 +16,7 @@ export default function InputField({ name, placeholder }) {
     if (e.key === "Enter") {
       e.preventDefault(); // ✅ 기본 Enter 키 동작 방지
       if (questionIndex === 4) {
-        handleSubmit(formData);
+        return;
       } else {
         setQuestionIndex((prev) => prev + 1); // ✅ 다음 질문으로 이동
       }
