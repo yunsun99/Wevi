@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class VendorResponseDto {
-    private Integer vendorId;
+    private Integer id;
     private String vendorName;
     private Integer categoryId;
     private String categoryName;
