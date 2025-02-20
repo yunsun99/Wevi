@@ -190,6 +190,7 @@ public class AiService {
         // FastAPI 요청을 위한 데이터 준비
         String fastApiUrl = "http://airecommend-container:8002/recommend";  // FastAPI 서버 URL
 //        String fastApiUrl = "http://127.0.0.1:8000/recommend";  // FastAPI 서버 URL
+>>>>>>> backend/src/main/java/com/ssafy/wevi/service/AiService.java
 
 
         RestTemplate restTemplate = new RestTemplate();Map<String, Object> requestBody = new HashMap<>();
