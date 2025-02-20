@@ -119,7 +119,7 @@ public class CoupleRequestService {
                 .orElseThrow(() -> new NoSuchElementException("해당 ID의 사용자를 찾을 수 없습니다: " + customerId));
 
         Integer receiverId = coupleRequest.getReceiver().getUserId();
-        Customer receiver = customerRepository.findById(receiverId).orElseThrow(() -> new NoSuchElementException("해당 ID의 배우자를 찾을 수 없습니다: " + spouseId));
+        Customer receiver = customerRepository.findById(receiverId).orElseThrow(() -> new NoSuchElementException("해당 ID의 배우자를 찾을 수 없습니다: " + receiverId));
 
         customer.setSentRequests(new ArrayList<>());
         customer.setReceivedRequests(new ArrayList<>());
