@@ -91,11 +91,10 @@ export default function CardSchedule({ data }) {
       } else {
         console.error("파일 업로드 실패");
       }
+      window.location.reload();
     } catch (error) {
       console.error("파일 업로드 중 오류 발생:", error);
-    } finally {
-      // try-catch 블록이 끝나면 화면 새로고침
-      window.location.reload();
+      alert("파일 업로드에 실패했어요. 나중에 다시 시도해주세요.");
     }
   }
   // console.log(data);

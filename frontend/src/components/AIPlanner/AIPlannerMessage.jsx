@@ -4,14 +4,15 @@ import {
   plannerState,
   AIquestions,
 } from "@/atoms/AIPlannerState";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import InputField from "@/components/AIPlanner/AIPlannerInput"; // ✅ 입력 필드 컴포넌트 임포트
 import character_image from "@/assets/characters/couple_link.png";
+import { requestAIplanner } from "../../api/aiplannerAxios";
 
 export default function QuestionFlow() {
   const [questionIndex, setQuestionIndex] = useRecoilState(questionIndexState);
   const [formData, setFormData] = useRecoilState(plannerState);
-
+  const [recommendInfo, setRecommendInfo] = useState();
   // ✅ 1번 & 5번 질문은 2초 후 자동 진행
   useEffect(() => {
     if (questionIndex === 0) {
@@ -22,11 +23,22 @@ export default function QuestionFlow() {
     }
   }, [questionIndex, setQuestionIndex]);
 
-  // ✅ 모든 질문이 끝나면 제출 버튼 표시
-  const handleSubmit = () => {
+  async function handleSubmit() {
     console.log("📩 전송할 데이터:", formData);
-    alert("데이터가 저장되었습니다!");
-  };
+
+    try {
+      const recommendData = await requestAIplanner(formData);
+      if (recommendData) {
+        setRecommendInfo(recommendData);
+        alert("🎉 데이터가 성공적으로 저장되었습니다!");
+      } else {
+        alert("⚠️ 데이터 저장 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("❌ 요청 실패:", error);
+      alert("🚨 서버 요청 중 문제가 발생했습니다.");
+    }
+  }
 
   return (
     <>
@@ -72,6 +84,14 @@ export default function QuestionFlow() {
           </button>
         )}
       </div>
+      {recommendInfo ? (
+        <>
+          <span>{recommendInfo.weddingHallVendor.vendorName}</span>
+          <span>{recommendInfo.studioVendor.vendorName}</span>
+          <span>{recommendInfo.dressVendor.vendorName}</span>
+          <span>{recommendInfo.makeUpVendor.vendorName}</span>
+        </>
+      ) : null}
     </>
   );
 }
