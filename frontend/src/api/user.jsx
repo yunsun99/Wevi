@@ -93,6 +93,7 @@ export async function upLoadConsultation(file, scheduleId) {
 export async function getConsultationAnalyzeInfo() {
   try {
     const response = await api.get(`/api/ai/analyze`);
+    console.log(response.status);
     if (response.status === 200) {
       const data = response.data.data;
       console.log(data);

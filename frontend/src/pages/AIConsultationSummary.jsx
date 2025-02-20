@@ -211,19 +211,19 @@ export default function AIConsultationSummary() {
   }, [consultationAnalyzeInfo]);
 
   useEffect(() => {
-    if (!consultationAnalyzeInfo.data.length) {
+    if (!consultationAnalyzeInfo || !consultationAnalyzeInfo.length) {
       console.log("❌ SummaryResult가 없습니다.");
       return;
     }
 
-    const parsedData = responseData.data.map((item) => ({
+    const parsedData = consultationAnalyzeInfo.map((item) => ({
       ...item,
       summaryResult:
         item.status === "COMPLETED" ? JSON.parse(item.summaryResult) : null,
     }));
 
     setSummaryData(parsedData);
-  }, []);
+  }, [consultationAnalyzeInfo]);
 
   const toggleCardSelection = (scheduleId, status) => {
     if (status !== "COMPLETED") return; // ✅ COMPLETED가 아닌 경우 선택 불가
