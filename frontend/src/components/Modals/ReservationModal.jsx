@@ -140,7 +140,7 @@ export default function ReservationModal({ onClose, selectedDate, vendorId }) {
             onClick={handleSubmit}
             className="w-full bg-[#609966] text-white py-3 rounded-lg font-bold hover:bg-[#4e7c53]"
           >
-            동의하고 예약금 결제하기
+            예약하기
           </button>
         </div>
       </div>
