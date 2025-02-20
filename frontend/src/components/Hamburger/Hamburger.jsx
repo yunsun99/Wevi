@@ -65,7 +65,7 @@ export default function Hamburger({ isOpen, setMenuOpen }) {
             className="p-3 text-gray-800 hover:bg-gray-200 rounded transition"
             onClick={() => setMenuOpen(false)}
           >
-            중간과정 조회
+            진행도도 조회
           </Link>
           <hr className="border-t border-gray-300" />
 
@@ -79,20 +79,11 @@ export default function Hamburger({ isOpen, setMenuOpen }) {
           <hr className="border-t border-gray-300" />
 
           <Link
-            to="/ai-planner"
+            to="/aiplanner"
             className="p-3 text-gray-800 hover:bg-gray-200 rounded transition"
             onClick={() => setMenuOpen(false)}
           >
             AI 플래너
-          </Link>
-          <hr className="border-t border-gray-300" />
-
-          <Link
-            to="/community"
-            className="p-3 text-gray-800 hover:bg-gray-200 rounded transition"
-            onClick={() => setMenuOpen(false)}
-          >
-            커뮤니티
           </Link>
           <hr className="border-t border-gray-300" />
 

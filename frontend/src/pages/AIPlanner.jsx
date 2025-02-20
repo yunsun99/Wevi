@@ -17,7 +17,7 @@ export default function AiPlanner() {
   return (
     <>
       <TopNavigationBar title="AI플래너" />
-      <div className="h-auto">
+      <div className="h-[86vh]">
         <AiPlannerMessage />
       </div>
       <BottomNavigationBar />
