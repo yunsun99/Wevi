@@ -17,7 +17,7 @@ public class FirebaseCloudMessagingService {
                 .setWebpushConfig(WebpushConfig.builder()
                         .setNotification(new WebpushNotification(
                                 title, body))
-                        .setFcmOptions(WebpushFcmOptions.withLink("http://localhost:5173/notification"))
+                        .setFcmOptions(WebpushFcmOptions.withLink("https://i12b208.p.ssafy.io/notification"))
                         .build())
                 .setToken(targetToken)
                 .build();
