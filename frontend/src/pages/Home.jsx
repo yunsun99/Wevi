@@ -5,6 +5,7 @@ import character_dress from "../assets/characters/character_dress.png";
 import character_hair from "../assets/characters/character_hair.png";
 import character_original from "../assets/characters/character_original.png";
 import character_camera from "../assets/characters/character_camera2.png";
+import character_backgroundNone from "../assets/characters/character_backgroundNone.png";
 
 import { useEffect, useState } from "react";
 import { getContractList } from "../api/schedule";
@@ -115,6 +116,13 @@ export default function Home() {
 
         <main className="flex flex-col w-screen items-center justify-center overflow-hidden h-[75vh]">
           <div className="relative w-full flex items-center justify-center">
+            {/* 기본 캐릭터 배경 (없을경우우)) */}
+            <img
+              src={character_backgroundNone}
+              alt="Character Background"
+              className="absolute object-contain"
+            />
+
             {/* 기본 캐릭터 배경 (항상 표시) */}
             {categoryExists.weddinghall && (
               <img

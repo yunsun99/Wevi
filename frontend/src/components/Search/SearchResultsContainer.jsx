@@ -11,5 +11,6 @@ export default function SearchResultsContainer() {
     ...item,
     id: item.vendorId,
   }));
+
   return <ListView data={updatedData} CardComponent={Card} />;
 }
