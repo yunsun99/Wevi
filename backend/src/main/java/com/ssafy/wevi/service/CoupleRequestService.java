@@ -115,6 +115,21 @@ public class CoupleRequestService {
             throw new SecurityException("본인이 보낸 요청만 취소할 수 있습니다.");
         }
 
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new NoSuchElementException("해당 ID의 사용자를 찾을 수 없습니다: " + customerId));
+
+        Integer spouseId = customer.getSpouse().getUserId();
+        Customer spouse = customerRepository.findById(spouseId).orElseThrow(() -> new NoSuchElementException("해당 ID의 배우자를 찾을 수 없습니다: " + spouseId));
+
+
+        customer.setSentRequests(new ArrayList<>());
+        customer.setReceivedRequests(new ArrayList<>());
+        customerRepository.save(customer);
+
+        spouse.setSentRequests(new ArrayList<>());
+        spouse.setReceivedRequests(new ArrayList<>());
+        customerRepository.save(spouse);
+
         // 커플요청 관련 알림 삭제
         List<Notification> notifications = coupleRequest.getNotifications();
         List<Integer> notificationIds = notifications.stream().map(Notification::getNotificationId).toList();
