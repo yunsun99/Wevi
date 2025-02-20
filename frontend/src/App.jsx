@@ -91,44 +91,40 @@ function SplashScreen() {
 function NotificationHandler() {
   const [isNotification, setIsNotification] =
     useRecoilState(isNotificationState);
-  const hasInitialized = useRef(false);
 
-  useEffect(() => {
-    if (hasInitialized.current) return;
-    hasInitialized.current = true;
+  // useEffect(() => {
+  //   // ✅ 1. 서비스 워커 등록 (상태 변경 없음)
+  //   registerServiceWorker().catch(() => {
+  //     console.error("서비스 워커 등록 실패");
+  //   });
 
-    // ✅ 1. 서비스 워커 등록 (상태 변경 없음)
-    registerServiceWorker().catch(() => {
-      console.error("서비스 워커 등록 실패");
-    });
+  //   // ✅ 2. 알람이 올 때만 실행되는 이벤트 리스너 추가
+  //   const handleNotification = () => {
+  //     setIsNotification(true);
+  //     alert("🔔 새로운 알림이 도착했습니다!");
+  //   };
 
-    // ✅ 2. 알람이 올 때만 실행되는 이벤트 리스너 추가
-    const handleNotification = () => {
-      setIsNotification(true);
-      alert("🔔 새로운 알림이 도착했습니다!");
-    };
+  //   const unsubscribe = onForegroundMessage(handleNotification);
 
-    const unsubscribe = onForegroundMessage(handleNotification);
+  //   // 켜져있었을떄 알람 설정
+  //   setIsNotification(false);
+  //   const loadAlarms = async () => {
+  //     try {
+  //       const data = await axiosNotification();
+  //       console.log("🔔 알림 데이터 로드:", data);
+  //       const reverseData = [...data].reverse();
+  //       if (!reverseData[0].isRead) {
+  //         setIsNotification(true);
+  //       }
+  //     } catch (error) {}
+  //   };
 
-    // 커져있었을떄 알람 설정
-    setIsNotification(false);
-    const loadAlarms = async () => {
-      try {
-        const data = await axiosNotification();
-        console.log("🔔 알림 데이터 로드:", data);
-        const reverseData = [...data].reverse();
-        if (!reverseData[0].isRead) {
-          setIsNotification(true);
-        }
-      } catch (error) {}
-    };
+  //   loadAlarms();
 
-    loadAlarms();
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
 
   return null; // UI 없음
 }
