@@ -118,17 +118,16 @@ public class CoupleRequestService {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("해당 ID의 사용자를 찾을 수 없습니다: " + customerId));
 
-        Integer spouseId = customer.getSpouse().getUserId();
-        Customer spouse = customerRepository.findById(spouseId).orElseThrow(() -> new NoSuchElementException("해당 ID의 배우자를 찾을 수 없습니다: " + spouseId));
-
+        Integer receiverId = coupleRequest.getReceiver().getUserId();
+        Customer receiver = customerRepository.findById(receiverId).orElseThrow(() -> new NoSuchElementException("해당 ID의 배우자를 찾을 수 없습니다: " + spouseId));
 
         customer.setSentRequests(new ArrayList<>());
         customer.setReceivedRequests(new ArrayList<>());
         customerRepository.save(customer);
 
-        spouse.setSentRequests(new ArrayList<>());
-        spouse.setReceivedRequests(new ArrayList<>());
-        customerRepository.save(spouse);
+        receiver.setSentRequests(new ArrayList<>());
+        receiver.setReceivedRequests(new ArrayList<>());
+        customerRepository.save(receiver);
 
         // 커플요청 관련 알림 삭제
         List<Notification> notifications = coupleRequest.getNotifications();
@@ -148,16 +147,16 @@ public class CoupleRequestService {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("해당 ID의 사용자를 찾을 수 없습니다: " + customerId));
 
-        Integer receiverId = coupleRequest.getReceiver().getUserId();
-        Customer receiver = customerRepository.findById(receiverId).orElseThrow(() -> new NoSuchElementException("해당 ID의 배우자를 찾을 수 없습니다: " + spouseId));
+        Integer spouseId = customer.getSpouse().getUserId();
+        Customer spouse = customerRepository.findById(spouseId).orElseThrow(() -> new NoSuchElementException("해당 ID의 배우자를 찾을 수 없습니다: " + spouseId));
 
         customer.setSpouse(null);
         customer.setSentRequests(new ArrayList<>());
         customerRepository.save(customer);
 
-        receiver.setSpouse(null);
-        receiver.setReceivedRequests(new ArrayList<>());
-        customerRepository.save(receiver);
+        spouse.setSpouse(null);
+        spouse.setReceivedRequests(new ArrayList<>());
+        customerRepository.save(spouse);
 
 
         // 커플요청 관련 알림 삭제
