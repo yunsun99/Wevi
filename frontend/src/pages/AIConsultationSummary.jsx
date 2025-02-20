@@ -255,101 +255,65 @@ export default function AIConsultationSummary() {
   return (
     <>
       <TopNavigationBar title="AI 상담 요약" />
-
-      {/* ✅ 카테고리 필터 바 추가 */}
-      <div className="flex justify-around bg-gray-200 p-2">
-        {["weddinghall", "studio", "dress", "makeup"].map((category) => (
-          <button
-            key={category}
-            onClick={() => handleCategoryChange(category)}
-            className={`px-4 py-2 rounded-md text-sm font-semibold ${
-              selectedCategory === category
-                ? "bg-blue-500 text-white"
-                : "bg-white text-gray-700"
-            }`}
-          >
-            {category === "weddinghall"
-              ? "웨딩홀"
-              : category === "studio"
-              ? "스튜디오"
-              : category === "dress"
-              ? "드레스"
-              : "헤어 & 메이크업"}
-          </button>
-        ))}
-      </div>
-
-      <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredData.map((item) => (
-          <div
-            key={item.scheduleId}
-            onClick={() => toggleCardSelection(item.scheduleId, item.status)}
-            className={`cursor-pointer bg-white p-4 shadow-md rounded-lg border-2 ${
-              selectedCards.includes(item.scheduleId)
-                ? "border-blue-500"
-                : "border-gray-300"
-            } ${
-              item.status !== "COMPLETED" ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            <h2 className="text-lg font-semibold">{item.scheduleTitle}</h2>
-            <p className="text-gray-500">{item.categoryName}</p>
-            <p
-              className={`text-sm font-semibold ${
-                item.status === "COMPLETED"
-                  ? "text-green-600"
-                  : item.status === "PROCESSING"
-                  ? "text-yellow-600"
-                  : "text-red-600"
+      <div className="h-[84vh]">
+        {/* ✅ 카테고리 필터 바 추가 */}
+        <div className="flex justify-around bg-gray-200 p-2">
+          {["weddinghall", "studio", "dress", "makeup"].map((category) => (
+            <button
+              key={category}
+              onClick={() => handleCategoryChange(category)}
+              className={`px-4 py-2 rounded-md text-sm font-semibold ${
+                selectedCategory === category
+                  ? "bg-blue-500 text-white"
+                  : "bg-white text-gray-700"
               }`}
             >
-              {item.status === "COMPLETED"
-                ? "✅ 완료"
-                : item.status === "PROCESSING"
-                ? "⏳ 진행 중(최대 10분 소요)"
-                : "❌ 실패(다시 시도해주세요)"}
-            </p>
-            <hr className="my-2" />
-            {item.status === "COMPLETED" && item.summaryResult && (
-              <>
-                <p>
-                  <strong>업체명:</strong> {item.summaryResult["업체명"]}
-                </p>
-                <p>
-                  <strong>홀명:</strong> {item.summaryResult["홀명"]}
-                </p>
-                <p>
-                  <strong>날짜:</strong> {item.summaryResult["날짜"]}
-                </p>
-              </>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* 비교하기 버튼 */}
-      {selectedCards.length === 2 && (
-        <div className="fixed bottom-5 left-0 right-0 flex justify-center z-50">
-          <button
-            onClick={() => setShowComparison(true)}
-            className="bg-blue-500 text-white px-6 py-2 rounded-lg shadow-md"
-          >
-            비교하기
-          </button>
+              {category === "weddinghall"
+                ? "웨딩홀"
+                : category === "studio"
+                ? "스튜디오"
+                : category === "dress"
+                ? "드레스"
+                : "헤어 & 메이크업"}
+            </button>
+          ))}
         </div>
-      )}
 
-      {/* 비교 모달 */}
-      {showComparison && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full">
-            <h2 className="text-lg font-semibold text-center mb-4">
-              비교 결과
-            </h2>
-            <div className="grid grid-cols-2 gap-4">
-              {selectedItems.map((item, index) => (
-                <div key={index} className="border p-4 rounded-lg">
-                  <h3 className="font-bold">{item.scheduleTitle}</h3>
+        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {filteredData.map((item) => (
+            <div
+              key={item.scheduleId}
+              onClick={() => toggleCardSelection(item.scheduleId, item.status)}
+              className={`cursor-pointer bg-white p-4 shadow-md rounded-lg border-2 ${
+                selectedCards.includes(item.scheduleId)
+                  ? "border-blue-500"
+                  : "border-gray-300"
+              } ${
+                item.status !== "COMPLETED"
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+            >
+              <h2 className="text-lg font-semibold">{item.scheduleTitle}</h2>
+              <p className="text-gray-500">{item.categoryName}</p>
+              <p
+                className={`text-sm font-semibold ${
+                  item.status === "COMPLETED"
+                    ? "text-green-600"
+                    : item.status === "PROCESSING"
+                    ? "text-yellow-600"
+                    : "text-red-600"
+                }`}
+              >
+                {item.status === "COMPLETED"
+                  ? "✅ 완료"
+                  : item.status === "PROCESSING"
+                  ? "⏳ 진행 중(최대 10분 소요)"
+                  : "❌ 실패(다시 시도해주세요)"}
+              </p>
+              <hr className="my-2" />
+              {item.status === "COMPLETED" && item.summaryResult && (
+                <>
                   <p>
                     <strong>업체명:</strong> {item.summaryResult["업체명"]}
                   </p>
@@ -359,25 +323,64 @@ export default function AIConsultationSummary() {
                   <p>
                     <strong>날짜:</strong> {item.summaryResult["날짜"]}
                   </p>
-                  <p>
-                    <strong>대관료:</strong> {item.summaryResult["대관료"]}
-                  </p>
-                  <p>
-                    <strong>환불 규정:</strong>{" "}
-                    {item.summaryResult["환불_규정"]}
-                  </p>
-                </div>
-              ))}
+                </>
+              )}
             </div>
+          ))}
+        </div>
+
+        {/* 비교하기 버튼 */}
+        {selectedCards.length === 2 && (
+          <div className="fixed bottom-30 left-0 right-0 flex justify-center z-50">
             <button
-              onClick={() => setShowComparison(false)}
-              className="mt-4 w-full bg-red-500 text-white py-2 rounded-lg"
+              onClick={() => setShowComparison(true)}
+              className="bg-blue-500 text-white px-6 py-2 rounded-lg shadow-md"
             >
-              닫기
+              비교하기
             </button>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* 비교 모달 */}
+        {showComparison && (
+          <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full">
+              <h2 className="text-lg font-semibold text-center mb-4">
+                비교 결과
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
+                {selectedItems.map((item, index) => (
+                  <div key={index} className="border p-4 rounded-lg">
+                    <h3 className="font-bold">{item.scheduleTitle}</h3>
+                    <p>
+                      <strong>업체명:</strong> {item.summaryResult["업체명"]}
+                    </p>
+                    <p>
+                      <strong>홀명:</strong> {item.summaryResult["홀명"]}
+                    </p>
+                    <p>
+                      <strong>날짜:</strong> {item.summaryResult["날짜"]}
+                    </p>
+                    <p>
+                      <strong>대관료:</strong> {item.summaryResult["대관료"]}
+                    </p>
+                    <p>
+                      <strong>환불 규정:</strong>{" "}
+                      {item.summaryResult["환불_규정"]}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => setShowComparison(false)}
+                className="mt-4 w-full bg-red-500 text-white py-2 rounded-lg"
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
       <BottomNavigationBar />
     </>
   );
