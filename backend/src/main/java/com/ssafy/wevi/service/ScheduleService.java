@@ -838,7 +838,7 @@ public class ScheduleService {
         consultationDto.setVendorImageUrl(vendorService.getImage(consultation.getVendor()).getImageUrl());
 
         // 상담 분석 요청했는지 여부 확인용
-        AudioSummary audioSummary = summaryRepository.findBySchedule_ScheduleId(consultation.getScheduleId());
+        AudioSummary audioSummary = summaryRepository.findByScheduleId(consultation.getScheduleId());
         if (audioSummary != null) {
             consultationDto.setStatus(audioSummary.getStatus());
         }

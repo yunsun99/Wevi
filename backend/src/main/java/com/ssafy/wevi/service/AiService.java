@@ -74,7 +74,7 @@ public class AiService {
         // 본인 상담인가?
         if (!schedule.getCustomer().getUserId().equals(user.getUserId())) throw new IllegalArgumentException("본인의 상담일 경우에만 상담 요청할 수 있습니다.");
         // 이미 분석 요청한 상담인가?
-        if (summaryRepository.findBySchedule_ScheduleId(schedule.getScheduleId()) != null) throw new IllegalArgumentException("해당 상담에 대해 이미 분석 요청하셨습니다.");
+        if (summaryRepository.findByScheduleId(schedule.getScheduleId()) != null) throw new IllegalArgumentException("해당 상담에 대해 이미 요청된 내역이 있습니다.");
 
 
         // ✅ 1.1 파일을 S3에 업로드하고 URL 가져오기
@@ -85,17 +85,18 @@ public class AiService {
         audioSummary.setOriginalFileUrl(s3Url);
         audioSummary.setCustomer((Customer) user);
         audioSummary.setSchedule((Consultation) schedule);
-//        audioSummary.setStatus("PENDING");
-//        audioSummary = summaryRepository.save(audioSummary); // 현재 원본파일url, status(PENDING)만 존재
+        audioSummary.setStatus("PROCESSING");
+        audioSummary = summaryRepository.save(audioSummary); // 현재 원본파일url
 
         // ✅ 1.3 FastAPI 요청을 위한 데이터 준비
-//        String fastApiUrl = "http://127.0.0.1:8001/predict";  // FastAPI 서버 URL
-        String fastApiUrl = "http://fastapi-container:8001/predict";  // FastAPI 서버 URL
+        String fastApiUrl = "http://127.0.0.1:8001/predict";  // FastAPI 서버 URL
+//        String fastApiUrl = "http://fastapi-container:8001/predict";  // FastAPI 서버 URL
         RestTemplate restTemplate = new RestTemplate();
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("file_url", s3Url);
         requestBody.put("audio_summary_id", audioSummary.getAudioSummaryId());
+        System.out.println("오디오아이디 =====> "+ audioSummary.getAudioSummaryId());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -113,16 +114,19 @@ public class AiService {
             System.out.println("✅ FastAPI 요청 성공: " + response.getBody());
 
             // 요청이 성공하면 상태를 "PROCESSING"로 업데이트 가능
-            audioSummary.setStatus("PROCESSING");
+//            audioSummary.setStatus("PROCESSING");
             summaryRepository.save(audioSummary);
+
+            // ✅ 4. 최종 응답 반환
+            return toAudioSummaryResponseDto(audioSummary, loginUserId);
         } catch (Exception e) {
             System.out.println("❌ FastAPI 요청 실패: " + e.getMessage());
-            throw new IllegalArgumentException("AI 서버로 요청이 실패. AI 서버 정상 동작 여부 확인 필요");
+            summaryRepository.delete(audioSummary);
 //            audioSummary.setStatus("FAILED");  // 요청 실패 시 상태 변경
 //            summaryRepository.save(audioSummary);
+            throw new IllegalArgumentException("AI 서버로 요청이 실패. AI 서버 정상 동작 여부 확인 필요");
+
         }
-        // ✅ 4. 최종 응답 반환
-        return toAudioSummaryResponseDto(audioSummary, loginUserId);
     }
 
     // AI 서버로부터 결과를 받음
@@ -190,7 +194,6 @@ public class AiService {
         // FastAPI 요청을 위한 데이터 준비
         String fastApiUrl = "http://airecommend-container:8002/recommend";  // FastAPI 서버 URL
 //        String fastApiUrl = "http://127.0.0.1:8000/recommend";  // FastAPI 서버 URL
->>>>>>> backend/src/main/java/com/ssafy/wevi/service/AiService.java
 
 
         RestTemplate restTemplate = new RestTemplate();Map<String, Object> requestBody = new HashMap<>();
