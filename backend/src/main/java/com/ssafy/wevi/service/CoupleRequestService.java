@@ -142,26 +142,23 @@ public class CoupleRequestService {
     // 커플연동 삭제 - 커플요청삭제
     @Transactional
     public void deleteCoupleRequest(Integer customerId) {
+        // 해당 유저의 커플요청 찾기
+        CoupleRequest coupleRequest = coupleRequestRepository.findBySenderUserIdOrReceiverUserId(customerId, customerId).orElseThrow();
+
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("해당 ID의 사용자를 찾을 수 없습니다: " + customerId));
 
-        Integer spouseId = customer.getSpouse().getUserId();
-        Customer spouse = customerRepository.findById(spouseId).orElseThrow(() -> new NoSuchElementException("해당 ID의 배우자를 찾을 수 없습니다: " + spouseId));
+        Integer receiverId = coupleRequest.getReceiver().getUserId();
+        Customer receiver = customerRepository.findById(receiverId).orElseThrow(() -> new NoSuchElementException("해당 ID의 배우자를 찾을 수 없습니다: " + spouseId));
 
-        // 본인의 spouse 정보를 초기화
         customer.setSpouse(null);
         customer.setSentRequests(new ArrayList<>());
-        customer.setReceivedRequests(new ArrayList<>());
         customerRepository.save(customer);
 
-        // 배우자의 spouse 정보를 초기화
-        spouse.setSpouse(null);
-        spouse.setSentRequests(new ArrayList<>());
-        spouse.setReceivedRequests(new ArrayList<>());
-        customerRepository.save(spouse);
+        receiver.setSpouse(null);
+        receiver.setReceivedRequests(new ArrayList<>());
+        customerRepository.save(receiver);
 
-        // 해당 유저의 커플요청 찾기
-        CoupleRequest coupleRequest = coupleRequestRepository.findBySenderUserIdOrReceiverUserId(customerId, customerId).orElseThrow();
 
         // 커플요청 관련 알림 삭제
         List<Notification> notifications = coupleRequest.getNotifications();
