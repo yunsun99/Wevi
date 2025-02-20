@@ -77,7 +77,26 @@ export async function upLoadConsultation(file, scheduleId) {
 
     if (response.status === 200) {
       console.log(response.data);
+      console.log(response.status);
       return response.data;
+    } else {
+      console.log(response.status);
+      return {};
+    }
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error);
+  }
+}
+
+// AI 상담 요약 전체 내역 조회
+export async function getConsultationAnalyzeInfo() {
+  try {
+    const response = await api.get(`/api/ai/analyze`);
+    if (response.status === 200) {
+      const data = response.data.data;
+      console.log(data);
+      return data;
     } else {
       return {};
     }
