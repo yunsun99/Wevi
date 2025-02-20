@@ -99,8 +99,8 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
         isNotEmpty(passwordCheck) &&
         !emailHasError &&
         !passwordHasError &&
-        !passwordCheckHasError &&
-        verifyComplete
+        !passwordCheckHasError
+      // verifyComplete
     );
   }, [
     formData,
@@ -108,7 +108,7 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
     emailHasError,
     passwordHasError,
     passwordCheckHasError,
-    verifyComplete,
+    // verifyComplete,
   ]);
 
   const onBack = () => {

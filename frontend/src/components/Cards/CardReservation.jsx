@@ -97,7 +97,7 @@ export default function CardReservation({ data, category }) {
 
           <p className="text-sm font-semibold">담당자:</p>
           <p className="text-base col-span-3">
-            {vendorData.ownerName || "정보 없음"}
+            {(vendorData && vendorData.ownerName) || "정보 없음"}
           </p>
 
           <p className="text-sm font-semibold">상품:</p>
