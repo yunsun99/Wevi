@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("../src/assets/fonts/Pretendard-Light.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Pretendard-Medium";
+  src: url("../src/assets/fonts/Pretendard-Medium.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@theme {
+  --font-pretendard: Pretendard;
+  --font-pretendard-medium: Pretendard-Medium;
+}
+
+body {
+  background-size: cover; /* ✅ 화면에 꽉 차게 조정 */
+  background-position: center; /* ✅ 중앙 정렬 */
+  background-attachment: fixed; /* ✅ 스크롤 시 배경 고정 */
+  background-repeat: no-repeat; /* ✅ 이미지 반복 없음 */
+  background-color: #fffdfa;
+}
+
+html {
+  font-family: "Pretendard", sans-serif;
+}

@@ -3,8 +3,11 @@ pipeline {
 
     environment {
         BRANCH_NAME = "${GIT_BRANCH}"
-        NODE_VERSION = 'node18'
+        NODE_VERSION = 'node20'
         DEPLOY_PATH = '/home/ubuntu/nginx/html'
+        JAVA_VERSION = 'jdk17'
+        APP_NAME = 'jenkins-test'
+        DOCKER_IMAGE = 'jenkins-test:latest'
     }
 
     stages {
@@ -13,6 +16,81 @@ pipeline {
                 checkout scm
                 script {
                     echo "현재 브랜치: ${BRANCH_NAME}"
+                }
+            }
+        }
+
+        stage('Backend Build & Deploy') {
+            when {
+                expression { BRANCH_NAME == 'origin/back' }
+            }
+            tools {
+                jdk "${JAVA_VERSION}"
+            }
+            steps {
+                dir('backend') {
+                    script {
+                        sh '''
+                            echo "===== Build Environment ====="
+                            echo "JDK Version:"
+                            java --version
+                            echo "Docker Version:"
+                            docker --version
+                            echo "Current Directory:"
+                            pwd
+                            ls -la
+                        '''
+
+                        // Prepare Environment
+                        sh '''
+                            rm -rf src/main/resources
+                            mkdir -p src/main/resources
+                            chmod 777 src/main/resources
+                        '''
+
+                        // 시크릿 파일 설정 부분 (필요시 주석 해제)
+                        withCredentials([
+                            file(credentialsId: 'prod-yaml', variable: 'prodFile'),
+                            file(credentialsId: 'firebase-json', variable: 'fireFile')
+                            // file(credentialsId: 'secret-yaml', variable: 'secretFile')
+                        ]) {
+                        sh '''
+                            cp "$prodFile" src/main/resources/application-prod.yml
+                            cp "$fireFile" src/main/resources/firebase-service-account.json
+                            chmod 644 src/main/resources/application-*.yml
+                            chmod 644 src/main/resources/firebase-*.json
+                        '''
+                        }
+
+                        // Gradle 빌드
+                        sh '''
+                            chmod +x gradlew
+                            ./gradlew clean build -x test --no-daemon
+                        '''
+                        
+                        // Docker 배포
+                        sh '''
+                            docker rm -f ${APP_NAME} || true
+                            docker rmi ${DOCKER_IMAGE} || true
+                            docker build -t ${DOCKER_IMAGE} .
+                            docker run -d \
+                                --name ${APP_NAME} \
+                                -e SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE=50MB \
+                                -e SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE=100MB \
+                                --network my-network \
+                                --restart unless-stopped \
+                                -p 8080:8080 \
+                                ${DOCKER_IMAGE}
+                        '''
+                    }
+                }
+            }
+            post {
+                success {
+                    echo '백엔드 빌드 및 배포 성공'
+                }
+                failure {
+                    echo '백엔드 빌드 및 배포 실패'
                 }
             }
         }
@@ -27,7 +105,6 @@ pipeline {
             steps {
                 dir('frontend') {
                     script {
-                        // 빌드 전 상태 출력
                         sh '''
                             echo "===== Build Environment ====="
                             echo "Node Version:"
@@ -38,8 +115,16 @@ pipeline {
                             pwd
                             ls -la
                         '''
-
-                        // 빌드 프로세스
+                        // 시크릿 파일 설정 부분 (필요시 주석 해제)
+                        withCredentials([
+                            file(credentialsId: 'react-env', variable: 'envFile')
+                        ]) {
+                        sh '''
+                            cp "$envFile" .env
+                            chmod 644 .env
+                        '''
+                        }
+                        
                         sh '''
                             echo "===== Starting Build Process ====="
                             rm -rf node_modules
@@ -47,14 +132,13 @@ pipeline {
                             CI=false npm run build
                         '''
                         
-                        // 배포
                         sh '''
                             echo "===== Starting Deployment ====="
                             echo "Cleaning deployment directory..."
                             rm -rf ${DEPLOY_PATH}/*
                             
                             echo "Copying build files..."
-                            cp -r build/* ${DEPLOY_PATH}/
+                            cp -r dist/* ${DEPLOY_PATH}/
                             
                             echo "Verifying deployment..."
                             ls -la ${DEPLOY_PATH}
@@ -74,14 +158,31 @@ pipeline {
     }
 
     post {
-        always {
-            cleanWs()
-        }
         success {
-            echo '파이프라인 성공'
+            script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                withCredentials([string(credentialsId: 'mattermost-webhook', variable: 'WEBHOOK_URL')]) {
+                    mattermostSend(color: 'good',
+                        message: "빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)",
+                        endpoint: WEBHOOK_URL,
+                        channel: 'f1f632e18102627b0737ddbefcf0c505'
+                    )
+                }
+            }
         }
         failure {
-            echo '파이프라인 실패'
+            script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                withCredentials([string(credentialsId: 'mattermost-webhook', variable: 'WEBHOOK_URL')]) {
+                    mattermostSend(color: 'danger',
+                        message: "빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)",
+                        endpoint: WEBHOOK_URL,
+                        channel: 'f1f632e18102627b0737ddbefcf0c505'
+                    )
+                }
+            }
         }
     }
 }

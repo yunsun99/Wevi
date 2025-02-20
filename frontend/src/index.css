@@ -1,9 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap");
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-* {
-  box-sizing: border-box;
+/* ✅ 모든 브라우저에서 스크롤바 숨기기 */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none !important; /* ✅ Chrome, Safari */
 }
