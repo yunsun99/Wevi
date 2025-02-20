@@ -30,20 +30,3 @@ export async function requestAIplanner(formData) {
     return 400; // 오류 코드 반환
   }
 }
-
-export async function handleSubmit(formData) {
-  console.log("📩 전송할 데이터:", formData);
-
-  try {
-    const recommendData = await requestAIplanner(formData);
-    if (recommendData) {
-      setRecommendInfo(recommendData);
-      alert("🎉 데이터가 성공적으로 저장되었습니다!");
-    } else {
-      alert("⚠️ 데이터 저장 중 오류가 발생했습니다.");
-    }
-  } catch (error) {
-    console.error("❌ 요청 실패:", error);
-    alert("🚨 서버 요청 중 문제가 발생했습니다.");
-  }
-}
