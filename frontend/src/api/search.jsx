@@ -59,9 +59,9 @@ function filterData(data) {
       data.searchDate.date.split("-").map(Number);
   }
   if (data.searchFilter.inoutside === "inside") {
-    transformedData.isIndoor = true;
-  } else if (data.searchFilter.inoutside === "outside") {
     transformedData.isIndoor = false;
+  } else if (data.searchFilter.inoutside === "outside") {
+    transformedData.isIndoor = true;
   }
 
   // if (data.searchFilter.price === "ASC") {

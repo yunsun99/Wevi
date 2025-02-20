@@ -113,8 +113,8 @@ export default function CardSchedule({ data }) {
         <div className="absolute inset-0 bg-black opacity-30"></div>
 
         {/* 카드 내용 */}
-        <div className="relative p-4 text-white">
-          <h2 className="text-sm font-bold">{data.title}</h2>
+        <div className="relative p-4 text-white space-y-1">
+          <h2 className="text-m font-bold">{data.title}</h2>
           <p className="text-xs">{data.vendorName}</p>
           <p className="text-xs">
             {data.startTime} - {data.endTime}

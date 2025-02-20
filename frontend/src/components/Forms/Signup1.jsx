@@ -132,7 +132,7 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
 
         <div className="w-full max-w-md min-h-[calc(100vh-160px)] pt-20">
           {/* 이메일 입력 + 인증 버튼 */}
-          <div className="flex gap-2 mb-4">
+          <div className="flex gap-2 mb-4 items-center">
             <Input
               label="이메일"
               id="email"
@@ -145,7 +145,7 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
               error={emailError}
               disabled={verifyComplete}
             />
-            <div className="pt-7">
+            <div className="">
               <Button2 onClick={onEmailSubmit} disabled={!isEmailValid}>
                 입력
               </Button2>
@@ -153,7 +153,7 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
           </div>
 
           {/* 인증번호 입력 */}
-          <div className="flex gap-2 mb-4">
+          <div className="flex gap-2 mb-4 items-center">
             <Input
               label="인증번호"
               id="verify"
@@ -161,7 +161,7 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
               name="verify"
               onChange={(e) => (verifyInput.current = e.target.value)}
             />
-            <div className="pt-7">
+            <div className="">
               <Button2 onClick={onVerifySubmit} disabled={!isEmailSended}>
                 인증
               </Button2>

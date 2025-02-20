@@ -20,11 +20,13 @@ export default function ButtonSearch2({ children, onClick = () => {} }) {
     navigate("/searchList");
   }
   return (
-    <button
-      className="w-full z-3 sticky bottom-28 bg-green-500 text-black py-3 rounded-lg hover:bg-green-600 transition"
-      onClick={onClick}
-    >
-      {children}
-    </button>
+    <div className="px-3 py-5 z-3 sticky bottom-[7vh] bg-white border-1 border-white">
+      <button
+        className="w-full bg-[#609966] text-[#FFFDFA] py-3 rounded-lg font-semibold"
+        onClick={onClick}
+      >
+        {children}
+      </button>
+    </div>
   );
 }
