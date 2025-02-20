@@ -18,9 +18,9 @@ export default function AIPlannerCard({ data }) {
     >
       <img
         src={
-          data.imageUrl === "default"
+          data.categoryId
             ? categoryImages[data.categoryId]
-            : data.imageUrl
+            : weddinghall_default
         }
         alt={data.vendorName}
         className="w-full h-[20vh] object-cover overflow-x-auto"

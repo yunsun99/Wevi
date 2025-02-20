@@ -15,12 +15,12 @@ export default function AiPlanner() {
   const handlePrevious = () => setStep(step - 1);
 
   return (
-    <>
+    <div className="relative">
       <TopNavigationBar title="AI플래너" />
       <div className="h-[86vh]">
         <AiPlannerMessage />
       </div>
       <BottomNavigationBar />
-    </>
+    </div>
   );
 }
