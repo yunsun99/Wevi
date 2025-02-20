@@ -54,7 +54,7 @@ public class VendorService {
         ImageDto imageDto = new ImageDto();
 
         if (images == null || images.isEmpty()) {
-            imageDto.setImageUrl("기본 이미지 입니다.");
+            imageDto.setImageUrl("default");
             return imageDto;
         }
 
