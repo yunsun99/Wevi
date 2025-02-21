@@ -1,39 +1,33 @@
-import { useNavigate, useParams } from "react-router-dom";
 import weddinghall_default from "@/assets/weddinghall_default.png";
 import dress_default from "@/assets/dress_default.png";
 import studio_default from "@/assets/studio_default.png";
 import makeup_default from "@/assets/makeup_default.png";
 
 const categoryImages = {
-  weddinghall: weddinghall_default,
-  dress: dress_default,
-  studio: studio_default,
-  makeup: makeup_default,
+  1: weddinghall_default,
+  3: dress_default,
+  2: studio_default,
+  4: makeup_default,
 };
 
-export default function Card({ data }) {
-  const navigate = useNavigate();
-  const { category } = useParams(); // /search/:category 경로에서 category를 추출
-  function handleCardClick(id) {
-    navigate(`/searchDetail/${category}?id=${id}`);
-  }
-  console.log(data);
+export default function AIPlannerCard({ data }) {
   return (
     <div
-      key={data.id}
+      key={data.categoryId}
       className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
-      onClick={() => handleCardClick(data.id)}
     >
       <img
         src={
-          data.imageUrl === "default" ? categoryImages[category] : data.imageUrl
+          data.categoryId
+            ? categoryImages[data.categoryId]
+            : weddinghall_default
         }
         alt={data.vendorName}
         className="w-full h-[20vh] object-cover overflow-x-auto"
       />
       <div className="pt-4 pl-4 pr-4">
         <h3 className="font-bold">{data.vendorName}</h3>
-        <p className="text-sm text-gray-500">{data.doName}</p>
+        <p className="text-sm text-gray-500">{data.autoRoadAddress}</p>
       </div>
       <div className="p-4">
         <h3 className="font-bold text-md text-right">

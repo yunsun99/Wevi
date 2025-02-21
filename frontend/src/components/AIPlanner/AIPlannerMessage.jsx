@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import InputField from "@/components/AIPlanner/AIPlannerInput"; // ✅ 입력 필드 컴포넌트 임포트
 import character_image from "@/assets/characters/couple_link.png";
 import { requestAIplanner } from "../../api/aiplannerAxios";
+import AIPlannerCard from "@/components/AIPlanner/AIPlannerCard";
 
 export default function QuestionFlow() {
   const [questionIndex, setQuestionIndex] = useRecoilState(questionIndexState);
@@ -86,10 +87,11 @@ export default function QuestionFlow() {
       </div>
       {recommendInfo ? (
         <>
-          <span>{recommendInfo.weddingHallVendor.vendorName}</span>
-          <span>{recommendInfo.studioVendor.vendorName}</span>
-          <span>{recommendInfo.dressVendor.vendorName}</span>
-          <span>{recommendInfo.makeUpVendor.vendorName}</span>
+          <br />
+          <AIPlannerCard data={recommendInfo.weddingHallVendor} />
+          <AIPlannerCard data={recommendInfo.studioVendor} />
+          <AIPlannerCard data={recommendInfo.dressVendor} />
+          <AIPlannerCard data={recommendInfo.makeUpVendor} />
         </>
       ) : null}
     </>

@@ -20,7 +20,6 @@ export default function AiPlanner() {
       <div className="h-[86vh]">
         <AiPlannerMessage />
       </div>
-      <BottomNavigationBar />
     </>
   );
 }
