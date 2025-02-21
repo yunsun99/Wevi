@@ -1,7 +1,7 @@
 import TopNavigationBar from "@/components/Navigators/TopNavigationBar2";
 import BottomNavigationBar from "@/components/Navigators/BottomNavigationBar";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { plannerState } from "../atoms/AIPlannerState";
 import AiPlannerMessage from "../components/AIPlanner/AIPlannerMessage";
@@ -13,12 +13,6 @@ export default function AiPlanner() {
 
   const handleNext = () => setStep(step + 1);
   const handlePrevious = () => setStep(step - 1);
-
-  useEffect(() => {
-    return () => {
-      setFormData(initialFormData);
-    };
-  }, []);
 
   return (
     <>

@@ -53,7 +53,9 @@ export async function getConsultationInfo(id) {
 // 계약리스트트 불러오기기
 export async function getContractList() {
   try {
-    const response = await api.get("/api/schedules/contracts");
+    const response = await api.get("/api/schedules/contracts", {
+      validateStatus: (status) => status < 100, // 400 이상의 상태 코드를 에러로 간주하지 않음
+    });
     if (response.status === 200) {
       const data = response.data.data;
       // console.log(data);
@@ -61,12 +63,12 @@ export async function getContractList() {
       return data;
     } else {
       // console.log("실패");
-      return;
+      return 403;
     }
   } catch (error) {
     // console.log("대실패");
     // console.log(error);
-    return error.response ? error.response.status : 500;
+    return 403;
   }
 }
 
