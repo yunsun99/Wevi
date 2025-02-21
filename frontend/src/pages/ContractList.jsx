@@ -15,14 +15,14 @@ export default function ContractList() {
         const contractData = await getContractList();
         setContractList(contractData);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
     axiosContractList();
   }, []);
 
   useEffect(() => {
-    console.log(contractList);
+    // console.log(contractList);
   }, [contractList]);
   return (
     <>

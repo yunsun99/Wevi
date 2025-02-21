@@ -14,6 +14,12 @@ export default function AiPlanner() {
   const handleNext = () => setStep(step + 1);
   const handlePrevious = () => setStep(step - 1);
 
+  useEffect(() => {
+    return () => {
+      setFormData(initialFormData);
+    };
+  }, []);
+
   return (
     <>
       <TopNavigationBar title="AI플래너" />

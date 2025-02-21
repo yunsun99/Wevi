@@ -26,9 +26,9 @@ export default function Search() {
 
       const data = await getSearchData(requestData);
       setSearchResults(data);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
-      console.error("❌ API 요청 실패:", error);
+      // console.error("❌ API 요청 실패:", error);
       setSearchResults([]);
     }
   };

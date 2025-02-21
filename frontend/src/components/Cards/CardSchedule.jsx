@@ -69,10 +69,10 @@ export default function CardSchedule({ data }) {
       });
 
       const file = await fileHandle.getFile();
-      console.log("선택한 파일:", file.name);
+      // console.log("선택한 파일:", file.name);
       uploadFile(file, data.scheduleId);
     } catch (error) {
-      console.error("파일 선택 취소 또는 오류:", error);
+      // console.error("파일 선택 취소 또는 오류:", error);
     }
   }
 
@@ -87,13 +87,13 @@ export default function CardSchedule({ data }) {
     try {
       const response = await upLoadConsultation(file, scheduleId);
       if (response.ok) {
-        console.log("파일 업로드 성공!");
+        // console.log("파일 업로드 성공!");
       } else {
-        console.error("파일 업로드 실패");
+        // console.error("파일 업로드 실패");
       }
       window.location.reload();
     } catch (error) {
-      console.error("파일 업로드 중 오류 발생:", error);
+      // console.error("파일 업로드 중 오류 발생:", error);
       alert("파일 업로드에 실패했어요. 나중에 다시 시도해주세요.");
     }
   }

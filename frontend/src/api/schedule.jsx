@@ -23,13 +23,13 @@ export async function getConsultationList() {
     const response = await api.get("/api/schedules/consultations");
     if (response.status === 200) {
       const data = response.data.data;
-      console.log(data);
+      // console.log(data);
       return data;
     } else {
       return;
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
@@ -45,7 +45,7 @@ export async function getConsultationInfo(id) {
       return;
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
@@ -56,16 +56,16 @@ export async function getContractList() {
     const response = await api.get("/api/schedules/contracts");
     if (response.status === 200) {
       const data = response.data.data;
-      console.log(data);
-      console.log("성공공");
+      // console.log(data);
+      // console.log("성공공");
       return data;
     } else {
-      console.log("실패");
+      // console.log("실패");
       return;
     }
   } catch (error) {
-    console.log("대실패");
-    console.log(error);
+    // console.log("대실패");
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
@@ -81,7 +81,7 @@ export async function getContractInfo(id) {
       return;
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
@@ -97,7 +97,7 @@ export async function getProgressList() {
       return;
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return Promise.reject(error);
   }
 }
@@ -109,14 +109,14 @@ export async function cancelReservation(scheduleId) {
       `/api/schedules/consultation/${scheduleId}`
     );
     if (response.status === 200) {
-      console.log("예약 취소 성공", response.data);
+      // console.log("예약 취소 성공", response.data);
       return true; // 성공 시 true 반환
     } else {
-      console.log("예약 취소 실패");
+      // console.log("예약 취소 실패");
       return false;
     }
   } catch (error) {
-    console.error("예약 취소 요청 실패", error);
+    // console.error("예약 취소 요청 실패", error);
     return error.response ? error.response.status : 500;
   }
 }
@@ -129,17 +129,17 @@ export async function getAvailableDates({ vendorId, year, month }) {
     );
     if (response.status === 200) {
       const data = response.data.data;
-      console.log("성공공");
+      // console.log("성공공");
       return data;
     } else {
-      console.log("실패");
+      // console.log("실패");
 
       return;
     }
   } catch (error) {
-    console.log("대대실패");
+    // console.log("대대실패");
 
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
@@ -152,17 +152,17 @@ export async function getAvailableTimes({ vendorId, year, month, day }) {
     );
     if (response.status === 200) {
       const data = response.data.data;
-      console.log("성공공");
+      // console.log("성공공");
       return data;
     } else {
-      console.log("실패");
+      // console.log("실패");
 
       return;
     }
   } catch (error) {
-    console.log("대대실패");
+    // console.log("대대실패");
 
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
@@ -178,8 +178,8 @@ export async function addConsultation({ selectedDate, request, vendorId }) {
       request: request || "", // 기본 요청사항
       vendorId: Number(vendorId), // 웨딩홀 ID
     };
-    console.log(payload);
-    console.log("📡 Sending Data:", payload); // ✅ 디버깅 로그
+    // console.log(payload);
+    // console.log("📡 Sending Data:", payload); // ✅ 디버깅 로그
 
     // ✅ API 요청
     const response = await api.post(
@@ -192,11 +192,11 @@ export async function addConsultation({ selectedDate, request, vendorId }) {
       }
     );
 
-    console.log("✅ 예약 성공:", response);
+    // console.log("✅ 예약 성공:", response);
 
     return response.data.status; // 성공 시 응답 코드 반환 (200)
   } catch (error) {
-    console.error("❌ 예약 실패:", error);
+    // console.error("❌ 예약 실패:", error);
     return 400; // 오류 코드 반환
   }
 }

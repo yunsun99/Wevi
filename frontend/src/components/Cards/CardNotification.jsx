@@ -1,7 +1,7 @@
 import { axiosCoupleReceive } from "../../api/coupleAxios";
 
 export default function CardNotification({ data }) {
-  console.log(data);
+  // console.log(data);
   const handleRequest = async (status) => {
     try {
       const code = await axiosCoupleReceive(status);
@@ -9,7 +9,7 @@ export default function CardNotification({ data }) {
         window.location.reload();
       }
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
     }
   };
 
@@ -51,11 +51,11 @@ function formatDate(dateString) {
 }
 
 function handleReject(notificationId) {
-  console.log(`연동 신청 거절됨: ${notificationId}`);
+  // console.log(`연동 신청 거절됨: ${notificationId}`);
   // ❗ 여기에 API 호출 또는 상태 업데이트 추가 가능
 }
 
 function handleAccept(notificationId) {
-  console.log(`연동 신청 수락됨: ${notificationId}`);
+  // console.log(`연동 신청 수락됨: ${notificationId}`);
   // ❗ 여기에 API 호출 또는 상태 업데이트 추가 가능
 }

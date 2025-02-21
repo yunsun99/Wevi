@@ -17,7 +17,7 @@ export default function CoupleLink() {
         const data = await getCoupleLinkState();
         setLink(data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     axiosLink();

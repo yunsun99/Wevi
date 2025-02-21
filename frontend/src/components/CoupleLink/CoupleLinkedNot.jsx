@@ -4,7 +4,7 @@ import CoupleLinkPending from "@/components/CoupleLink/CoupleLinkPending";
 import CoupleLinkReceive from "@/components/CoupleLink/CoupleLinkReceive";
 
 export default function CoupleLinkedNot({ link }) {
-  console.log(link);
+  // console.log(link);
   return (
     <>
       <div className="relative w-full flex items-center justify-center">

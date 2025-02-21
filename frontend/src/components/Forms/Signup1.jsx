@@ -31,7 +31,7 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
       const verifyCode = await sendEmail(formData.email);
       setIsEmailSended(true);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -99,8 +99,8 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
         isNotEmpty(passwordCheck) &&
         !emailHasError &&
         !passwordHasError &&
-        !passwordCheckHasError
-      // verifyComplete
+        !passwordCheckHasError &&
+        verifyComplete
     );
   }, [
     formData,
@@ -108,7 +108,7 @@ const Signup1 = ({ formData, setFormData, onNext }) => {
     emailHasError,
     passwordHasError,
     passwordCheckHasError,
-    // verifyComplete,
+    verifyComplete,
   ]);
 
   const onBack = () => {

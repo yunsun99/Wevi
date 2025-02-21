@@ -15,7 +15,7 @@ export default function ConsultationDetail() {
         const consultationInfo = await getConsultationInfo(id);
         setConsultationData(consultationInfo);
       } catch (err) {
-        console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
+        // console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
       }
     };
     axiosConsultationInfo();

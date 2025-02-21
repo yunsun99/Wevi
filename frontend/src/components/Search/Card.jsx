@@ -17,7 +17,7 @@ export default function Card({ data }) {
   function handleCardClick(id) {
     navigate(`/searchDetail/${category}?id=${id}`);
   }
-  console.log(data);
+  // console.log(data);
   return (
     <div
       key={data.id}

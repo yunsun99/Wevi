@@ -95,7 +95,7 @@ function NotificationHandler() {
   useEffect(() => {
     // ✅ 1. 서비스 워커 등록 (상태 변경 없음)
     registerServiceWorker().catch(() => {
-      console.error("서비스 워커 등록 실패");
+      // console.error("서비스 워커 등록 실패");
     });
 
     // ✅ 2. 알람이 올 때만 실행되는 이벤트 리스너 추가
@@ -111,7 +111,7 @@ function NotificationHandler() {
     const loadAlarms = async () => {
       try {
         const data = await axiosNotification();
-        console.log("🔔 알림 데이터 로드:", data);
+        // console.log("🔔 알림 데이터 로드:", data);
         const reverseData = [...data].reverse();
         if (!reverseData[0].isRead) {
           setIsNotification(true);

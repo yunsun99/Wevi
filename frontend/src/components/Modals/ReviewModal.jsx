@@ -24,7 +24,7 @@ export default function ReviewModal({ onClose, vendorId }) {
         alert("리뷰 작성에 실패했습니다.");
       }
     } catch (error) {
-      console.error("Error submitting review:", error);
+      // console.error("Error submitting review:", error);
       alert("리뷰 작성 중 오류가 발생했습니다.");
     }
   };

@@ -76,7 +76,7 @@ export default function AIConsultationSummary() {
         const consultationAnalyzeData = await getConsultationAnalyzeInfo();
         setConsultationAnalyzeInfo(consultationAnalyzeData);
       } catch (err) {
-        console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
+        // console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
       }
     };
     axiosConsultationAnalyzeInfo();
@@ -88,7 +88,7 @@ export default function AIConsultationSummary() {
 
   useEffect(() => {
     if (!consultationAnalyzeInfo || !consultationAnalyzeInfo.length) {
-      console.log("❌ SummaryResult가 없습니다.");
+      // console.log("❌ SummaryResult가 없습니다.");
       return;
     }
 
@@ -97,7 +97,7 @@ export default function AIConsultationSummary() {
       summaryResult:
         item.status === "COMPLETED" ? JSON.parse(item.summaryResult) : null,
     }));
-    console.log(parsedData);
+    // console.log(parsedData);
     setSummaryData(parsedData);
   }, [consultationAnalyzeInfo]);
 
