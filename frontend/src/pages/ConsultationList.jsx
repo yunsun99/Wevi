@@ -26,14 +26,14 @@ export default function ConsultationList() {
 
         setConsultationList(sortedData);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
     axiosConsultaionList();
   }, []);
 
   useEffect(() => {
-    console.log(consultationList);
+    // console.log(consultationList);
   }, [consultationList]);
   return (
     <>

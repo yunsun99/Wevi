@@ -25,8 +25,8 @@ const CardSearchDetail = React.memo(({ data, selectedButton }) => {
     navigate(`/consultationReservation?id=${vendorId}`);
   }
 
-  console.log("CardSearchDetail Rendered");
-  console.log(data);
+  // console.log("CardSearchDetail Rendered");
+  // console.log(data);
 
   // 🔥 각 섹션을 위한 useRef 생성
   const imageRef = useRef(null);

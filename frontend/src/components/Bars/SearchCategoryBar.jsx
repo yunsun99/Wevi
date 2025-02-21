@@ -2,7 +2,7 @@ import { memo } from "react";
 
 function SearchCategoryBar({ currentCategory, onChangeCategory }) {
   // ✅ props로 상태 전달
-  console.log("SearchCategoryBar 렌더링됨");
+  // console.log("SearchCategoryBar 렌더링됨");
 
   const buttonActive =
     "px-4 py-4 flex-1 text-[#121212] text-sm font-semibold text-[#121212] hover:text-gray-800 hover:border-b-2 hover:border-black cursor-pointer bg-[#EDE4DC]";

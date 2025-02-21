@@ -12,13 +12,13 @@ export async function axiosNotification() {
       return;
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
 
 export async function axiosReadNotification(notificationIds) {
-  console.log(notificationIds);
+  // console.log(notificationIds);
   try {
     const response = await api.patch(
       "/api/users/notifications",
@@ -31,7 +31,7 @@ export async function axiosReadNotification(notificationIds) {
     );
     return response.status;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }

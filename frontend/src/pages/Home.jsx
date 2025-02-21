@@ -54,12 +54,12 @@ export default function Home() {
 
         setCategoryExists(categoryStatus);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
 
     const axiosUserInfo = async () => {
-      console.log("userinfo 실행");
+      // console.log("userinfo 실행");
       try {
         const userData = await getUserInfo();
         if (!userData) {
@@ -67,7 +67,7 @@ export default function Home() {
         }
         setUserInfo(userData);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
 
@@ -77,7 +77,7 @@ export default function Home() {
 
   useEffect(() => {
     if (userInfo.coupleUpdatedAt) {
-      console.log("으악");
+      // console.log("으악");
       setDateDiff(getDaysDifference(userInfo.coupleUpdatedAt));
     } else {
       return;
@@ -88,7 +88,7 @@ export default function Home() {
   //   console.log(categoryExists);
   // }, [categoryExists]);
   useEffect(() => {
-    console.log(userInfo);
+    // console.log(userInfo);
   }, [userInfo]);
 
   let comment =

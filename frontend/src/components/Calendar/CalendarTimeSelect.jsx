@@ -20,9 +20,9 @@ export default function CalendarTimeSelect({ vendorId }) {
         const month = dayjs(selectedDate.date).month() + 1;
         const day = dayjs(selectedDate.date).date();
 
-        console.log(
-          `⏰ Fetching available times: vendorId=${vendorId}, date=${selectedDate.date}`
-        );
+        // console.log(
+        //   `⏰ Fetching available times: vendorId=${vendorId}, date=${selectedDate.date}`
+        // );
 
         const response = await getAvailableTimes({
           vendorId,
@@ -30,14 +30,14 @@ export default function CalendarTimeSelect({ vendorId }) {
           month,
           day,
         });
-        console.log(response.availableTime);
+        // console.log(response.availableTime);
         if (response.availableTime) {
           setAvailableTimes(response.availableTime);
         } else {
           setAvailableTimes([]); // 데이터가 없을 경우 빈 배열 처리
         }
       } catch (err) {
-        console.error("API 요청 중 에러 발생:", err);
+        // console.error("API 요청 중 에러 발생:", err);
         setAvailableTimes([]); // 에러 발생 시 빈 배열 유지
       }
     };

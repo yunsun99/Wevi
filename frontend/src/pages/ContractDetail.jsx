@@ -15,7 +15,7 @@ export default function ContractDetail() {
         const contractInfo = await getContractInfo(id);
         setContractData(contractInfo);
       } catch (err) {
-        console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
+        // console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
       }
     };
     axiosContractInfo();
