@@ -14,7 +14,7 @@ export default function VendorReview() {
     setIsModalOpen(true); // 모달 열기
   }
 
-  console.log(reviewData);
+  // console.log(reviewData);
 
   return (
     <div className="bg-gray-50 p-4">

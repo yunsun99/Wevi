@@ -16,7 +16,7 @@ export default function Reservation() {
           const consultationInfo = await getConsultationInfo(tempdata.url);
           setReservationData(consultationInfo);
         } catch (err) {
-          console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
+          // console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
         }
       };
       axiosReservationInfo();
@@ -26,7 +26,7 @@ export default function Reservation() {
           const contractInfo = await getContractInfo(tempdata.url);
           setReservationData(contractInfo);
         } catch (err) {
-          console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
+          // console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
         }
       };
       axiosReservationInfo();

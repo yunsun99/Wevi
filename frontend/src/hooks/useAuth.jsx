@@ -10,7 +10,7 @@ export function useAuth() {
       await login(username, password);
       setAuthState({ user: { username }, isAuthenticated: true });
     } catch (error) {
-      console.error("로그인 실패:", error);
+      // console.error("로그인 실패:", error);
     }
   };
 

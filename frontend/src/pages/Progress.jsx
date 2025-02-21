@@ -15,14 +15,14 @@ export default function Progress() {
         );
         setProgressList(sortedData);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
     axiosProgressList();
   }, []);
 
   useEffect(() => {
-    console.log(progressList);
+    // console.log(progressList);
   }, [progressList]);
   return (
     <>

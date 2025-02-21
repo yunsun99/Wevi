@@ -8,7 +8,7 @@ export default function CardReservation({ data, category }) {
   const [vendorData, setVendorData] = useState();
   const navigate = useNavigate();
 
-  console.log(data);
+  // console.log(data);
   const now = new Date();
   const reservationDateTime = new Date(`${data.startDate}T${data.startTime}`);
   const isPastReservation =
@@ -35,7 +35,7 @@ export default function CardReservation({ data, category }) {
   }
   useEffect(() => {
     if (!data.vendorId) {
-      console.log("실패");
+      // console.log("실패");
       return;
     }
     const axiosVendorInfo = async () => {
@@ -43,13 +43,13 @@ export default function CardReservation({ data, category }) {
         const vendorInfo = await getVendorInfo(data.vendorId);
         setVendorData(vendorInfo);
       } catch (err) {
-        console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
+        // console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
       }
     };
     axiosVendorInfo();
   }, [data.vendorId]);
   useEffect(() => {
-    console.log(vendorData);
+    // console.log(vendorData);
   }, [vendorData]);
 
   return (

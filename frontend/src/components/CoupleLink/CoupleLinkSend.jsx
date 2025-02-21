@@ -12,12 +12,12 @@ export default function CoupleLinkSend() {
 
     try {
       const code = await axiosCoupleRequests(email);
-      console.log(code);
+      // console.log(code);
       if (code === 201) {
         window.location.reload();
       }
     } catch (err) {
-      consolelog(err.message);
+      // consolelog(err.message);
     }
   };
 

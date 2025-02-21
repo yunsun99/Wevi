@@ -103,7 +103,7 @@ const Signup2 = ({ formData, setFormData, onPrevious }) => {
       oncomplete: function (data) {
         // data 객체에 zonecode, roadAddress, jibunAddress 등이 포함되어 있습니다.
         // 예: 도로명 주소를 기본으로 사용
-        console.log(data);
+        // console.log(data);
         setFormData((prev) => ({
           ...prev,
           zonecode: data.zonecode,
@@ -113,7 +113,7 @@ const Signup2 = ({ formData, setFormData, onPrevious }) => {
     }).open();
   };
   useEffect(() => {
-    console.log(formData);
+    // console.log(formData);
   }, [formData]);
   return (
     <>

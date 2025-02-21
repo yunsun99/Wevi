@@ -28,7 +28,7 @@ export default function MyPage() {
         const userInfo = await getUserInfo();
         setUser(userInfo);
       } catch (err) {
-        console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
+        // console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
       }
     };
     axiosUserInfo();

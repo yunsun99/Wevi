@@ -32,7 +32,7 @@ export default function ProgressCard({ data }) {
       acc[categoryTitle] = [];
     }
     acc[categoryTitle].push(item);
-    console.log(categoryTitle);
+    // console.log(categoryTitle);
     return acc;
   }, {});
 

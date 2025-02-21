@@ -28,11 +28,11 @@ export const requestFCMToken = async () => {
       });
       return token;
     } else {
-      console.log("Notification permission denied");
+      // console.log("Notification permission denied");
       return null;
     }
   } catch (error) {
-    console.error("Error getting FCM token:", error);
+    // console.error("Error getting FCM token:", error);
     return null;
   }
 };
@@ -40,7 +40,7 @@ export const requestFCMToken = async () => {
 // ✅ 포그라운드 메시지 수신
 export const onForegroundMessage = (callback) => {
   const unsubscribe = onMessage(messaging, (payload) => {
-    console.log("포그라운드 메시지 수신:", payload);
+    // console.log("포그라운드 메시지 수신:", payload);
     if (callback) callback(payload);
   });
 
@@ -54,13 +54,13 @@ export const registerServiceWorker = async () => {
       const registration = await navigator.serviceWorker.register(
         "/firebase-messaging-sw.js"
       );
-      console.log("Service Worker 등록 성공:", registration);
+      // console.log("Service Worker 등록 성공:", registration);
       return registration;
     } catch (error) {
-      console.error("Service Worker 등록 실패:", error);
+      // console.error("Service Worker 등록 실패:", error);
       throw error;
     }
   } else {
-    console.error("Service Worker가 브라우저에서 지원되지 않습니다.");
+    // console.error("Service Worker가 브라우저에서 지원되지 않습니다.");
   }
 };

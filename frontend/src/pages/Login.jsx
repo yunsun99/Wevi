@@ -71,7 +71,7 @@ export default function Login() {
         const loadAlarms = async () => {
           try {
             const data = await axiosNotification();
-            console.log("🔔 알림 데이터 로드:", data);
+            // console.log("🔔 알림 데이터 로드:", data);
             const reverseData = [...data].reverse();
             if (!reverseData[0].isRead) {
               setIsNotification(true);

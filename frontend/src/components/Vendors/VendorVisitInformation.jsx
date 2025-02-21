@@ -35,7 +35,7 @@ export default function VendorVisitInformation({ data }) {
               position: coords,
             });
           } else {
-            console.error("주소 검색 실패:", data.autoRoadAddress);
+            // console.error("주소 검색 실패:", data.autoRoadAddress);
           }
         });
       });

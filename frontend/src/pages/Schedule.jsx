@@ -28,14 +28,14 @@ export default function Schedule() {
         const scheduleData = await getSchedules();
         setScheduleData(scheduleData);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
     axiosSchedules();
   }, []);
 
   useEffect(() => {
-    console.log(scheduleData);
+    // console.log(scheduleData);
   }, [scheduleData]);
 
   const sortedScheduleData = useMemo(() => {

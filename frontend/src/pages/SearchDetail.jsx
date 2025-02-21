@@ -30,7 +30,7 @@ export default function SearchDetail() {
         const venderInfo = await getVendorInfo(id);
         setVendorData(venderInfo);
       } catch (err) {
-        console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
+        // console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
       }
     };
     axiosVendorInfo();
@@ -44,7 +44,7 @@ export default function SearchDetail() {
           reviews: reviews,
         }));
       } catch (err) {
-        console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
+        // console.log(err); // ✅ 서버에서 받은 오류 메시지 표시
       }
     };
     axiosVendorReviews();

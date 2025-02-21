@@ -15,7 +15,7 @@ export async function getUserInfo() {
       return {};
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return Promise.reject(error);
   }
 }
@@ -27,19 +27,19 @@ export async function getCoupleLinkState() {
     if (response.status === 200) {
       response.data.profileImage = logo;
       const data = response.data.data;
-      console.log(data);
+      // console.log(data);
       return getLinkType(data);
     } else {
       return {};
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return Promise.reject(error);
   }
 }
 
 function getLinkType(data) {
-  console.log(data);
+  // console.log(data);
   if (!data) return { type: -1 }; // 데이터가 없을 경우 예외 처리
 
   if (data.sentRequestId) {
@@ -76,15 +76,15 @@ export async function upLoadConsultation(file, scheduleId) {
     });
 
     if (response.status === 200) {
-      console.log(response.data);
-      console.log(response.status);
+      // console.log(response.data);
+      // console.log(response.status);
       return response.data;
     } else {
-      console.log(response.status);
+      // console.log(response.status);
       return {};
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return Promise.reject(error);
   }
 }
@@ -94,15 +94,15 @@ export async function getConsultationAnalyzeInfo() {
   try {
     const response = await api.get(`/api/ai/analyze`);
     if (response.status === 200) {
-      console.log(response);
+      // console.log(response);
       const data = response.data.data;
-      console.log(data);
+      // console.log(data);
       return data;
     } else {
       return {};
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return Promise.reject(error);
   }
 }

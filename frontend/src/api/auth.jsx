@@ -27,7 +27,7 @@ export async function handleLogin(email, password) {
 
 export async function isEmailDuplicate(email) {
   if (!email || typeof email !== "string") {
-    console.error("❌ 유효하지 않은 이메일 값:", email);
+    // console.error("❌ 유효하지 않은 이메일 값:", email);
     return 400;
   }
 
@@ -44,10 +44,10 @@ export async function isEmailDuplicate(email) {
 
     return response.data.status;
   } catch (error) {
-    console.error(
-      "❌ API 요청 실패:",
-      error.response ? error.response.data : error
-    );
+    // console.error(
+    //   "❌ API 요청 실패:",
+    //   error.response ? error.response.data : error
+    // );
     return error.response ? error.response.status : 500;
   }
 }
@@ -67,14 +67,14 @@ export async function sendEmail(email) {
     );
     return response;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
 
 export async function verifyEmail(email, verificationCode) {
-  console.log(email);
-  console.log(verificationCode);
+  // console.log(email);
+  // console.log(verificationCode);
   try {
     const response = await api.post(
       `/api/users/verifyEmail`,
@@ -90,7 +90,7 @@ export async function verifyEmail(email, verificationCode) {
     );
     return response;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
@@ -98,7 +98,7 @@ export async function verifyEmail(email, verificationCode) {
 export async function handleSignUp(formData) {
   try {
     const jsonData = JSON.stringify(formData);
-    console.log(formData);
+    // console.log(formData);
 
     const response = await api.post(`/api/customers/signup`, jsonData, {
       headers: {
@@ -107,7 +107,7 @@ export async function handleSignUp(formData) {
     });
     return response.status; // 성공 시 응답 코드 반환 (예: 200)
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
@@ -121,7 +121,7 @@ export async function handleLogout() {
     });
     return response.status; // 성공 시 응답 코드 반환 (예: 200)
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }
@@ -135,7 +135,7 @@ export async function sendFCMToken(token) {
     });
     return response.status;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response ? error.response.status : 500;
   }
 }

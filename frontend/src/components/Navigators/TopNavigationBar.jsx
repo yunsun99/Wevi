@@ -13,7 +13,7 @@ import { isNotificationState } from "../../atoms/notificationState";
 function TopNavigationBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const notification = useRecoilValue(isNotificationState);
-  console.log(notification);
+  // console.log(notification);
 
   return (
     <>

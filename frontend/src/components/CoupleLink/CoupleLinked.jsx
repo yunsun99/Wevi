@@ -14,7 +14,7 @@ export default function CoupleLinked({ link }) {
         window.location.reload();
       }
     } catch (err) {
-      consolelog(err.message);
+      // consolelog(err.message);
     }
   };
 

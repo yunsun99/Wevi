@@ -11,7 +11,7 @@ export default function CoupleLinkReceive() {
         window.location.reload();
       }
     } catch (err) {
-      consolelog(err.message);
+      // consolelog(err.message);
     }
   };
   return (
