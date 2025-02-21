@@ -116,7 +116,9 @@ function NotificationHandler() {
         if (!reverseData[0].isRead) {
           setIsNotification(true);
         }
-      } catch (error) {}
+      } catch (error) {
+        return;
+      }
     };
 
     loadAlarms();

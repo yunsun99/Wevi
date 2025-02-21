@@ -9,11 +9,11 @@ export async function axiosNotification() {
       const data = response.data.data;
       return data;
     } else {
-      return;
+      return null;
     }
   } catch (error) {
     // console.log(error);
-    return error.response ? error.response.status : 500;
+    return null;
   }
 }
 
