@@ -1,33 +1,52 @@
-## 🚩 Work Flow
+# WEVI (웨딩 일정관리 서비스)
 
----
+<img src="./assets/wevi_main.png" width="100">
 
-### **1) Jira에서 작업 시작**
+<br/>
 
-- 스토리 및 하위 태스크 확인.
-- 작업 담당자는 Jira에서 이슈 번호를 확인하고 브랜치 생성.
+# 목차
 
-### **2) 브랜치 생성**
+### 1️⃣ [서비스 소개](#-서비스-소개)
 
-- 브랜치 생성 규칙:
-  - `fr/#123-login`
-  - `ba/#124-ai-alarm`
+### 2️⃣ [서비스 화면](#-서비스-화면)
 
-### **3) 작업 및 커밋**
+### 3️⃣ [개발 환경](#-개발-환경)
 
-- 커밋 메시지는 작업 내용을 간결히 작성:
-  - 예: `fix: API endpoint`
-  - 작업의 맥락은 브랜치명과 MR로 연결.
+### 4️⃣ [기술 특이점](#-기술-특이점)
 
-### **4) 머지 요청(MR)**
+### 5️⃣ [기획 및 설계 산출물](#-기획-및-설계-산출물)
 
-- MR 생성 시:
-  - 제목: `[FE#123] FEAT: Create login page`.
-  - 설명: Jira 이슈 링크 및 작업 요약 추가.
+### 6️⃣ [Conventions](#-conventions)
 
-## 🚩 Commit Convention
+### 7️⃣ [팀원 소개 및 개발 회고](#-팀원-소개-및-개발-회고)
 
----
+<br/>
+
+# 서비스 소개
+
+<br/>
+
+# 서비스 화면
+
+<br/>
+
+# 개발 환경
+
+<img src="./assets/wevi_technology stack.png" width="100">
+
+<img src="./assets/wevi_infra_architecture.png" width="100">
+
+<br/>
+
+# 기술 특이점
+
+<br/>
+
+# 기획 및 설계 산출물
+
+<br/>
+
+# conventions
 
 ### Commit Message Structure
 
@@ -45,24 +64,12 @@
     - 제목은 50자 이내
     - 마침표 및 특수기호 사용 금지
     - 영문인 경우 동사(원형)을 가장 앞에, 첫 글자는 대문자로 작성
-  - Body
-    - 72자 이내로 작성
-    - 최대한 상세히 작성
-    - 무엇을, 왜 변경했는지 작성
-  - Footer(optional)
-    - issue tracker ID 명시하고 싶은 경우 작성
-    - 유형: #이슈 번호 형식으로 작성
-    - 이슈 트래커 유형
-      - Fixes: 수정 중(아직 해결되지 않은 경우)
-      - Resolves: 이슈를 해결
-      - Ref: 참고할 이슈가 있을 때 사용
-      - Related to: 관련된 이슈 번호
 
 ### Commit Type
 
 | Tag Name |                            Description                             |
 | :------: | :----------------------------------------------------------------: |
-|   feat   |                          새로운 기능 추가                          |
+|   feat   |                          새로운 기능 추가                           |
 |   fix    |                             버그 수정                              |
 |   docs   |                             문서 수정                              |
 |  style   |                 코드 포맷팅, 코드 변경이 없는 경우                 |
@@ -72,17 +79,57 @@
 |  remove  |                       파일을 삭제만 한 경우                        |
 |  rename  |     파일 또는 디렉터리 명을 수정하거나 옮기는 작업만 있는 경우     |
 
-### 예시
+<br/>
 
-```
-fix: 사용자 정보 조회 시 발생하는 NullPointerException 수정
+# 팀원 소개 및 개발 회고
 
-사용자 정보가 없을 경우 기본값 반환하도록 로직 변경
+## 📆 프로젝트 기간
 
----------------------------------------------------------
-feat: 사용자 정보 조회 기능 추가
+### 25.01.06 ~ 25.02.21
 
-마이페이지에서 사용하기 위한
-사용자 정보를 ID를 기준으로 조회 하는 메서드 추가
-MyPageDTO에 정보를 담아 반환
-```
+- 기획 및 설계 : 25.01.06 ~ 25.01.17
+- 프로젝트 구현 : 25.01.18 ~ 25.02.14
+- 버그 수정 및 산출물 정리 : 25.02.15 ~ 25.02.20
+- 코드 리팩토링 : 25.02.21 ~
+
+## 💞 팀원 소개
+
+<table>
+    <tr>
+        <td height="140px" align="center"> <a href="https://github.com/자기주소">
+            <img src="https://avatars.githubusercontent.com/자기주소" width="140px" /> <br><br> 👑 황성일 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/자기주소">
+            <img src="https://avatars.githubusercontent.com/자기주소" width="140px" /> <br><br> 👶🏻 고대권 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/자기주소">
+            <img src="https://avatars.githubusercontent.com/자기주소" width="140px" /> <br><br> 👶🏻 정정윤선 <br>(Back-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/자기주소">
+            <img src="https://avatars.githubusercontent.com/자기주소" width="140px" /> <br><br> 👶🏻 박성근 <br>(Back-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/자기주소">
+            <img src="https://avatars.githubusercontent.com/자기주소" width="140px" /> <br><br> 👶🏻 신동운 <br>(Back-End, Infra) </a> <br></td>
+    </tr>
+    <tr>
+        <td align="center"><br/></td>
+        <td align="center"><br/></td>
+        <td align="center"><br/></td>
+        <td align="center"><br/></td>
+        <td align="center"><br/></td>
+        <td align="center"><br/></td>
+    </tr>
+</table>
+
+## 🙌🏻 회고
+
+##### **황성일**<br>
+- 적어주세요.
+
+##### **고대권**<br>
+- 적어주세요.
+
+##### **정윤선**<br>
+- 적어주세요.
+
+##### **박성근**<br>
+- 적어주세요.
+
+##### **신동운**<br>
+- 적어주세요.
