@@ -1,6 +1,6 @@
 # WEVI (웨딩 일정관리 서비스)
 
-<img src="./assets/wevi_main.png" width="100">
+<img src="./assets/wevi_main.png" width="100%">
 
 <br/>
 
@@ -32,9 +32,9 @@
 
 # 개발 환경
 
-<img src="./assets/wevi_technology stack.png" width="100">
+<img src="./assets/wevi_technology stack.png" width="100%">
 
-<img src="./assets/wevi_infra_architecture.png" width="100">
+<img src="./assets/wevi_infra_architecture.png" width="100%">
 
 <br/>
 
