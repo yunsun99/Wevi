@@ -1,6 +1,6 @@
 # WEVI – 편리한 웨딩 일정 관리 플랫폼
 
-<img src="./assets/wevi_main.png" width="100">
+<img src="./assets/wevi_main.png" width="100%">
 
 <br/>
 
