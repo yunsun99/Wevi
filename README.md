@@ -6,13 +6,13 @@
 
 # 📌 목차
 
-### 1️⃣ [서비스 소개](#-서비스-소개)
-### 2️⃣ [서비스 화면](#-서비스-화면)
-### 3️⃣ [개발 환경](#-개발-환경)
-### 4️⃣ [기술 특이점](#-기술-특이점)
-### 5️⃣ [기획 및 설계 산출물](#-기획-및-설계-산출물)
-### 6️⃣ [Conventions](#-conventions)
-### 7️⃣ [팀원 소개 및 개발 회고](#-팀원-소개-및-개발-회고)
+### 1️⃣ [서비스 소개](#서비스-소개)
+### 2️⃣ [서비스 화면](#서비스-화면)
+### 3️⃣ [개발 환경](#개발-환경)
+### 4️⃣ [기술 특이점](#기술-특이점)
+### 5️⃣ [기획 및 설계 산출물](#기획-및-설계-산출물)
+### 6️⃣ [Conventions](#conventions)
+### 7️⃣ [팀원 소개 및 개발 회고](#팀원-소개-및-개발-회고)
 
 <br/>
 
@@ -82,25 +82,25 @@
 
 # 서비스 화면  
 
-<img src="./assets/scenario/login.png" width="100">
-<img src="./assets/scenario/register.png" width="100">
-<img src="./assets/scenario/home.png" width="100">
-<img src="./assets/scenario/search.png" width="100">
-<img src="./assets/scenario/vendor_detail.png" width="100">
-<img src="./assets/scenario/schedule.png" width="100">
-<img src="./assets/scenario/couple.png" width="100">
-<img src="./assets/scenario/alarm.png" width="100">
-<img src="./assets/scenario/timeline.png" width="100">
-<img src="./assets/scenario/mypage.png" width="100">
-<img src="./assets/scenario/ai.png" width="100">
-<img src="./assets/scenario/ai_recommend.png" width="100">
+<img src="./assets/scenario/login.png" width="100%">
+<img src="./assets/scenario/register.png" width="100%">
+<img src="./assets/scenario/home.png" width="100%">
+<img src="./assets/scenario/search.png" width="100%">
+<img src="./assets/scenario/vendor_detail.png" width="100%">
+<img src="./assets/scenario/schedule.png" width="100%">
+<img src="./assets/scenario/couple.png" width="100%">
+<img src="./assets/scenario/alarm.png" width="100%">
+<img src="./assets/scenario/timeline.png" width="100%">
+<img src="./assets/scenario/mypage.png" width="100%">
+<img src="./assets/scenario/ai.png" width="100%">
+<img src="./assets/scenario/ai_recommend.png" width="100%">
 
 <br/>
 
 # 개발 환경  
 
-<img src="./assets/wevi_technology stack.png" width="100">
-<img src="./assets/wevi_infra_architecture.png" width="100">
+<img src="./assets/wevi_technology stack.png" width="100%">
+<img src="./assets/wevi_infra_architecture.png" width="100%">
 
 ---
 
