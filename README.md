@@ -42,7 +42,6 @@
          <td align="center"><br/>각자 구현한 기능 및 페이지</td>
          <td align="center"><br/>각자 구현한 기능 및 페이지</td>
          <td>
-            <br/>
             - 프로젝트 초기세팅
             <br/>
             - Spring Security를 이용한 회원 관리 API
