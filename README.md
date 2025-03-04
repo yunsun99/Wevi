@@ -1,4 +1,6 @@
-# WEVI – 편리한 웨딩 일정 관리 플랫폼
+# WEVI : 편리한 웨딩 일정 관리 플랫폼
+
+ > 결혼 준비 과정 속에서 혼자, 때로는 함께 챙겨야 하는 복잡한 일정을 자동으로 생성/관리해주고, 손쉽게 공유할 수 있도록 도와주는 서비스 **WEVI(웨비)** 입니다..
 
 <img src="./assets/wevi_main.png" width="100%">
 
@@ -6,20 +8,74 @@
 
 # 📌 목차
 
-### 1️⃣ [서비스 소개](#1-서비스-소개)
-### 2️⃣ [서비스 화면](#2-서비스-화면)
-### 3️⃣ [개발 환경](#3-개발-환경)
-### 4️⃣ [기술 특이점](#4-기술-특이점)
-### 5️⃣ [기획 및 설계 산출물](#5-기획-및-설계-산출물)
-### 6️⃣ [Conventions](#6-conventions)
-### 7️⃣ [팀원 소개 및 개발 회고](#7-팀원-소개-및-개발-회고)
+### 1️⃣ [팀원 소개](#1-팀원-소개)
+### 2️⃣ [서비스 소개](#2-서비스-소개)
+### 3️⃣ [서비스 화면](#3-서비스-화면)
+### 4️⃣ [개발 환경](#4-개발-환경)
+### 5️⃣ [기술 특이점](#5-기술-특이점)
+### 6️⃣ [기획 및 설계 산출물](#6-기획-및-설계-산출물)
+### 7️⃣ [Conventions](#7-conventions)
+### 8️⃣ [개발 회고](#8-개발-회고)
 
 <br/>
 
-# 1. 서비스 소개
+# 1. 팀원 소개
+
+&nbsp;
+
+## 💞 팀원 소개
+
+<table>
+    <tr>
+        <td height="140px" align="center"> <a href="https://github.com/seongilhwang97">
+            <img src="https://avatars.githubusercontent.com/seongilhwang97" width="140px" /> <br><br> 👑 황성일 <br>(Team Leader, Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/userdkdk">
+            <img src="https://avatars.githubusercontent.com/userdkdk" width="140px" /> <br><br> 👶🏻 고대권 <br>(Front-End Leader) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/yunsun99">
+            <img src="https://avatars.githubusercontent.com/yunsun99" width="140px" /> <br><br> 👶🏻 정윤선 <br>(Back-End Leader, AI) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/SeonggeunPark">
+            <img src="https://avatars.githubusercontent.com/SeonggeunPark" width="140px" /> <br><br> 👶🏻 박성근 <br>(Back-End, AI) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/dwshin-dev">
+            <img src="https://avatars.githubusercontent.com/dwshin-dev" width="140px" /> <br><br> 👶🏻 신동운 <br>(Back-End, Infra) </a> <br></td>
+    </tr>
+    <tr>
+         <td align="center"><br/>각자 구현한 기능 및 페이지</td>
+         <td align="center"><br/>각자 구현한 기능 및 페이지</td>
+         <td>
+            <br/>
+            - 프로젝트 초기세팅
+            <br/>
+            - Spring Security를 이용한 회원 관리 API
+            <br/>
+            - FCM 이용한 푸시 알림 전송
+            <br/>
+            - 커플 연동 API
+            <br/>
+            - 상담 예약 가능한 날짜 / 시간 조회 API
+            <br/>
+            - AI 웨딩 플래너 코드 작성
+         </td>
+         <td align="center"><br/>각자 구현한 기능 및 페이지</td>
+         <td align="center"><br/>각자 구현한 기능 및 페이지</td>
+    </tr>
+</table>
+
+&nbsp;
+
+# 2. 서비스 소개
 
 WEVI(웨비)는 결혼을 준비하는 예비 부부들을 위한 올인원 웨딩 일정 관리 플랫폼입니다.       
 실제 예비 신혼부부들을 인터뷰하여 **복잡한 일정 관리, 상담 예약의 어려움, 부부 간 일정 공유 문제**를 해결하는 서비스를 제공합니다.
+
+&nbsp;
+
+## 📆 프로젝트 기간  
+### 2025.01.06 ~ 2025.02.21
+
+- **기획 및 설계**: 2025.01.06 ~ 2025.01.17  
+- **프로젝트 구현**: 2025.01.18 ~ 2025.02.14  
+- **버그 수정 및 산출물 정리**: 2025.02.15 ~ 2025.02.20  
+- **코드 리팩토링**: 2025.02.21 ~  
 
 &nbsp;
 
@@ -27,9 +83,9 @@ WEVI(웨비)는 결혼을 준비하는 예비 부부들을 위한 올인원 웨�
 
 ### ✅ 웨딩 일정 관리  
 - **업체 검색 및 필터링**: 웨딩 업체를 쉽게 검색하고 필터링  
-- **상담 예약 및 일정 자동 등록**: 번거로운 상담 예약을 간편하게 처리하고 자동 등록  
-- **중간 과정 조회**: 진행 중인 예약 상태를 쉽게 확인  
-- **커플 연동 기능**: 예비 부부 간 일정 공유를 간편화  
+- **상담 예약 및 일정 자동 등록**: 번거로운 상담 예약을 간편하게 처리하고 상담 일정을 캘린더에 자동 등록  
+- **중간 과정 조회**: 계약한 업체의 계약에 대한 업무 진행 상황을 쉽게 확인
+- **커플 연동 기능**: 예비 부부 간 자동 캘린더 동기화를 통해 간편하게 일정 공유
 
 ### ✅ AI 기능  
 - **AI 상담 요약**: GPT-4를 활용하여 상담 내용을 자동 요약  
@@ -40,13 +96,17 @@ WEVI(웨비)는 결혼을 준비하는 예비 부부들을 위한 올인원 웨�
 ## 🔧 기술 스택
 
 ### **프론트엔드**
-- React 18.3.0, Vite 6.0.5, Tailwind CSS 4.0.0
-- JavaScript(ES6), Firebase Cloud Messaging
-- Node.js 20
+- React 18.3.0, Vite 6.0.5
+- JavaScript(ES6), Node.js 20
+- Tailwind CSS 4.0.0
+- Firebase Cloud Messaging
 
 ### **백엔드**
-- Spring Boot 3.3.7, MySQL 8.0.41, FastAPI  
-- Oracle Open JDK 17, Spring Data JPA, Spring Security 6.4.2  
+- Spring Boot 3.3.7, Oracle Open JDK 17 
+- Spring Data JPA, Spring Security 6.4.2  
+- MySQL 8.0.41
+- FastAPI 
+- Firebase Cloud Messaging
 
 ### **AI 기술**
 - OpenAI GPT-4, Whisper, Pyannote  
@@ -80,7 +140,7 @@ WEVI(웨비)는 결혼을 준비하는 예비 부부들을 위한 올인원 웨�
 
 &nbsp;
 
-# 2. 서비스 화면  
+# 3. 서비스 화면  
 
 <img src="./assets/scenario/login.png" width="100%">
 <img src="./assets/scenario/register.png" width="100%">
@@ -98,7 +158,7 @@ WEVI(웨비)는 결혼을 준비하는 예비 부부들을 위한 올인원 웨�
 
 &nbsp;
 
-# 3. 개발 환경  
+# 4. 개발 환경  
 
 <img src="./assets/wevi_technology stack.png" width="100%">
 <img src="./assets/wevi_infra_architecture.png" width="100%">
@@ -106,7 +166,7 @@ WEVI(웨비)는 결혼을 준비하는 예비 부부들을 위한 올인원 웨�
 
 &nbsp;
 
-# 4. 기술 특이점
+# 5. 기술 특이점
 
 &nbsp;
 
@@ -161,7 +221,7 @@ WEVI(웨비)는 결혼을 준비하는 예비 부부들을 위한 올인원 웨�
 
 &nbsp;
 
-# 5. 기획 및 설계 산출물  
+# 6. 기획 및 설계 산출물  
 
 ### 요구사항 명세서 
 https://held-nephew-fd8.notion.site/v3-11e3e17bbf4c4208ba0c38edb60f20e1
@@ -177,22 +237,15 @@ https://www.notion.so/API-e5e9eb4063154f858accd1f03a012507
 
 &nbsp;
 
-# 6. Conventions  
+# 7. Conventions  
 
 ### Commit Message Structure
 - 기본적인 commit message 구조  
-  - 각 파트는 빈 줄로 구분
-
-    > 제목 (Type: Subject) <br />
-    > (공백) <br />
-    > 본문 (Body) <br />
-    > (공백) <br />
-    > Footer
-
-  - Subject
-    - 제목은 50자 이내
-    - 마침표 및 특수기호 사용 금지
-    - 영문인 경우 동사(원형)을 가장 앞에, 첫 글자는 대문자로 작성
+   ```
+   type: subject
+   ```
+   - **type**: 어떤 의도로 커밋을 했는지 명시합니다. (ex. feat, refactor)
+   - **Subject**: 코드 변경사항을 요약해서 작성합니다. 영문으로 표기하고 마침표는 찍지 않습니다.
 
 ### Commit Type  
 
@@ -210,45 +263,7 @@ https://www.notion.so/API-e5e9eb4063154f858accd1f03a012507
 
 &nbsp;
 
-# 7. 팀원 소개 및 개발 회고  
-
-&nbsp;
-
-## 📆 프로젝트 기간  
-### 2025.01.06 ~ 2025.02.21
-
-- **기획 및 설계**: 2025.01.06 ~ 2025.01.17  
-- **프로젝트 구현**: 2025.01.18 ~ 2025.02.14  
-- **버그 수정 및 산출물 정리**: 2025.02.15 ~ 2025.02.20  
-- **코드 리팩토링**: 2025.02.21 ~  
-
-&nbsp;
-
-## 💞 팀원 소개
-
-<table>
-    <tr>
-        <td height="140px" align="center"> <a href="https://github.com/seongilhwang97">
-            <img src="https://avatars.githubusercontent.com/seongilhwang97" width="140px" /> <br><br> 👑 황성일 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/userdkdk">
-            <img src="https://avatars.githubusercontent.com/userdkdk" width="140px" /> <br><br> 👶🏻 고대권 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/yunsun99">
-            <img src="https://avatars.githubusercontent.com/yunsun99" width="140px" /> <br><br> 👶🏻 정윤선 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/SeonggeunPark">
-            <img src="https://avatars.githubusercontent.com/SeonggeunPark" width="140px" /> <br><br> 👶🏻 박성근 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/dwshin-dev">
-            <img src="https://avatars.githubusercontent.com/dwshin-dev" width="140px" /> <br><br> 👶🏻 신동운 <br>(Back-End, Infra) </a> <br></td>
-    </tr>
-    <tr>
-        <td align="center"><br/>팀장, 프론트엔드</td>
-        <td align="center"><br/>프론트엔드 리더</td>
-        <td align="center"><br/>백엔드 리더, AI</td>
-        <td align="center"><br/>백엔드, AI</td>
-        <td align="center"><br/>백엔드, 인프라</td>
-    </tr>
-</table>
-
-## 🙌🏻 회고
+# 8. 개발 회고  
 
 ##### **황성일**<br>
 - 적어주세요.
@@ -257,7 +272,14 @@ https://www.notion.so/API-e5e9eb4063154f858accd1f03a012507
 - 적어주세요.
 
 ##### **정윤선**<br>
-- 적어주세요.
+- **소감 및 만족한 점**: 간단한 프로젝트들을 제외하면 처음으로 Spring을 사용한 팀 프로젝트였는데 무사히 마치게 되어서 기쁩니다. 
+백엔드 리더를 맡아 다른 팀원들과 소통하며 개발 실력과 협업 능력을 기를 수 있어 값진 경험이었습니다.
+또한 Spring Data JPA, Spring Security를 익혀서 원활하게 사용할 수 있었다는 점에서도 만족스럽습니다.
+- **어려웠거나 아쉬웠던 점**: 각 업체의 영업시간을 요일마다 받아서 각 요일에 대해 예약 가능한 시간을 동적으로 생성하도록 설계하고 싶었는데
+초반 ERD 설계 시 이 부분을 고려하지 못해서 후반에 수정하기에 어려움이 있었습니다.
+또한 외래 키 관계가 복잡해지니 데이터 삭제 시에 관련 오류가 많이 발생해서 다음 개발 때는 이 부분을 고려해서 처음부터 제대로 개발해보려 합니다.
+- **다음 개발 때 시도해 볼 점**: 다음에 이번처럼 자동으로 예약 시간을 생성하고 관리해야 할 일이 있다면 이번에 시간 문제로 사용하지 못한 Spring Batch를 사용해보고 싶습니다.
+또한 이번 개발 때는 최적화를 고려하지 않았는데, 다음 개발 때는 쿼리 최적화 등을 시도해 보고 싶고, API 응답 속도도 높여보는 경험을 해보고 싶습니다.
 
 ##### **박성근**<br>
 - 적어주세요.
