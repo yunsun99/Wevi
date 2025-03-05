@@ -39,8 +39,34 @@
             <img src="https://avatars.githubusercontent.com/dwshin-dev" width="140px" /> <br><br> 👶🏻 신동운 <br>(Back-End, Infra) </a> <br></td>
     </tr>
     <tr>
-         <td align="center"><br/>각자 구현한 기능 및 페이지</td>
-         <td align="center"><br/>각자 구현한 기능 및 페이지</td>
+         <td>
+            - 피그마 디자인
+            <br/>
+            - 공통 컴포넌트 생성
+            <br/>
+            - 업체 검색 및 상세 페이지
+            <br/>
+            - 업체 일정 관리 페이지
+            <br/>
+            - 유저 진행도 연동 페이지
+            <br/>
+            - 마이페이지
+            <br/>
+            - AI 상담 내용 분석 페이지
+         </td>
+         <td>
+            - 피그마 디자인
+            <br/>
+            - 공통 컴포넌트 생성
+            <br/>
+            - 회원가입/ 로그인 페이지
+            <br/>
+            - 커플 연동 페이지
+            <br/>
+            - 푸시 알림 기능
+            <br/>
+            - AI 플래너 페이지
+         </td>
          <td>
             - 프로젝트 초기세팅
             <br/>
