@@ -80,7 +80,17 @@
             <br/>
             - AI 웨딩 플래너 코드 작성
          </td>
-         <td align="center"><br/>각자 구현한 기능 및 페이지</td>
+         <td>
+            - 상담 예약, 계약 등록, 일정 관리 기능
+            <br/>
+            - 중간과정 조회 및 관리 기능
+            <br/>
+            - AI 기반 상담 내용 분석, 관리 기능
+            <br/>
+            - AI 기능 관련 FastAPI 구현
+            <br/>
+            - 
+         </td>
          <td align="center"><br/>각자 구현한 기능 및 페이지</td>
     </tr>
 </table>
