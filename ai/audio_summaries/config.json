@@ -1,8 +1,0 @@
-{
-    "AWS_ACCESS_KEY": "AKIA4IM3HBAP4PE4HIHO",
-    "AWS_SECRET_KEY": "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",
-    "AWS_DEFAULT_REGION": "ap-northeast-2",
-    "S3_BUCKET_NAME": "my-vendor-images",
-    "HUGGINGFACE_ACCESS_TOKEN": "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",
-    "OPENAI_API_KEY": "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"
-  }

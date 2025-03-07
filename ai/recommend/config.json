@@ -1,8 +1,0 @@
-{
-    "DB_USER_NAME": "wevi",
-    "DB_PASSWORD": "8teamft!",
-    "DB_HOST": "mysql-container",
-    "DB_PORT": "3306",
-    "DB_NAME": "wevi",
-    "DB_URL": "mysql+pymysql://wevi:8teamft!@mysql-container:3306/wevi?charset=utf8mb4"
-  }
