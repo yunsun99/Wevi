@@ -9,9 +9,9 @@ const AddressBoundary = () => {
 
   useEffect(() => {
     // 통계청 API URL
-    const apiUrl = "https://sgis.kostat.go.kr/openapi/rest/AreaBoundary";
-    const consumer_key = "87f8654cc8d644589358"; // 발급받은 인증키
-    const consumer_secret = "78b823a664be46658e26"; // 발급받은 인증키
+    const apiUrl = "";
+    const consumer_key = ""; // 발급받은 인증키
+    const consumer_secret = ""; // 발급받은 인증키
 
     // 요청할 파라미터 설정
     const params = new URLSearchParams({
